@@ -38,6 +38,7 @@
         },
         {
             "scale": 9,
+						"wireframe": false,
             "type": "renderer",
             "window-id": 2,
             "window-pos": [
