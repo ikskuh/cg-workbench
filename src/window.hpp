@@ -14,6 +14,7 @@
 class Window
 {
 	friend void load(std::string const & fileName);
+	friend int main(int argc, char ** argv);
 private:
 	int id;
 	bool isOpen;

@@ -99,6 +99,8 @@ ShaderEditor::ShaderEditor() :
 
 	this->shaders.emplace_back(new Shader(GL_VERTEX_SHADER));
 	this->shaders.emplace_back(new Shader(GL_FRAGMENT_SHADER));
+
+	this->Compile();
 }
 
 ShaderEditor::~ShaderEditor()

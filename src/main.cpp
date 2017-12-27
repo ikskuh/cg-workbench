@@ -27,7 +27,16 @@ void load(std::string const & fileName);
 
 extern int currentWindowID;
 
-int main(int, char**)
+static Window * createMenu()
+{
+	Window * result = nullptr;
+	if(ImGui::MenuItem("Shader")) Window::Register(result = new ShaderEditor());
+	if(ImGui::MenuItem("Geometry")) Window::Register(result = new GeometryWindow());
+	if(ImGui::MenuItem("Renderer")) Window::Register(result = new RenderWindow());
+	return result;
+}
+
+int main(int argc, char ** argv)
 {
     // Setup SDL
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
@@ -157,10 +166,7 @@ int main(int, char**)
 	        }
 	        if (ImGui::BeginMenu("Create"))
 	        {
-				if(ImGui::MenuItem("Shader")) Window::Register(new ShaderEditor());
-				if(ImGui::MenuItem("Geometry")) Window::Register(new GeometryWindow());
-				if(ImGui::MenuItem("Renderer")) Window::Register(new RenderWindow());
-
+				createMenu();
 	            ImGui::EndMenu();
 	        }
 			if(ImGui::BeginMenu("Extras"))
@@ -184,6 +190,8 @@ int main(int, char**)
 
 			ImGui::SetNextWindowPos(ImVec2(0,0), ImGuiCond_Always);
 			ImGui::SetNextWindowSize(ImVec2(w, h), ImGuiCond_Always);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
+
 			auto flags = ImGuiWindowFlags_NoTitleBar
 					| ImGuiWindowFlags_NoBringToFrontOnFocus
 					| ImGuiWindowFlags_NoCollapse
@@ -195,9 +203,21 @@ int main(int, char**)
 
 			if(ImGui::Begin("Desktop", nullptr, flags))
 			{
+				if(ImGui::BeginPopupContextWindow(nullptr, 0))
+				{
+					Window * win = createMenu();
+					if(win != nullptr)
+					{
+						win->wantsResize = true;
+						win->pos = ImGui::GetIO().MousePos;
+					}
+					ImGui::EndPopup();
+				}
 				Window::UpdateNodes();
 			}
 			ImGui::End();
+
+			ImGui::PopStyleVar();
 		}
 
         // 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
