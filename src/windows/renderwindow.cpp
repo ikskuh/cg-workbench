@@ -3,7 +3,7 @@
 RenderWindow::RenderWindow() :
     Window("Render Window", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize),
     texSize(512,512),
-    scale(9)
+    scale(9), wireframe(false)
 {
 	glCreateTextures(GL_TEXTURE_2D, 1, &this->tex);
 	glTextureStorage2D(
@@ -53,6 +53,11 @@ void RenderWindow::OnRender()
 		glUseProgram(this->shader->GetObject());
 		glBindVertexArray(this->geom->GetObject());
 
+		if(this->wireframe)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 	else
@@ -87,79 +92,75 @@ void RenderWindow::SizeConstraint(ImGuiSizeConstraintCallbackData * data)
 		(src.x - px) / aspect + py);
 }
 
-void RenderWindow::OnSetup()
-{
-	/*
-	ImGui::SetNextWindowSizeConstraints(
-		ImVec2(0, 0),
-		ImVec2(FLT_MAX, FLT_MAX),
-		&RenderWindow::SizeConstraint,
-		this);
-	*/
-	Window::OnSetup();
-}
-
 void RenderWindow::OnUpdate()
 {
 	if(ImGui::BeginMenuBar())
 	{
 		if(ImGui::BeginMenu("Renderer"))
 		{
-			if(ImGui::BeginMenu("Target 1"))
+			if(ImGui::BeginMenu("Render Targets"))
 			{
-				ImGui::MenuItem("None");
-				ImGui::MenuItem("RGBA8");
-				ImGui::MenuItem("RGBA16F");
-				ImGui::MenuItem("RGBA32F");
-				ImGui::EndMenu();
-			}
-			if(ImGui::BeginMenu("Target 2"))
-			{
-				ImGui::MenuItem("None");
-				ImGui::MenuItem("RGBA8");
-				ImGui::MenuItem("RGBA16F");
-				ImGui::MenuItem("RGBA32F");
-				ImGui::EndMenu();
-			}
-			if(ImGui::BeginMenu("Target 3"))
-			{
-				ImGui::MenuItem("None");
-				ImGui::MenuItem("RGBA8");
-				ImGui::MenuItem("RGBA16F");
-				ImGui::MenuItem("RGBA32F");
-				ImGui::EndMenu();
-			}
-			if(ImGui::BeginMenu("Target 4"))
-			{
-				ImGui::MenuItem("None");
-				ImGui::MenuItem("RGBA8");
-				ImGui::MenuItem("RGBA16F");
-				ImGui::MenuItem("RGBA32F");
+				if(ImGui::BeginMenu("Target 1"))
+				{
+					ImGui::MenuItem("None");
+					ImGui::MenuItem("RGBA8");
+					ImGui::MenuItem("RGBA16F");
+					ImGui::MenuItem("RGBA32F");
+					ImGui::EndMenu();
+				}
+				if(ImGui::BeginMenu("Target 2"))
+				{
+					ImGui::MenuItem("None");
+					ImGui::MenuItem("RGBA8");
+					ImGui::MenuItem("RGBA16F");
+					ImGui::MenuItem("RGBA32F");
+					ImGui::EndMenu();
+				}
+				if(ImGui::BeginMenu("Target 3"))
+				{
+					ImGui::MenuItem("None");
+					ImGui::MenuItem("RGBA8");
+					ImGui::MenuItem("RGBA16F");
+					ImGui::MenuItem("RGBA32F");
+					ImGui::EndMenu();
+				}
+				if(ImGui::BeginMenu("Target 4"))
+				{
+					ImGui::MenuItem("None");
+					ImGui::MenuItem("RGBA8");
+					ImGui::MenuItem("RGBA16F");
+					ImGui::MenuItem("RGBA32F");
+					ImGui::EndMenu();
+				}
+
 				ImGui::EndMenu();
 			}
 
-			ImGui::EndMenu();
-		}
-		if(ImGui::BeginMenu("Viewport"))
-		{
-			bool scale7 = (this->scale == 7);
-			bool scale8 = (this->scale == 8);
-			bool scale9 = (this->scale == 9);
-			bool scale10 = (this->scale == 10);
+			if(ImGui::BeginMenu("Viewport"))
+			{
+				bool scale7 = (this->scale == 7);
+				bool scale8 = (this->scale == 8);
+				bool scale9 = (this->scale == 9);
+				bool scale10 = (this->scale == 10);
 
-			ImGui::MenuItem("128 px", nullptr, &scale7);
-			ImGui::MenuItem("256 px", nullptr, &scale8);
-			ImGui::MenuItem("512 px", nullptr, &scale9);
-			ImGui::MenuItem("1024 px", nullptr, &scale10);
+				ImGui::MenuItem("128 px", nullptr, &scale7);
+				ImGui::MenuItem("256 px", nullptr, &scale8);
+				ImGui::MenuItem("512 px", nullptr, &scale9);
+				ImGui::MenuItem("1024 px", nullptr, &scale10);
 
-#define APPLY(n) \
-			else if((this->scale != n) && scale##n) this->scale = n
-			if(false) ;
-			APPLY(7);
-			APPLY(8);
-			APPLY(9);
-			APPLY(10);
-#undef APPLY
+	#define APPLY(n) \
+				else if((this->scale != n) && scale##n) this->scale = n
+				if(false) ;
+				APPLY(7);
+				APPLY(8);
+				APPLY(9);
+				APPLY(10);
+	#undef APPLY
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::MenuItem("Wireframe", nullptr, &this->wireframe);
 
 			ImGui::EndMenu();
 		}
@@ -181,11 +182,13 @@ nlohmann::json RenderWindow::Serialize() const
 {
 	return {
 		{ "type", "renderer" },
-		{ "scale", this->scale }
+		{ "scale", this->scale },
+		{ "wireframe", this->wireframe },
 	};
 }
 
 void RenderWindow::Deserialize(const nlohmann::json &value)
 {
 	this->scale = value["scale"];
+	this->wireframe = value["wireframe"];
 }

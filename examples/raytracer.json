@@ -1,0 +1,53 @@
+{
+    "signals": [
+        {
+            "from": [
+                1,
+                0
+            ],
+            "to": [
+                2,
+                1
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 position;\n\nout vec2 fragCoord;\n\nvoid main() {\n\tfragCoord = vec2(512,512) * (0.5 + vec2(0.5,-0.5) * position.xy);\n\tgl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 fragColor;\n\nin vec2 fragCoord;\n\nfloat iTime = 1;\nvec2 iResolution = vec2(512,512);\n\n//xyz is position, w is radius\nconst vec4 theSphere = vec4(0.0,0.0,0.0,2.0);\n\n//variables for raytrace output\nvec3 hitPos;\nvec3 hitNormal;\nfloat hitT;\nfloat light;\nvec3 frustum;\n\n\n//ray vs. sphere collision test\n//(taken directly from Inigo Quilez's website)\nbool intSphere (in vec4 sphere,in vec3 rayOrigin,in vec3 rayDir) {\n\tvec3 diff = rayOrigin-sphere.xyz;\n\tfloat b = dot(rayDir,diff);\n\tfloat c = dot(diff,diff) - sphere.w*sphere.w;\n\tfloat t = b*b - c;\n\tif (t>0.0) {\n\t\tt = -b - sqrt(t);\n\t\tif (t>0.0) {\n\t\t\thitPos = rayOrigin + rayDir*t;\n\t\t\thitNormal = normalize(hitPos - sphere.xyz);\n\t\t\thitT=t;\n\t\t\treturn(true);\n\t\t}\n\t}\n\t\n\treturn(false);\n}\n\nbool intGround (in float height,in vec3 rayOrigin,in vec3 rayDir) {\n\tfloat diff = -height-rayOrigin.y;\n\tif (rayDir.y==0.0) {\n\t\treturn(false);\n\t}\n\tfloat t = diff / dot(rayDir,vec3(0.0,-1.0,0.0));\n\tif (t>0.0) {\n\t\thitPos=rayOrigin+rayDir*t;\n\t\thitNormal=vec3(0.0,1.0,0.0);\n\t\thitT=t;\n\t\treturn(true);\n\t}\n\treturn(false);\n}\n\n//Turbo simple lighting calculation\n//nDotL and distance falloff\nfloat pointLight(vec3 samplePos,vec4 light,vec3 normal) {\n\tvec3 l = light.xyz - samplePos;\n\tif (dot(l,l)>light.w*light.w) {\n\t\treturn(0.0);\n\t}\n\tfloat nDotL = dot(normal,normalize(l));\n\treturn(nDotL*(1.0-length(l)/light.w));\n}\n\nvoid main()\n{\n\t//where's the camera?\n\tvec3 camPos = vec3(sin(iTime*1.0),cos(iTime*.387),-8.0);\n\t\n\t//camera projection settings\n\t//points along the +X/+Y corner of the view frustum\n\tfrustum = vec3(1.0,iResolution.y/iResolution.x,1.0);\n\n\t\n\t//where's the pixel?\n\tvec2 uv = fragCoord.xy / iResolution.xy;\n\t\n\t//what's the view ray of the current pixel?\n\tvec3 t2=vec3(uv,1.0);\n\tt2=t2 * 2.0 - 1.0;\n\tvec3 viewDir = normalize(frustum * t2);\n\t\n\t//where's the light?\n\t//xyz is position, w is size\n\tvec4 theLight = vec4(5.0+cos(iTime*1.23),\n\t\t\t\t\t\t 6.0,\n\t\t\t\t\t\t sin(iTime*1.23),\n\t\t\t\t\t\t 25.0+cos(iTime*.037));\n\t\n\t//is the view ray hitting the sphere or ground?\n\tbool hit=false;\n\tvec3 finalPos;\n\tvec3 finalNormal;\n\tfloat finalT;\n\t//collide against sphere and ground plane\n\tif (intSphere(theSphere,camPos,viewDir)) {\n\t\thit=true;\n\t\t\n\t\tfinalT=hitT;\n\t\tfinalPos=hitPos;\n\t\tfinalNormal=hitNormal;\n\t}\n\tif (intGround(-2.5,camPos,viewDir)) {\n\t\t\n\t\tif (hit==false||hitT<finalT) {\n\t\t\thit=true;\n\t\t\tfinalT=hitT;\n\t\t\tfinalPos=hitPos;\n\t\t\tfinalNormal=hitNormal;\n\t\t}\n\t}\n\tif (hit) {\n\t\t//hitPos and hitNormal are set inside collision functions\n\t\tlight = pointLight(finalPos,theLight,finalNormal);\n\t\t\n\t\t//check lit pixels for shadows\n\t\tif (light>.05) {\n\t\t\tif (intSphere(theSphere,finalPos,normalize(theLight.xyz-finalPos))) {\n\t\t\t\tlight*=0.3;\n\t\t\t}\n\t\t}\n\t\t\n\t\t//apply ambient light\n\t\tlight=max(0.05,light);\n\t\t\n\t\tvec3 finalColor=vec3(light,light,light);\n\t\t\n\t\t//post processing: slight fog\n\t\tfinalColor+=normalize(vec3(0.75,0.75,0.95)-finalColor)*min(finalT,20.0)/60.0;\n\t\t\n\t\t//all done: fire away!\n\t\tfragColor = vec4(finalColor,1.0);\n\t} else {\n\t\t//pixel not hitting anything\n\t\t\n\t\tfragColor = vec4(.5,.5,.7,1.0)*(1.0-.25*t2.y);\n\t}\n}",
+                    "type": 35632
+                }
+            ],
+            "type": "shader",
+            "window-id": 1,
+            "window-pos": [
+                30.0,
+                53.0
+            ],
+            "window-size": [
+                787.0,
+                656.0
+            ]
+        },
+        {
+            "scale": 9,
+            "type": "renderer",
+            "window-id": 2,
+            "window-pos": [
+                1021.0,
+                137.0
+            ],
+            "window-size": [
+                528.0,
+                566.0
+            ]
+        }
+    ]
+}

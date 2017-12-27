@@ -12,6 +12,7 @@ private:
 	ImVec2 texSize;
 
 	int scale;
+	bool wireframe;
 
 	Sink * geom;
 	Sink * shader;
@@ -19,7 +20,6 @@ private:
 	static void SizeConstraint(ImGuiSizeConstraintCallbackData * data);
 protected:
 	void OnRender() override;
-	void OnSetup() override;
 	void OnUpdate() override;
 public:
 	RenderWindow();
