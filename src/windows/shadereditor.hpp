@@ -37,18 +37,27 @@ public:
 	void Compile();
 };
 
+struct Uniform
+{
+	std::string name;
+	Sink * sink;
+	int location;
+};
+
 class ShaderEditor :
 	public Window
 {
 private:
 	GLuint program;
 	std::vector<std::unique_ptr<Shader>> shaders;
+	std::vector<Uniform> uniforms;
 
 	std::string shaderLog;
 
 	void Compile();
 protected:
 	void OnUpdate() override;
+	void OnRender() override;
 public:
 	ShaderEditor();
 	virtual ~ShaderEditor();

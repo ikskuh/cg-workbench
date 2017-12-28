@@ -18,6 +18,16 @@
 #include "windows/luaconsole.hpp"
 #include "windows/geometrywindow.hpp"
 #include "windows/gpuerrorlog.hpp"
+#include "windows/uniformwindow.hpp"
+#include "windows/colorwindow.hpp"
+#include "windows/timerwindow.hpp"
+#include "windows/arithmeticwindow.hpp"
+#include "windows/notewindow.hpp"
+#include "windows/bufferwindow.hpp"
+#include "windows/graphwindow.hpp"
+#include "windows/vectoradapter.hpp"
+#include "windows/imagesource.hpp"
+#include "resources.hpp"
 
 std::string currentFileName;
 
@@ -30,9 +40,52 @@ extern int currentWindowID;
 static Window * createMenu()
 {
 	Window * result = nullptr;
-	if(ImGui::MenuItem("Shader")) Window::Register(result = new ShaderEditor());
-	if(ImGui::MenuItem("Geometry")) Window::Register(result = new GeometryWindow());
-	if(ImGui::MenuItem("Renderer")) Window::Register(result = new RenderWindow());
+	if(ImGui::MenuItem("Shader"))   result = new ShaderEditor();
+	if(ImGui::MenuItem("Geometry")) result = new GeometryWindow();
+	if(ImGui::MenuItem("Renderer")) result = new RenderWindow();
+	if(ImGui::MenuItem("Graph")) result = new GraphWindow();
+	if(ImGui::MenuItem("Image")) result = new ImageSource();
+	if(ImGui::BeginMenu("Values"))
+	{
+		if(ImGui::MenuItem("Float")) result = new UniformWindow<CgDataType::UniformFloat>();
+		ImGui::Separator();
+		if(ImGui::MenuItem("Vec2")) result = new UniformWindow<CgDataType::UniformVec2>();
+		if(ImGui::MenuItem("Vec3")) result = new UniformWindow<CgDataType::UniformVec3>();
+		if(ImGui::MenuItem("Vec4")) result = new UniformWindow<CgDataType::UniformVec4>();
+		ImGui::Separator();
+		if(ImGui::MenuItem("Mat3")) result = new UniformWindow<CgDataType::UniformMat3>();
+		if(ImGui::MenuItem("Mat4")) result = new UniformWindow<CgDataType::UniformMat4>();
+		ImGui::Separator();
+		if(ImGui::MenuItem("Color")) result = new ColorWindow();
+		if(ImGui::MenuItem("Timer")) result = new TimerWindow();
+
+		ImGui::EndMenu();
+	}
+	if(ImGui::BeginMenu("Arithmetic"))
+	{
+		if(ImGui::MenuItem("float")) result = new ArithmeticWindow<CgDataType::UniformFloat>();
+		if(ImGui::MenuItem("vec2")) result = new ArithmeticWindow<CgDataType::UniformVec2>();
+		if(ImGui::MenuItem("vec3")) result = new ArithmeticWindow<CgDataType::UniformVec3>();
+		if(ImGui::MenuItem("vec4")) result = new ArithmeticWindow<CgDataType::UniformVec4>();
+		ImGui::Separator();
+		if(ImGui::MenuItem("vec to float")) result = new VectorSplitter();
+		if(ImGui::MenuItem("float to vec")) result = new VectorMerger();
+		ImGui::EndMenu();
+	}
+	if(ImGui::BeginMenu("Buffer"))
+	{
+		if(ImGui::MenuItem("float")) result = new BufferWindow<CgDataType::UniformFloat>();
+		if(ImGui::MenuItem("vec2")) result = new BufferWindow<CgDataType::UniformVec2>();
+		if(ImGui::MenuItem("vec3")) result = new BufferWindow<CgDataType::UniformVec3>();
+		if(ImGui::MenuItem("vec4")) result = new BufferWindow<CgDataType::UniformVec4>();
+		ImGui::EndMenu();
+	}
+
+	ImGui::Separator();
+	if(ImGui::MenuItem("Note")) result = new NoteWindow();
+
+	if(result)
+		Window::Register(result);
 	return result;
 }
 
@@ -86,9 +139,17 @@ int main(int argc, char ** argv)
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(&GpuErrorLog::LogMessage, nullptr);
 
+	resources::load("/home/felix/projects/cg-workbench/");
+
+	if(argc == 2)
+	{
+		load(std::string(argv[1]));
+	}
+
     // Main loop
     bool done = false;
 	static char cwd[256];
+	ImVec2 spawn;
     while (!done)
     {
         SDL_Event event;
@@ -209,9 +270,13 @@ int main(int argc, char ** argv)
 					if(win != nullptr)
 					{
 						win->wantsResize = true;
-						win->pos = ImGui::GetIO().MousePos;
+						win->pos = spawn;
 					}
 					ImGui::EndPopup();
+				}
+				else
+				{
+					spawn = ImGui::GetIO().MousePos;
 				}
 				Window::UpdateNodes();
 			}
@@ -361,6 +426,48 @@ void load(std::string const & fileName)
 			win = new GeometryWindow();
 		else if(type == "shader")
 			win = new ShaderEditor();
+		else if(type == "uniform-float")
+			win = new UniformWindow<CgDataType::UniformFloat>();
+		else if(type == "uniform-vec2")
+			win = new UniformWindow<CgDataType::UniformVec2>();
+		else if(type == "uniform-vec3")
+			win = new UniformWindow<CgDataType::UniformVec3>();
+		else if(type == "uniform-vec4")
+			win = new UniformWindow<CgDataType::UniformVec4>();
+		else if(type == "uniform-mat3")
+			win = new UniformWindow<CgDataType::UniformMat3>();
+		else if(type == "uniform-mat4")
+			win = new UniformWindow<CgDataType::UniformMat4>();
+		else if(type == "uniform-color")
+			win = new ColorWindow();
+		else if(type == "timer")
+			win = new TimerWindow();
+		else if(type == "arithmetic-float")
+			win = new ArithmeticWindow<CgDataType::UniformFloat>();
+		else if(type == "arithmetic-vec2")
+			win = new ArithmeticWindow<CgDataType::UniformVec2>();
+		else if(type == "arithmetic-vec3")
+			win = new ArithmeticWindow<CgDataType::UniformVec3>();
+		else if(type == "arithmetic-vec4")
+			win = new ArithmeticWindow<CgDataType::UniformVec4>();
+		else if(type == "buffer-float")
+			win = new BufferWindow<CgDataType::UniformFloat>();
+		else if(type == "buffer-vec2")
+			win = new BufferWindow<CgDataType::UniformVec2>();
+		else if(type == "buffer-vec3")
+			win = new BufferWindow<CgDataType::UniformVec3>();
+		else if(type == "buffer-vec4")
+			win = new BufferWindow<CgDataType::UniformVec4>();
+		else if(type == "note")
+			win = new NoteWindow();
+		else if(type == "graph")
+			win = new GraphWindow();
+		else if(type == "vector-splitter")
+			win = new VectorSplitter();
+		else if(type == "vector-merger")
+			win = new VectorMerger();
+		else if(type == "image")
+			win = new ImageSource();
 		else
 			abort();
 

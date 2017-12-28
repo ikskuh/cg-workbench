@@ -7,12 +7,18 @@ class Source :
 	public Slot
 {
 private:
-	GLuint const * object;
+	void const * object;
 public:
-	Source(CgDataType type, std::string const & name, GLuint const * object);
+	Source(CgDataType type, std::string const & name, void const * object);
 	virtual ~Source();
 
-	GLuint const & GetObject() const { return *this->object; }
+	void const * GetObject() const { return this->object; }
+
+	template<CgDataType _Type>
+	typename UniformType<_Type>::type GetObject() const
+	{
+		return *static_cast<typename UniformType<_Type>::type const *>(this->object);
+	}
 
 	static Source const * GetDefault(CgDataType type);
 };

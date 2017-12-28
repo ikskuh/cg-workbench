@@ -33,6 +33,9 @@ protected:
 
 	void AddSource(Source * source);
 	void AddSink(Sink * sink);
+
+	void RemoveSource(Source * source, bool free = true);
+	void RemoveSink(Sink * sink, bool free = true);
 protected:
 	explicit Window(std::string const & title, ImGuiWindowFlags flags = ImGuiWindowFlags_MenuBar);
 	virtual void OnUpdate() = 0;
@@ -86,5 +89,15 @@ public:
 	static std::vector<std::unique_ptr<Window>>::iterator Begin();
 	static std::vector<std::unique_ptr<Window>>::iterator End();
 };
+
+#define TRIVIAL_SERIALIZE(_Name) \
+	nlohmann::json Serialize() const override \
+	{ \
+		return { { "type", _Name } }; \
+	} \
+	void Deserialize(nlohmann::json const & value) override \
+	{ \
+		(void)value; \
+	}
 
 #endif // WINDOW_HPP

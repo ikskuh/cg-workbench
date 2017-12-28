@@ -12,7 +12,7 @@
         },
         {
             "from": [
-                12,
+                23,
                 0
             ],
             "to": [
@@ -106,18 +106,28 @@
                 0
             ],
             "to": [
-                19,
+                23,
                 0
             ]
         },
         {
             "from": [
-                19,
+                22,
                 0
             ],
             "to": [
-                20,
+                23,
                 1
+            ]
+        },
+        {
+            "from": [
+                18,
+                0
+            ],
+            "to": [
+                24,
+                0
             ]
         }
     ],
@@ -126,7 +136,7 @@
     "windows": [
         {
             "type": "uniform-float",
-            "value": 0.00100000004749745,
+            "value": 0.101000003516674,
             "window-id": 10,
             "window-pos": [
                 76.0,
@@ -142,8 +152,8 @@
             "type": "arithmetic-float",
             "window-id": 12,
             "window-pos": [
-                911.0,
-                193.0
+                893.0,
+                143.0
             ],
             "window-size": [
                 283.0,
@@ -155,8 +165,8 @@
             "type": "arithmetic-float",
             "window-id": 13,
             "window-pos": [
-                919.0,
-                472.0
+                913.0,
+                488.0
             ],
             "window-size": [
                 283.0,
@@ -168,8 +178,8 @@
             "type": "arithmetic-float",
             "window-id": 14,
             "window-pos": [
-                495.0,
-                616.0
+                510.0,
+                596.0
             ],
             "window-size": [
                 283.0,
@@ -181,8 +191,8 @@
             "type": "arithmetic-float",
             "window-id": 15,
             "window-pos": [
-                453.0,
-                256.0
+                530.0,
+                344.0
             ],
             "window-size": [
                 283.0,
@@ -191,11 +201,11 @@
         },
         {
             "type": "uniform-float",
-            "value": 0.0900000035762787,
+            "value": 0.0,
             "window-id": 16,
             "window-pos": [
-                115.0,
-                148.0
+                22.0,
+                107.0
             ],
             "window-size": [
                 262.0,
@@ -207,8 +217,8 @@
             "type": "arithmetic-float",
             "window-id": 18,
             "window-pos": [
-                491.0,
-                133.0
+                483.0,
+                86.0
             ],
             "window-size": [
                 283.0,
@@ -216,40 +226,42 @@
             ]
         },
         {
-            "items": [
-                {
-                    "code": "#version 330\nlayout(location = 0) in vec3 position;\n\nout vec2 uv;\n\nvoid main() {\n\tuv = 0.5 + 0.5 * position.xy;\n\tgl_Position = vec4(position, 1.0);\n}\n",
-                    "type": 35633
-                },
-                {
-                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\n\nuniform float finput;\n\nvoid main() {\n\tcolor = vec4(vec3(0.5) + finput,1);\n}\n",
-                    "type": 35632
-                }
-            ],
-            "type": "shader",
-            "window-id": 19,
+            "type": "uniform-float",
+            "value": 0.990000009536743,
+            "window-id": 22,
             "window-pos": [
-                1230.0,
-                321.0
+                105.0,
+                237.0
             ],
             "window-size": [
-                487.0,
-                482.0
+                262.0,
+                54.0
             ]
         },
         {
-            "scale": 7,
-            "type": "renderer",
-            "window-id": 20,
+            "operator": 9,
+            "type": "arithmetic-float",
+            "window-id": 23,
             "window-pos": [
-                1258.0,
-                65.0
+                624.0,
+                261.0
             ],
             "window-size": [
-                144.0,
-                182.0
+                283.0,
+                54.0
+            ]
+        },
+        {
+            "type": "graph",
+            "window-id": 24,
+            "window-pos": [
+                1273.0,
+                56.0
             ],
-            "wireframe": false
+            "window-size": [
+                303.0,
+                147.0
+            ]
         }
     ]
 }

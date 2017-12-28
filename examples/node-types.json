@@ -1,0 +1,93 @@
+{
+    "signals": [
+        {
+            "from": [
+                3,
+                0
+            ],
+            "to": [
+                2,
+                0
+            ]
+        },
+        {
+            "from": [
+                2,
+                0
+            ],
+            "to": [
+                4,
+                1
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "type": "uniform-vec2",
+            "value": [
+                0.0,
+                0.0
+            ],
+            "window-id": 1,
+            "window-pos": [
+                16.0,
+                107.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ]
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 position;\n\nout vec2 uv;\n\nvoid main() {\n\tuv = 0.5 + 0.5 * position.xy;\n\tgl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\nuniform float iTime;\n\nvoid main() {\n\tcolor = vec4(uv,0.5 + 0.5 * sin(iTime),1);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "type": "shader",
+            "window-id": 2,
+            "window-pos": [
+                372.0,
+                92.0
+            ],
+            "window-size": [
+                420.0,
+                311.0
+            ]
+        },
+        {
+            "type": "uniform-float",
+            "value": 11.0000009536743,
+            "window-id": 3,
+            "window-pos": [
+                17.0,
+                39.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ]
+        },
+        {
+            "scale": 8,
+            "type": "renderer",
+            "window-id": 4,
+            "window-pos": [
+                901.0,
+                89.0
+            ],
+            "window-size": [
+                272.0,
+                310.0
+            ],
+            "wireframe": false
+        }
+    ]
+}

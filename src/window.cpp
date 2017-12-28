@@ -4,6 +4,8 @@
 #include <memory>
 #include <cstdio>
 
+#include "resources.hpp"
+
 static std::vector<std::unique_ptr<Window>> windows;
 
 int currentWindowID = 0;
@@ -41,6 +43,27 @@ void Window::UpdateAll()
 	windows.erase(pos, windows.end());
 }
 
+static ImTextureID GetSocketIcon(CgDataType type, bool isSource)
+{
+	switch(type)
+	{
+		case CgDataType::Geometry: return (ImTextureID)uintptr_t(resources::icons::geometry);
+		case CgDataType::Shader: return (ImTextureID)uintptr_t(resources::icons::shader);
+		case CgDataType::Texture2D: return (ImTextureID)uintptr_t(resources::icons::image);
+		case CgDataType::UniformFloat: return (ImTextureID)uintptr_t(resources::icons::scalar);
+		case CgDataType::UniformVec2: return (ImTextureID)uintptr_t(resources::icons::vector);
+		case CgDataType::UniformVec3: return (ImTextureID)uintptr_t(resources::icons::vector);
+		case CgDataType::UniformVec4: return (ImTextureID)uintptr_t(resources::icons::vector);
+		case CgDataType::UniformMat3: return (ImTextureID)uintptr_t(resources::icons::matrix);
+		case CgDataType::UniformMat4: return (ImTextureID)uintptr_t(resources::icons::matrix);
+		default:
+			if(isSource)
+				return (ImTextureID)uintptr_t(resources::icons::genericSource);
+			else
+				return (ImTextureID)uintptr_t(resources::icons::genericSink);
+	}
+}
+
 void Window::UpdateNodes()
 {
 	static Source * currentSource = nullptr;
@@ -52,6 +75,8 @@ void Window::UpdateNodes()
 
 	auto * draw = ImGui::GetWindowDrawList();
 	auto & io = ImGui::GetIO();
+
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
 
 	currentSink = nullptr;
 	for(auto const & win : windows)
@@ -86,14 +111,16 @@ void Window::UpdateNodes()
 				}
 				ImGui::PushStyleColor(ImGuiCol_Button, color);
 			}
-			if(ImGui::Button(MakeTitle("",sink.get()), ImVec2(size, size)))
+			ImGui::PushID(sink.get());
+			if(ImGui::ImageButton(GetSocketIcon(sink->GetType(), false) , ImVec2(size, size)))
 				sink->SetSource(nullptr);
+			ImGui::PopID();
 			if(currentSource != nullptr)
 			{
 				ImGui::PopStyleColor();
 			}
 			if(ImGui::IsItemHovered())
-				ImGui::SetTooltip("%s", sink->GetName().c_str());
+				ImGui::SetTooltip("%s : %s", sink->GetName().c_str(), DisplayName(sink->GetType()));
 
 			if(sink->GetSource(false) != nullptr)
 			{
@@ -125,9 +152,19 @@ void Window::UpdateNodes()
 			ImGui::SetCursorScreenPos(ImVec2(
 				win->pos.x + win->size.x + margin,
 				win->pos.y + offset));
-			ImGui::Button(MakeTitle("",source.get()), ImVec2(size, size));
+			ImGui::PushID(source.get());
+			ImGui::ImageButton(GetSocketIcon(source->GetType(), true), ImVec2(size, size));
+			ImGui::PopID();
 			if(ImGui::IsItemHovered())
-				ImGui::SetTooltip("%s", source->GetName().c_str());
+			{
+				ImGui::BeginTooltip();
+
+				ImGui::Text("%s : %s", source->GetName().c_str(), DisplayName(source->GetType()));
+
+				DisplayDataValue(source->GetType(), source->GetObject());
+
+				ImGui::EndTooltip();
+			}
 			if(ImGui::IsItemActive())
 			{
 				currentSource = source.get();
@@ -150,6 +187,7 @@ void Window::UpdateNodes()
 			offset += size + margin;
 		}
 	}
+	ImGui::PopStyleVar();
 }
 
 void Window::RenderAll()
@@ -266,6 +304,40 @@ void Window::AddSink(Sink * sink)
 	sink->window = this;
 	sink->index = this->sinks.size();
 	this->sinks.emplace_back(sink);
+}
+
+void Window::RemoveSource(Source * source, bool free)
+{
+	auto end = std::remove_if(this->sources.begin(), this->sources.end(), [source](std::unique_ptr<Source> const & ptr)
+	{
+		return (ptr.get() == source);
+	});
+	if(!free)
+	{
+		for(auto it = end; it != this->sources.end(); it++)
+			it->release();
+	}
+	this->sources.erase(end, this->sources.end());
+
+	for(size_t i = 0; i < this->sources.size(); i++)
+		this->sources[i]->index = int(i);
+}
+
+void Window::RemoveSink(Sink * sink, bool free)
+{
+	auto end = std::remove_if(this->sinks.begin(), this->sinks.end(), [sink](std::unique_ptr<Sink> const & ptr)
+	{
+		return (ptr.get() == sink);
+	});
+	if(!free)
+	{
+		for(auto it = end; it != this->sinks.end(); it++)
+			it->release();
+	}
+	this->sinks.erase(end, this->sinks.end());
+
+	for(size_t i = 0; i < this->sinks.size(); i++)
+		this->sinks[i]->index = int(i);
 }
 
 nlohmann::json Window::Serialize() const

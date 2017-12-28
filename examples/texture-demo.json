@@ -1,0 +1,82 @@
+{
+    "signals": [
+        {
+            "from": [
+                1,
+                0
+            ],
+            "to": [
+                2,
+                0
+            ]
+        },
+        {
+            "from": [
+                2,
+                0
+            ],
+            "to": [
+                3,
+                1
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "file": "/home/felix/projects/cg-workbench/examples/64px.png",
+            "mag-filt": 9728,
+            "min-filt": 9728,
+            "type": "image",
+            "window-id": 1,
+            "window-pos": [
+                60.0,
+                64.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "wrap-r": 10497,
+            "wrap-s": 33071,
+            "wrap-t": 33648
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 position;\n\nout vec2 uv;\n\nvoid main() {\n\tuv = 0.5 + 0.5 * position.xy;\n\tgl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\nuniform sampler2D tex;\n\nvoid main() {\n\tcolor = texture(tex, 4.0 * uv);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "type": "shader",
+            "window-id": 2,
+            "window-pos": [
+                440.0,
+                177.0
+            ],
+            "window-size": [
+                415.0,
+                325.0
+            ]
+        },
+        {
+            "scale": 8,
+            "type": "renderer",
+            "window-id": 3,
+            "window-pos": [
+                937.0,
+                75.0
+            ],
+            "window-size": [
+                272.0,
+                310.0
+            ],
+            "wireframe": false
+        }
+    ]
+}

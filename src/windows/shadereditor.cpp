@@ -108,6 +108,67 @@ ShaderEditor::~ShaderEditor()
 	glDeleteProgram(this->program);
 }
 
+void ShaderEditor::OnRender()
+{
+	int index = 0;
+	for(Uniform const & u : this->uniforms)
+	{
+		switch(u.sink->GetType())
+		{
+			case CgDataType::UniformFloat:
+			{
+				glProgramUniform1f(this->program, u.location, u.sink->GetObject<CgDataType::UniformFloat>());
+				break;
+			}
+			case CgDataType::UniformVec2:
+			{
+				auto val = u.sink->GetObject<CgDataType::UniformVec2>();
+				glProgramUniform2f(this->program, u.location, val.x, val.y);
+				break;
+			}
+			case CgDataType::UniformVec3:
+			{
+				auto val = u.sink->GetObject<CgDataType::UniformVec3>();
+				glProgramUniform3f(this->program, u.location, val.x, val.y, val.z);
+				break;
+			}
+			case CgDataType::UniformVec4:
+			{
+				auto val = u.sink->GetObject<CgDataType::UniformVec4>();
+				glProgramUniform4f(this->program, u.location, val.x, val.y, val.z, val.w);
+				break;
+			}
+			case CgDataType::UniformMat3:
+			{
+				auto val = u.sink->GetObject<CgDataType::UniformMat3>();
+				glProgramUniformMatrix3fv(this->program, u.location, 1, GL_FALSE, &val[0].x);
+				break;
+			}
+			case CgDataType::UniformMat4:
+			{
+				auto val = u.sink->GetObject<CgDataType::UniformMat4>();
+				glProgramUniformMatrix4fv(this->program, u.location, 1, GL_FALSE, &val[0].x);
+				break;
+			}
+			case CgDataType::Texture2D:
+			{
+				GLuint img = u.sink->GetObject<CgDataType::Texture2D>();
+
+				glProgramUniform1i(this->program, u.location, index);
+
+				glBindTextureUnit(index, img);
+
+				index++;
+
+				break;
+			}
+			default:
+				fprintf(stderr, "Unsupported type for uniform %s: %d\n", u.name.c_str(), static_cast<int>(u.sink->GetType()));
+				break;
+		}
+	}
+}
+
 void ShaderEditor::OnUpdate()
 {
 	char buffer[64];
@@ -163,7 +224,7 @@ void ShaderEditor::OnUpdate()
 			ImGui::InputTextMultiline(
 				buffer,
 				sh->GetCode(), Shader::MaxLength,
-				ImVec2(-1.0f, ImGui::GetTextLineHeight() * 14),
+				ImVec2(-1.0f, -1.0),
 				ImGuiInputTextFlags_AllowTabInput);
 
 			ImGui::TextWrapped("%s", sh->GetLog().c_str());
@@ -206,6 +267,69 @@ void ShaderEditor::Compile()
 		else
 		{
 			this->shaderLog = "";
+
+			// remove all sinks and store the connections
+			std::map<std::string, Source const *> previous;
+			while(this->GetSinkCount() > 0)
+			{
+				Sink * sink = this->GetSink(0);
+				if(sink->HasSourceConnected())
+					previous.emplace(sink->GetName(), sink->GetSource(false));
+				this->RemoveSink(sink);
+			}
+
+			this->uniforms.clear();
+
+			int count;
+			glGetProgramiv(this->program, GL_ACTIVE_UNIFORMS, &count);
+			for(int i = 0; i < count; i++)
+			{
+				GLchar name[256];
+				GLint size;
+				GLenum type;
+				GLsizei len;
+
+				glGetActiveUniform(
+					this->program,
+					i,
+					256,
+					&len,
+					&size,
+					&type,
+					name);
+
+				Sink * sink = nullptr;
+				switch(type)
+				{
+					case GL_FLOAT:      sink = new Sink(CgDataType::UniformFloat, std::string(name, len)); break;
+					case GL_FLOAT_VEC2: sink = new Sink(CgDataType::UniformVec2,  std::string(name, len)); break;
+					case GL_FLOAT_VEC3: sink = new Sink(CgDataType::UniformVec3,  std::string(name, len)); break;
+					case GL_FLOAT_VEC4: sink = new Sink(CgDataType::UniformVec4,  std::string(name, len)); break;
+					case GL_FLOAT_MAT3: sink = new Sink(CgDataType::UniformMat3,  std::string(name, len)); break;
+					case GL_FLOAT_MAT4: sink = new Sink(CgDataType::UniformMat4,  std::string(name, len)); break;
+					case GL_SAMPLER_2D: sink = new Sink(CgDataType::Texture2D,    std::string(name, len)); break;
+					default:            sink = nullptr; break;
+				}
+
+				if(sink != nullptr)
+				{
+					auto it = previous.find(sink->GetName());
+					if(it != previous.end())
+					{
+						if((it->second != nullptr) && (it->second->GetType() == sink->GetType()))
+							sink->SetSource(it->second);
+					}
+
+					Uniform u;
+					u.sink = sink;
+					u.location = i;
+					u.name = sink->GetName();
+
+					uniforms.emplace_back(u);
+
+					this->AddSink(sink);
+				}
+			}
 		}
 
 		for(auto const & sh : this->shaders)

@@ -27,13 +27,14 @@ public:
 			return nullptr;
 	}
 
-	GLuint GetObject() const
+	template<CgDataType _Type>
+	typename UniformType<_Type>::type GetObject() const
 	{
 		auto * src = this->GetSource();
 		if(src != nullptr)
-			return src->GetObject();
+			return *static_cast<typename UniformType<_Type>::type const *>(src->GetObject());
 		else
-			return 0;
+			return typename UniformType<_Type>::type();
 	}
 
 	bool HasSource() const { return (this->GetSource() != nullptr); }

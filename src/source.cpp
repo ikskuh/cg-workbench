@@ -1,7 +1,7 @@
 #include "source.hpp"
 #include <stdexcept>
 
-Source::Source(CgDataType type, std::string const & name, GLuint const * object) :
+Source::Source(CgDataType type, std::string const & name, void const * object) :
 	Slot(type, name),
     object(object)
 {

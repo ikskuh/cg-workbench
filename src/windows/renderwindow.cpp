@@ -28,7 +28,7 @@ RenderWindow::RenderWindow() :
 	this->AddSink(this->geom = new Sink(CgDataType::Geometry, "Geometry"));
 	this->AddSink(this->shader = new Sink(CgDataType::Shader, "Shader"));
 
-	this->AddSource(new Source(CgDataType::Texture, "Image", &this->tex));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image", &this->tex));
 }
 
 RenderWindow::~RenderWindow()
@@ -50,8 +50,8 @@ void RenderWindow::OnRender()
 		glClearColor(0.0,0.0,0.0,1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(this->shader->GetObject());
-		glBindVertexArray(this->geom->GetObject());
+		glUseProgram(this->shader->GetObject<CgDataType::Shader>());
+		glBindVertexArray(this->geom->GetObject<CgDataType::Geometry>());
 
 		if(this->wireframe)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

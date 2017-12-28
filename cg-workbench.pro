@@ -30,7 +30,18 @@ SOURCES += \
     src/sink.cpp \
     src/slot.cpp \
     src/windows/geometrywindow.cpp \
-    src/windows/gpuerrorlog.cpp
+    src/windows/gpuerrorlog.cpp \
+    src/imageloader.cpp \
+    src/resources.cpp \
+    src/windows/uniformwindow.cpp \
+    src/windows/colorwindow.cpp \
+    src/windows/timerwindow.cpp \
+    src/windows/arithmeticwindow.cpp \
+    src/windows/notewindow.cpp \
+    src/windows/bufferwindow.cpp \
+    src/windows/graphwindow.cpp \
+    src/windows/vectoradapter.cpp \
+    src/windows/imagesource.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -49,4 +60,15 @@ HEADERS += \
     src/cgdatatype.hpp \
     src/slot.hpp \
     src/windows/geometrywindow.hpp \
-    src/windows/gpuerrorlog.hpp
+    src/windows/gpuerrorlog.hpp \
+    src/imageloader.hpp \
+    src/resources.hpp \
+    src/windows/uniformwindow.hpp \
+    src/windows/colorwindow.hpp \
+    src/windows/timerwindow.hpp \
+    src/windows/arithmeticwindow.hpp \
+    src/windows/notewindow.hpp \
+    src/windows/bufferwindow.hpp \
+    src/windows/graphwindow.hpp \
+    src/windows/vectoradapter.hpp \
+    src/windows/imagesource.hpp
