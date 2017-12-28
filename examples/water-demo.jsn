@@ -1,0 +1,106 @@
+{
+    "signals": [
+        {
+            "from": [
+                1,
+                0
+            ],
+            "to": [
+                2,
+                0
+            ]
+        },
+        {
+            "from": [
+                5,
+                0
+            ],
+            "to": [
+                2,
+                1
+            ]
+        },
+        {
+            "from": [
+                2,
+                0
+            ],
+            "to": [
+                3,
+                1
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "file": "/tmp/albedo.png",
+            "mag-filt": 9729,
+            "min-filt": 9987,
+            "type": "image",
+            "window-id": 1,
+            "window-pos": [
+                21.0,
+                31.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "wrap-r": 10497,
+            "wrap-s": 10497,
+            "wrap-t": 10497
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 position;\n\nout vec2 uv;\n\nvoid main() {\n\tuv = 0.5 + 0.5 * position.xy;\n\tgl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\nuniform sampler2D tex;\nuniform float iTime;\n\nvoid main() {\n\t\n\tvec2 c = vec2(0.7, 0.5);\n\tfloat d = 70 * length(c - uv);\n\tvec2 o = (0.05 + 0.01 * sin(d + 0.1 * iTime)) * normalize(c - uv);\n\n\tcolor = texture(tex,uv + o);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "type": "shader",
+            "window-id": 2,
+            "window-pos": [
+                416.0,
+                88.0
+            ],
+            "window-size": [
+                417.0,
+                350.0
+            ]
+        },
+        {
+            "scale": 9,
+            "type": "renderer",
+            "window-id": 3,
+            "window-pos": [
+                1024.0,
+                102.0
+            ],
+            "window-size": [
+                528.0,
+                566.0
+            ],
+            "wireframe": false
+        },
+        {
+            "current": 16600.9921875,
+            "speed": 11.9500007629395,
+            "type": "timer",
+            "window-id": 5,
+            "window-pos": [
+                31.0,
+                470.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ]
+        }
+    ]
+}
