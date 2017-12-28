@@ -131,8 +131,8 @@
             "type": "renderer",
             "window-id": 5,
             "window-pos": [
-                1318.0,
-                181.0
+                1293.0,
+                119.0
             ],
             "window-size": [
                 528.0,
@@ -154,10 +154,10 @@
         },
         {
             "color": [
-                0.4347825050354,
-                0.0,
                 1.0,
-                1.0
+                0.490196079015732,
+                0.0,
+                0.929411768913269
             ],
             "type": "uniform-color",
             "window-id": 7,
@@ -174,8 +174,8 @@
             "type": "image-buffer",
             "window-id": 8,
             "window-pos": [
-                976.0,
-                40.0
+                1002.0,
+                42.0
             ],
             "window-size": [
                 134.0,
@@ -184,7 +184,7 @@
         },
         {
             "type": "uniform-float",
-            "value": 0.200000002980232,
+            "value": 0.300000011920929,
             "window-id": 9,
             "window-pos": [
                 10.0,
@@ -197,7 +197,7 @@
         },
         {
             "type": "uniform-float",
-            "value": 59.8400039672852,
+            "value": 60.060001373291,
             "window-id": 10,
             "window-pos": [
                 15.0,
@@ -209,7 +209,7 @@
             ]
         },
         {
-            "current": 173.903366088867,
+            "current": 12008.275390625,
             "speed": 1.0,
             "type": "timer",
             "window-id": 11,

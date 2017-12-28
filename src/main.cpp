@@ -29,6 +29,7 @@
 #include "windows/imagesource.hpp"
 #include "windows/trigger.hpp"
 #include "windows/imagebuffer.hpp"
+#include "windows/matrixtransforms.hpp"
 #include "resources.hpp"
 
 std::string currentFileName;
@@ -73,6 +74,16 @@ static Window * createMenu()
 		ImGui::Separator();
 		if(ImGui::MenuItem("vec to float")) result = new VectorSplitter();
 		if(ImGui::MenuItem("float to vec")) result = new VectorMerger();
+		ImGui::EndMenu();
+	}
+	if(ImGui::BeginMenu("Transforms"))
+	{
+		if(ImGui::MenuItem("Multiplication")) result = new MatrixMult();
+		if(ImGui::MenuItem("Translation")) result = new MatrixTranslate();
+		if(ImGui::MenuItem("Rotation")) result = new MatrixRotate();
+		if(ImGui::MenuItem("Scaling")) result = new MatrixScale();
+		if(ImGui::MenuItem("Look At")) result = new MatrixLookAt();
+		if(ImGui::MenuItem("Perspective")) result = new MatrixPerspective();
 		ImGui::EndMenu();
 	}
 	if(ImGui::BeginMenu("Buffer"))
@@ -440,58 +451,13 @@ void load(std::string const & fileName)
 		// geometry -> GeometryWindow
 		// shader   -> ShaderEditor
 		json type = window["type"];
-		if(type == "renderer")
-			win = new RenderWindow();
-		else if(type == "geometry")
-			win = new GeometryWindow();
-		else if(type == "shader")
-			win = new ShaderEditor();
-		else if(type == "uniform-float")
-			win = new UniformWindow<CgDataType::UniformFloat>();
-		else if(type == "uniform-vec2")
-			win = new UniformWindow<CgDataType::UniformVec2>();
-		else if(type == "uniform-vec3")
-			win = new UniformWindow<CgDataType::UniformVec3>();
-		else if(type == "uniform-vec4")
-			win = new UniformWindow<CgDataType::UniformVec4>();
-		else if(type == "uniform-mat3")
-			win = new UniformWindow<CgDataType::UniformMat3>();
-		else if(type == "uniform-mat4")
-			win = new UniformWindow<CgDataType::UniformMat4>();
-		else if(type == "uniform-color")
-			win = new ColorWindow();
-		else if(type == "timer")
-			win = new TimerWindow();
-		else if(type == "arithmetic-float")
-			win = new ArithmeticWindow<CgDataType::UniformFloat>();
-		else if(type == "arithmetic-vec2")
-			win = new ArithmeticWindow<CgDataType::UniformVec2>();
-		else if(type == "arithmetic-vec3")
-			win = new ArithmeticWindow<CgDataType::UniformVec3>();
-		else if(type == "arithmetic-vec4")
-			win = new ArithmeticWindow<CgDataType::UniformVec4>();
-		else if(type == "buffer-float")
-			win = new BufferWindow<CgDataType::UniformFloat>();
-		else if(type == "buffer-vec2")
-			win = new BufferWindow<CgDataType::UniformVec2>();
-		else if(type == "buffer-vec3")
-			win = new BufferWindow<CgDataType::UniformVec3>();
-		else if(type == "buffer-vec4")
-			win = new BufferWindow<CgDataType::UniformVec4>();
-		else if(type == "note")
-			win = new NoteWindow();
-		else if(type == "graph")
-			win = new GraphWindow();
-		else if(type == "vector-splitter")
-			win = new VectorSplitter();
-		else if(type == "vector-merger")
-			win = new VectorMerger();
-		else if(type == "image")
-			win = new ImageSource();
-		else if(type == "trigger")
-			win = new Trigger();
-		else if(type == "image-buffer")
-			win = new ImageBuffer();
+		if(false)
+			;
+#define WINMAP(_Type,_Name) \
+		else if(type == _Name) \
+			win = new _Type();
+#include "windows/typemap.hpp"
+#undef WINMAP
 		else
 			abort();
 

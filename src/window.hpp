@@ -66,6 +66,8 @@ public:
 
 	int GetID() const { return this->id; }
 
+	std::string GetTitle() const { return this->title; }
+
 	virtual nlohmann::json Serialize() const;
 
 	virtual void Deserialize(nlohmann::json const & value);

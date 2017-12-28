@@ -6,9 +6,15 @@ layout(location = 0) in vec3 position;
 
 out vec2 uv;
 
+uniform mat4 transform;0
+        0
+        000
+        00
+
+
 void main() {
 	uv = 0.5 + 0.5 * position.xy;
-	gl_Position = vec4(position, 1.0);
+	gl_Position = transform * vec4(position, 1.0);
 }
 )glsl";
 

@@ -45,7 +45,8 @@ SOURCES += \
     src/windows/vectoradapter.cpp \
     src/windows/imagesource.cpp \
     src/windows/trigger.cpp \
-    src/windows/imagebuffer.cpp
+    src/windows/imagebuffer.cpp \
+    src/windows/matrixtransforms.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -77,4 +78,6 @@ HEADERS += \
     src/windows/vectoradapter.hpp \
     src/windows/imagesource.hpp \
     src/windows/trigger.hpp \
-    src/windows/imagebuffer.hpp
+    src/windows/imagebuffer.hpp \
+    src/windows/matrixtransforms.hpp \
+    src/windows/typemap.hpp

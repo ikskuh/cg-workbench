@@ -129,6 +129,8 @@ std::pair<char const*, typename ArithmeticWindow<_Type>::unop_t> ArithmeticWindo
     { "Sin",    [](data_t x) { return glm::sin(x); } },
     { "Cos",    [](data_t x) { return glm::cos(x); } },
     { "Tan",    [](data_t x) { return glm::tan(x); } },
+    { "To Radians", [](data_t x) { return glm::radians(x); } },
+    { "To Degrees", [](data_t x) { return glm::degrees(x); } },
 };
 
 template<CgDataType _Type>
