@@ -3,7 +3,7 @@ The CG Workbench is a small GLSL coding environment which allows to rapidly prot
 
 ![](https://puu.sh/yOGv5/6c440d280e.png)
 
-# External Libraries
+## External Libraries
 This project would be much harder without those great libraries:
 - [SDL2](https://www.libsdl.org)
 - [github.com/nlohmann/json](https://github.com/nlohmann/json)
@@ -11,3 +11,17 @@ This project would be much harder without those great libraries:
 - [github.com/ocornut/imgui](https://github.com/ocornut/imgui)
 - [github.com/mlabbe/nativefiledialog](https://github.com/mlabbe/nativefiledialog)
 - [github.com/nothings/stb](https://github.com/nothings/stb)
+
+## Ideas / Missing Nodes
+- Geometry Node
+	- Load OBJ file
+- Music Node
+	- Play/Pause/Seek
+	- Outputs: Time in song
+- BPM Node
+	- Convert Seconds to beats or bars
+	- Button for manual BPM input
+	- Offset to start of song
+- Timeline Node
+	- Attach values to a timeline
+	- Time as input
