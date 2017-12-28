@@ -1,0 +1,226 @@
+{
+    "signals": [
+        {
+            "from": [
+                8,
+                0
+            ],
+            "to": [
+                4,
+                0
+            ]
+        },
+        {
+            "from": [
+                5,
+                4
+            ],
+            "to": [
+                4,
+                1
+            ]
+        },
+        {
+            "from": [
+                6,
+                0
+            ],
+            "to": [
+                4,
+                2
+            ]
+        },
+        {
+            "from": [
+                5,
+                2
+            ],
+            "to": [
+                4,
+                3
+            ]
+        },
+        {
+            "from": [
+                7,
+                1
+            ],
+            "to": [
+                4,
+                4
+            ]
+        },
+        {
+            "from": [
+                9,
+                0
+            ],
+            "to": [
+                4,
+                5
+            ]
+        },
+        {
+            "from": [
+                10,
+                0
+            ],
+            "to": [
+                4,
+                6
+            ]
+        },
+        {
+            "from": [
+                11,
+                1
+            ],
+            "to": [
+                4,
+                7
+            ]
+        },
+        {
+            "from": [
+                4,
+                0
+            ],
+            "to": [
+                5,
+                1
+            ]
+        },
+        {
+            "from": [
+                5,
+                0
+            ],
+            "to": [
+                8,
+                0
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 position;\n\nout vec2 uv;\n\nvoid main() {\n\tuv = 0.5 + 0.5 * position.xy;\n\tgl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\nuniform sampler2D src;\nuniform vec2 mouse;\nuniform float clear;\nuniform float draw;\nuniform vec4 drawcolor;\nuniform float range;\nuniform float speed;\nuniform float dt;\n\nvoid main()\n{\n\tfloat d = length(mouse - uv);\n\td = clamp(range - d / range, 0, 1);\n\t\t\n\tcolor = mix(\n\t\ttexture(src, uv - vec2(\n\t\t\t0.00001 * sin(100 * uv.x + 100 * uv.y),\n\t\t\tdt * speed / 512.0)),\n\t\ttexture(src, uv),\n\t\t0.7);\n\n\tcolor.rgb = mix(\n\t\tcolor.rgb,\n\t\tdrawcolor.rgb,\n\t\tdraw * d * drawcolor.a);\n\n\tcolor.rgb *= (1.0 - clear);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "type": "shader",
+            "window-id": 4,
+            "window-pos": [
+                474.0,
+                156.0
+            ],
+            "window-size": [
+                714.0,
+                376.0
+            ]
+        },
+        {
+            "scale": 9,
+            "type": "renderer",
+            "window-id": 5,
+            "window-pos": [
+                1318.0,
+                181.0
+            ],
+            "window-size": [
+                528.0,
+                566.0
+            ],
+            "wireframe": false
+        },
+        {
+            "type": "trigger",
+            "window-id": 6,
+            "window-pos": [
+                41.0,
+                127.0
+            ],
+            "window-size": [
+                58.0,
+                54.0
+            ]
+        },
+        {
+            "color": [
+                0.4347825050354,
+                0.0,
+                1.0,
+                1.0
+            ],
+            "type": "uniform-color",
+            "window-id": 7,
+            "window-pos": [
+                18.0,
+                311.0
+            ],
+            "window-size": [
+                285.0,
+                289.0
+            ]
+        },
+        {
+            "type": "image-buffer",
+            "window-id": 8,
+            "window-pos": [
+                976.0,
+                40.0
+            ],
+            "window-size": [
+                134.0,
+                61.0
+            ]
+        },
+        {
+            "type": "uniform-float",
+            "value": 0.200000002980232,
+            "window-id": 9,
+            "window-pos": [
+                10.0,
+                38.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ]
+        },
+        {
+            "type": "uniform-float",
+            "value": 59.8400039672852,
+            "window-id": 10,
+            "window-pos": [
+                15.0,
+                621.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ]
+        },
+        {
+            "current": 173.903366088867,
+            "speed": 1.0,
+            "type": "timer",
+            "window-id": 11,
+            "window-pos": [
+                20.0,
+                211.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ]
+        }
+    ]
+}

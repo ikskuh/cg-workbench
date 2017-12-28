@@ -22,12 +22,42 @@
         },
         {
             "from": [
+                7,
+                0
+            ],
+            "to": [
+                2,
+                2
+            ]
+        },
+        {
+            "from": [
                 2,
                 0
             ],
             "to": [
                 3,
                 1
+            ]
+        },
+        {
+            "from": [
+                3,
+                4
+            ],
+            "to": [
+                6,
+                0
+            ]
+        },
+        {
+            "from": [
+                6,
+                0
+            ],
+            "to": [
+                7,
+                0
             ]
         }
     ],
@@ -59,7 +89,7 @@
                     "type": 35633
                 },
                 {
-                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\nuniform sampler2D tex;\nuniform float iTime;\n\nvoid main() {\n\t\n\tvec2 c = vec2(0.7, 0.5);\n\tfloat d = 70 * length(c - uv);\n\tvec2 o = (0.05 + 0.01 * sin(d + 0.1 * iTime)) * normalize(c - uv);\n\n\tcolor = texture(tex,uv + o);\n}\n",
+                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\nuniform sampler2D tex;\nuniform float iTime;\nuniform vec2 c;\n\nvoid main() {\n\t\n\tfloat d = 30 * length(c - uv);\n\tvec2 o = (0.05 + 0.01 * sin(d + 0.1 * iTime)) * normalize(c - uv);\n\n\tcolor = texture(tex,uv + o);\n}\n",
                     "type": 35632
                 }
             ],
@@ -79,8 +109,8 @@
             "type": "renderer",
             "window-id": 3,
             "window-pos": [
-                1024.0,
-                102.0
+                1045.0,
+                119.0
             ],
             "window-size": [
                 528.0,
@@ -89,7 +119,7 @@
             "wireframe": false
         },
         {
-            "current": 16600.9921875,
+            "current": 20782.19140625,
             "speed": 11.9500007629395,
             "type": "timer",
             "window-id": 5,
@@ -100,6 +130,36 @@
             "window-size": [
                 262.0,
                 94.0
+            ]
+        },
+        {
+            "length": 1.0,
+            "smooth": false,
+            "type": "buffer-vec2",
+            "useTime": true,
+            "window-id": 6,
+            "window-pos": [
+                339.0,
+                620.0
+            ],
+            "window-size": [
+                276.0,
+                138.0
+            ]
+        },
+        {
+            "length": 10.0,
+            "smooth": true,
+            "type": "buffer-vec2",
+            "useTime": false,
+            "window-id": 7,
+            "window-pos": [
+                737.0,
+                573.0
+            ],
+            "window-size": [
+                269.0,
+                138.0
             ]
         }
     ]

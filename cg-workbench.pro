@@ -15,6 +15,8 @@ LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a $$system(pkg-config --libs gtk+-
 QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
 QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
 
+DEFINES += IMGUI_DISABLE_OBSOLETE_FUNCTIONS
+
 SOURCES += \
 	src/main.cpp \
 	src/imgui_impl.cpp \
@@ -41,7 +43,9 @@ SOURCES += \
     src/windows/bufferwindow.cpp \
     src/windows/graphwindow.cpp \
     src/windows/vectoradapter.cpp \
-    src/windows/imagesource.cpp
+    src/windows/imagesource.cpp \
+    src/windows/trigger.cpp \
+    src/windows/imagebuffer.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -71,4 +75,6 @@ HEADERS += \
     src/windows/bufferwindow.hpp \
     src/windows/graphwindow.hpp \
     src/windows/vectoradapter.hpp \
-    src/windows/imagesource.hpp
+    src/windows/imagesource.hpp \
+    src/windows/trigger.hpp \
+    src/windows/imagebuffer.hpp

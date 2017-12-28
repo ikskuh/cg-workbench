@@ -27,6 +27,8 @@
 #include "windows/graphwindow.hpp"
 #include "windows/vectoradapter.hpp"
 #include "windows/imagesource.hpp"
+#include "windows/trigger.hpp"
+#include "windows/imagebuffer.hpp"
 #include "resources.hpp"
 
 std::string currentFileName;
@@ -45,6 +47,7 @@ static Window * createMenu()
 	if(ImGui::MenuItem("Renderer")) result = new RenderWindow();
 	if(ImGui::MenuItem("Graph")) result = new GraphWindow();
 	if(ImGui::MenuItem("Image")) result = new ImageSource();
+	if(ImGui::MenuItem("Trigger")) result = new Trigger();
 	if(ImGui::BeginMenu("Values"))
 	{
 		if(ImGui::MenuItem("Float")) result = new UniformWindow<CgDataType::UniformFloat>();
@@ -78,6 +81,8 @@ static Window * createMenu()
 		if(ImGui::MenuItem("vec2")) result = new BufferWindow<CgDataType::UniformVec2>();
 		if(ImGui::MenuItem("vec3")) result = new BufferWindow<CgDataType::UniformVec3>();
 		if(ImGui::MenuItem("vec4")) result = new BufferWindow<CgDataType::UniformVec4>();
+		ImGui::Separator();
+		if(ImGui::MenuItem("Image")) result = new ImageBuffer();
 		ImGui::EndMenu();
 	}
 
@@ -88,6 +93,8 @@ static Window * createMenu()
 		Window::Register(result);
 	return result;
 }
+
+extern ImVec2 screen_pan;
 
 int main(int argc, char ** argv)
 {
@@ -155,6 +162,18 @@ int main(int argc, char ** argv)
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
+			if(event.type == SDL_MOUSEMOTION && (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)))
+			{
+				screen_pan.x -= event.motion.xrel;
+				screen_pan.y -= event.motion.yrel;
+
+				if(screen_pan.x < 0) screen_pan.x = 0;
+				if(screen_pan.y < 0) screen_pan.y = 0;
+
+				if(screen_pan.x > 10000) screen_pan.x = 10000;
+				if(screen_pan.y > 10000) screen_pan.y = 10000;
+			}
+
             ImGui_ImplSdlGL3_ProcessEvent(&event);
             if (event.type == SDL_QUIT)
                 done = true;
@@ -164,96 +183,18 @@ int main(int argc, char ** argv)
 
         ImGui_ImplSdlGL3_NewFrame(window);
 
-		if (ImGui::BeginMainMenuBar())
-	    {
-	        if (ImGui::BeginMenu("File"))
-	        {
-				if(ImGui::MenuItem("New", "CTRL+N"))
-				{
-					Window::DestroyAll();
-					currentWindowID = 0; // reset window id counter
-				}
-
-				if(ImGui::MenuItem("Open...", "CTRL+O"))
-				{
-					nfdchar_t *outPath = NULL;
-					nfdresult_t result = NFD_OpenDialog("json", getcwd(cwd, sizeof(cwd)), &outPath );
-					if ( result == NFD_OKAY )
-					{
-						currentFileName = std::string(outPath);
-						free(outPath);
-						load(currentFileName);
-					}
-					else if ( result == NFD_CANCEL )
-						; // Silently ignore cancel
-					else
-					{
-						printf("Error: %s\n", NFD_GetError() );
-					}
-				}
-				ImGui::Separator();
-
-				bool requiresSaveAs = false;
-				if(ImGui::MenuItem("Save", "CTRL+S"))
-				{
-					if(currentFileName.length() == 0)
-						requiresSaveAs = true;
-					else
-						save(currentFileName);
-				}
-				if(ImGui::MenuItem("Save As...", "CTRL+SHIFT+S") || requiresSaveAs)
-				{
-					nfdchar_t *outPath = NULL;
-					nfdresult_t result = NFD_SaveDialog("json", getcwd(cwd, sizeof(cwd)), &outPath );
-					if ( result == NFD_OKAY )
-					{
-						currentFileName = std::string(outPath);
-						free(outPath);
-						save(currentFileName);
-					}
-					else if ( result == NFD_CANCEL )
-						; // Silently ignore cancel
-					else
-					{
-						printf("Error: %s\n", NFD_GetError() );
-					}
-				}
-				ImGui::Separator();
-				if(ImGui::MenuItem("Exit", "ALT+F4"))
-				{
-					done = true;
-				}
-	            ImGui::EndMenu();
-	        }
-	        if (ImGui::BeginMenu("Create"))
-	        {
-				createMenu();
-	            ImGui::EndMenu();
-	        }
-			if(ImGui::BeginMenu("Extras"))
-			{
-				if(ImGui::MenuItem("Lua Console")) Window::Register(new LuaConsole());
-				if(ImGui::MenuItem("OpenGL Log")) Window::Register(new GpuErrorLog());
-				ImGui::Separator();
-				if(ImGui::MenuItem("Show Test Window", nullptr, &show_test_window)) { }
-				if(ImGui::MenuItem("Show Style Editor", nullptr, &show_style_editor)) { }
-
-				ImGui::EndMenu();
-			}
-	        ImGui::EndMainMenuBar();
-	    }
-
 		Window::UpdateAll();
 
 		{
 			int w,h;
 			SDL_GetWindowSize(window, &w, &h);
 
-			ImGui::SetNextWindowPos(ImVec2(0,0), ImGuiCond_Always);
+			ImGui::SetNextWindowPos(screen_pan, ImGuiCond_Always);
 			ImGui::SetNextWindowSize(ImVec2(w, h), ImGuiCond_Always);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
 
 			auto flags = ImGuiWindowFlags_NoTitleBar
+			        | ImGuiWindowFlags_MenuBar
 					| ImGuiWindowFlags_NoBringToFrontOnFocus
 					| ImGuiWindowFlags_NoCollapse
 					| ImGuiWindowFlags_NoFocusOnAppearing
@@ -264,7 +205,85 @@ int main(int argc, char ** argv)
 
 			if(ImGui::Begin("Desktop", nullptr, flags))
 			{
-				if(ImGui::BeginPopupContextWindow(nullptr, 0))
+				if (ImGui::BeginMenuBar())
+			    {
+			        if (ImGui::BeginMenu("File"))
+			        {
+						if(ImGui::MenuItem("New", "CTRL+N"))
+						{
+							Window::DestroyAll();
+							currentWindowID = 0; // reset window id counter
+						}
+
+						if(ImGui::MenuItem("Open...", "CTRL+O"))
+						{
+							nfdchar_t *outPath = NULL;
+							nfdresult_t result = NFD_OpenDialog("json", getcwd(cwd, sizeof(cwd)), &outPath );
+							if ( result == NFD_OKAY )
+							{
+								currentFileName = std::string(outPath);
+								free(outPath);
+								load(currentFileName);
+							}
+							else if ( result == NFD_CANCEL )
+								; // Silently ignore cancel
+							else
+							{
+								printf("Error: %s\n", NFD_GetError() );
+							}
+						}
+						ImGui::Separator();
+
+						bool requiresSaveAs = false;
+						if(ImGui::MenuItem("Save", "CTRL+S"))
+						{
+							if(currentFileName.length() == 0)
+								requiresSaveAs = true;
+							else
+								save(currentFileName);
+						}
+						if(ImGui::MenuItem("Save As...", "CTRL+SHIFT+S") || requiresSaveAs)
+						{
+							nfdchar_t *outPath = NULL;
+							nfdresult_t result = NFD_SaveDialog("json", getcwd(cwd, sizeof(cwd)), &outPath );
+							if ( result == NFD_OKAY )
+							{
+								currentFileName = std::string(outPath);
+								free(outPath);
+								save(currentFileName);
+							}
+							else if ( result == NFD_CANCEL )
+								; // Silently ignore cancel
+							else
+							{
+								printf("Error: %s\n", NFD_GetError() );
+							}
+						}
+						ImGui::Separator();
+						if(ImGui::MenuItem("Exit", "ALT+F4"))
+						{
+							done = true;
+						}
+			            ImGui::EndMenu();
+			        }
+			        if (ImGui::BeginMenu("Create"))
+			        {
+						createMenu();
+			            ImGui::EndMenu();
+			        }
+					if(ImGui::BeginMenu("Extras"))
+					{
+						if(ImGui::MenuItem("Lua Console")) Window::Register(new LuaConsole());
+						if(ImGui::MenuItem("OpenGL Log")) Window::Register(new GpuErrorLog());
+						ImGui::Separator();
+						if(ImGui::MenuItem("Show Test Window", nullptr, &show_test_window)) { }
+						if(ImGui::MenuItem("Show Style Editor", nullptr, &show_style_editor)) { }
+
+						ImGui::EndMenu();
+					}
+			        ImGui::EndMenuBar();
+			    }
+				if(ImGui::BeginPopupContextWindow(nullptr, 1))
 				{
 					Window * win = createMenu();
 					if(win != nullptr)
@@ -284,6 +303,7 @@ int main(int argc, char ** argv)
 
 			ImGui::PopStyleVar();
 		}
+
 
         // 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
         if (show_test_window)
@@ -468,6 +488,10 @@ void load(std::string const & fileName)
 			win = new VectorMerger();
 		else if(type == "image")
 			win = new ImageSource();
+		else if(type == "trigger")
+			win = new Trigger();
+		else if(type == "image-buffer")
+			win = new ImageBuffer();
 		else
 			abort();
 

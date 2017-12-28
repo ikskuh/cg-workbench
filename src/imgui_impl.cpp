@@ -9,6 +9,8 @@
 #include "imgui.h"
 #include "imgui_impl.h"
 
+#include <glm/gtx/transform.hpp>
+
 // SDL,GL3W
 #include <SDL.h>
 #include <SDL_syswm.h>
@@ -24,6 +26,9 @@ static int          g_AttribLocationTex = 0, g_AttribLocationProjMtx = 0;
 static int          g_AttribLocationPosition = 0, g_AttribLocationUV = 0, g_AttribLocationColor = 0;
 static unsigned int g_VboHandle = 0, g_VaoHandle = 0, g_ElementsHandle = 0;
 
+
+ImVec2 screen_pan(0.0f, 0.0f);
+
 // This is the main rendering function that you have to implement and provide to ImGui (via setting up 'RenderDrawListsFn' in the ImGuiIO structure)
 // Note that this implementation is little overcomplicated because we are saving/setting up/restoring every OpenGL state explicitly, in order to be able to run within any OpenGL engine that doesn't do so.
 // If text or lines are blurry when integrating ImGui in your engine: in your Render function, try translating your projection matrix by (0.5f,0.5f) or (0.375f,0.375f)
@@ -31,8 +36,12 @@ void ImGui_ImplSdlGL3_RenderDrawLists(ImDrawData* draw_data)
 {
     // Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
     ImGuiIO& io = ImGui::GetIO();
-    int fb_width = (int)(io.DisplaySize.x * io.DisplayFramebufferScale.x);
-    int fb_height = (int)(io.DisplaySize.y * io.DisplayFramebufferScale.y);
+
+	float vp_w = io.DisplayVisibleMax.x - io.DisplayVisibleMin.x;
+	float vp_h = io.DisplayVisibleMax.y - io.DisplayVisibleMin.y;
+
+    int fb_width = (int)(vp_w * io.DisplayFramebufferScale.x);
+    int fb_height = (int)(vp_h * io.DisplayFramebufferScale.y);
     if (fb_width == 0 || fb_height == 0)
         return;
     draw_data->ScaleClipRects(io.DisplayFramebufferScale);
@@ -71,16 +80,14 @@ void ImGui_ImplSdlGL3_RenderDrawLists(ImDrawData* draw_data)
 
     // Setup viewport, orthographic projection matrix
     glViewport(0, 0, (GLsizei)fb_width, (GLsizei)fb_height);
-    const float ortho_projection[4][4] =
-    {
-        { 2.0f/io.DisplaySize.x, 0.0f,                   0.0f, 0.0f },
-        { 0.0f,                  2.0f/-io.DisplaySize.y, 0.0f, 0.0f },
-        { 0.0f,                  0.0f,                  -1.0f, 0.0f },
-        {-1.0f,                  1.0f,                   0.0f, 1.0f },
-    };
+
+	glm::mat4 ortho = glm::ortho(
+		io.DisplayVisibleMin.x, io.DisplayVisibleMax.x,
+		io.DisplayVisibleMax.y, io.DisplayVisibleMin.y);
+
     glUseProgram(g_ShaderHandle);
     glUniform1i(g_AttribLocationTex, 0);
-    glUniformMatrix4fv(g_AttribLocationProjMtx, 1, GL_FALSE, &ortho_projection[0][0]);
+    glUniformMatrix4fv(g_AttribLocationProjMtx, 1, GL_FALSE, &ortho[0][0]);
     glBindVertexArray(g_VaoHandle);
     glBindSampler(0, 0); // Rely on combined texture/sampler state.
 
@@ -105,7 +112,11 @@ void ImGui_ImplSdlGL3_RenderDrawLists(ImDrawData* draw_data)
             else
             {
                 glBindTexture(GL_TEXTURE_2D, (GLuint)(intptr_t)pcmd->TextureId);
-                glScissor((int)pcmd->ClipRect.x, (int)(fb_height - pcmd->ClipRect.w), (int)(pcmd->ClipRect.z - pcmd->ClipRect.x), (int)(pcmd->ClipRect.w - pcmd->ClipRect.y));
+                glScissor(
+					(int)pcmd->ClipRect.x - screen_pan.x,
+					(int)(fb_height - pcmd->ClipRect.w + screen_pan.y),
+					(int)(pcmd->ClipRect.z - pcmd->ClipRect.x),
+					(int)(pcmd->ClipRect.w - pcmd->ClipRect.y));
                 glDrawElements(GL_TRIANGLES, (GLsizei)pcmd->ElemCount, sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, idx_buffer_offset);
             }
             idx_buffer_offset += pcmd->ElemCount;
@@ -367,8 +378,12 @@ void ImGui_ImplSdlGL3_NewFrame(SDL_Window* window)
 	int display_w, display_h;
 	SDL_GetWindowSize(window, &w, &h);
 	SDL_GL_GetDrawableSize(window, &display_w, &display_h);
-	io.DisplaySize = ImVec2((float)w, (float)h);
+
+	io.DisplaySize = ImVec2(10000 + w, 10000 + h);
 	io.DisplayFramebufferScale = ImVec2(w > 0 ? ((float)display_w / w) : 0, h > 0 ? ((float)display_h / h) : 0);
+
+	io.DisplayVisibleMin = screen_pan;
+	io.DisplayVisibleMax = ImVec2(io.DisplayVisibleMin.x + w, io.DisplayVisibleMin.y + h);
 
 	// Setup time step
 	Uint32	time = SDL_GetTicks();
@@ -381,7 +396,7 @@ void ImGui_ImplSdlGL3_NewFrame(SDL_Window* window)
 	int mx, my;
 	Uint32 mouseMask = SDL_GetMouseState(&mx, &my);
 	if (SDL_GetWindowFlags(window) & SDL_WINDOW_MOUSE_FOCUS)
-			io.MousePos = ImVec2((float)mx, (float)my);   // Mouse position, in pixels (set to -1,-1 if no mouse / on another screen, etc.)
+			io.MousePos = ImVec2((float)mx + io.DisplayVisibleMin.x, (float)my + io.DisplayVisibleMin.y);   // Mouse position, in pixels (set to -1,-1 if no mouse / on another screen, etc.)
 	else
 			io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
 

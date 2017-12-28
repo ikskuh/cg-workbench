@@ -1,9 +1,13 @@
 #include "renderwindow.hpp"
+#include <nfd.h>
+#include <fstream>
+#include <unistd.h>
 
 RenderWindow::RenderWindow() :
     Window("Render Window", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize),
     texSize(512,512),
-    scale(9), wireframe(false)
+    scale(9), wireframe(false),
+    mousePressed(0.0f), mousePos(256,256)
 {
 	glCreateTextures(GL_TEXTURE_2D, 1, &this->tex);
 	glTextureStorage2D(
@@ -29,6 +33,10 @@ RenderWindow::RenderWindow() :
 	this->AddSink(this->shader = new Sink(CgDataType::Shader, "Shader"));
 
 	this->AddSource(new Source(CgDataType::Texture2D, "Image", &this->tex));
+	this->AddSource(new Source(CgDataType::UniformVec2, "Image Size", &this->texSize.x));
+	this->AddSource(new Source(CgDataType::UniformFloat, "Mouse Pressed", &this->mousePressed));
+	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos", &this->mousePos.x));
+	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos (Normalized)", &this->mousePosNormalized.x));
 }
 
 RenderWindow::~RenderWindow()
@@ -94,55 +102,17 @@ void RenderWindow::SizeConstraint(ImGuiSizeConstraintCallbackData * data)
 
 void RenderWindow::OnUpdate()
 {
+	char cwd[256];
 	if(ImGui::BeginMenuBar())
 	{
 		if(ImGui::BeginMenu("Renderer"))
 		{
-			if(ImGui::BeginMenu("Render Targets"))
-			{
-				if(ImGui::BeginMenu("Target 1"))
-				{
-					ImGui::MenuItem("None");
-					ImGui::MenuItem("RGBA8");
-					ImGui::MenuItem("RGBA16F");
-					ImGui::MenuItem("RGBA32F");
-					ImGui::EndMenu();
-				}
-				if(ImGui::BeginMenu("Target 2"))
-				{
-					ImGui::MenuItem("None");
-					ImGui::MenuItem("RGBA8");
-					ImGui::MenuItem("RGBA16F");
-					ImGui::MenuItem("RGBA32F");
-					ImGui::EndMenu();
-				}
-				if(ImGui::BeginMenu("Target 3"))
-				{
-					ImGui::MenuItem("None");
-					ImGui::MenuItem("RGBA8");
-					ImGui::MenuItem("RGBA16F");
-					ImGui::MenuItem("RGBA32F");
-					ImGui::EndMenu();
-				}
-				if(ImGui::BeginMenu("Target 4"))
-				{
-					ImGui::MenuItem("None");
-					ImGui::MenuItem("RGBA8");
-					ImGui::MenuItem("RGBA16F");
-					ImGui::MenuItem("RGBA32F");
-					ImGui::EndMenu();
-				}
-
-				ImGui::EndMenu();
-			}
-
 			if(ImGui::BeginMenu("Viewport"))
 			{
 				bool scale7 = (this->scale == 7);
 				bool scale8 = (this->scale == 8);
 				bool scale9 = (this->scale == 9);
 				bool scale10 = (this->scale == 10);
-
 				ImGui::MenuItem("128 px", nullptr, &scale7);
 				ImGui::MenuItem("256 px", nullptr, &scale8);
 				ImGui::MenuItem("512 px", nullptr, &scale9);
@@ -162,6 +132,41 @@ void RenderWindow::OnUpdate()
 
 			ImGui::MenuItem("Wireframe", nullptr, &this->wireframe);
 
+			if(ImGui::MenuItem("Export..."))
+			{
+				nfdchar_t *outPath = NULL;
+				nfdresult_t result = NFD_SaveDialog("ppm", getcwd(cwd, sizeof(cwd)), &outPath );
+				if ( result == NFD_OKAY )
+				{
+					std::string fileName(outPath);
+					free(outPath);
+
+					int w, h;
+					glGetTextureLevelParameteriv(this->tex, 0, GL_TEXTURE_WIDTH, &w);
+					glGetTextureLevelParameteriv(this->tex, 0, GL_TEXTURE_HEIGHT, &h);
+
+					std::vector<char> bits(w * h * 3);
+					glGetTextureImage(
+						this->tex,
+						0,
+						GL_RGB,
+						GL_UNSIGNED_BYTE,
+						bits.size(),
+						bits.data());
+
+					std::ofstream stream(fileName);
+					stream << "P6 " << w << " " << h << " 255" << "\n";
+					stream.write(bits.data(), bits.size());
+					stream.flush();
+				}
+				else if ( result == NFD_CANCEL )
+					; // Silently ignore cancel
+				else
+				{
+					printf("Error: %s\n", NFD_GetError() );
+				}
+			}
+
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
@@ -173,9 +178,20 @@ void RenderWindow::OnUpdate()
 
 	float size = (1 << this->scale);
 
+	auto pos = ImGui::GetCursorPos();
 	ImGui::Image(
 		ImTextureID(uintptr_t(this->tex)),
 	    ImVec2(size, (size / w) * h));
+	if(ImGui::IsItemHovered())
+	{
+		this->mousePressed = ImGui::IsMouseDown(1);
+
+		this->mousePos = ImGui::GetMousePos();
+		this->mousePos -= (glm::vec2)ImGui::GetWindowPos();
+		this->mousePos -= (glm::vec2)pos;
+
+		this->mousePosNormalized = this->mousePos / glm::vec2(w, h);
+	}
 }
 
 nlohmann::json RenderWindow::Serialize() const

@@ -16,6 +16,11 @@ private:
 
 	Sink * geom;
 	Sink * shader;
+	Sink * transform;
+
+	float mousePressed;
+	glm::vec2 mousePos, mousePosNormalized;
+
 
 	static void SizeConstraint(ImGuiSizeConstraintCallbackData * data);
 protected:
