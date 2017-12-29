@@ -178,8 +178,8 @@
             "type": "shader",
             "window-id": 1,
             "window-pos": [
-                469.0,
-                72.0
+                435.0,
+                129.0
             ],
             "window-size": [
                 853.0,
@@ -211,7 +211,7 @@
             "wireframe": false
         },
         {
-            "current": 365.302825927734,
+            "current": 492.286315917969,
             "speed": 1.0,
             "type": "timer",
             "window-id": 3,
@@ -352,7 +352,7 @@
             "wireframe": false
         },
         {
-            "current": 4089.25048828125,
+            "current": 4216.91259765625,
             "speed": 1.0,
             "type": "timer",
             "window-id": 17,
@@ -378,8 +378,8 @@
             "type": "image",
             "window-id": 18,
             "window-pos": [
-                1380.0,
-                563.0
+                1389.0,
+                819.0
             ],
             "window-size": [
                 297.0,
@@ -453,7 +453,7 @@
             "window-id": 24,
             "window-pos": [
                 2512.0,
-                820.0
+                844.0
             ],
             "window-size": [
                 276.0,

@@ -173,7 +173,10 @@ int main(int argc, char ** argv)
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
-			if(event.type == SDL_MOUSEMOTION && (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)))
+			if(event.type == SDL_MOUSEMOTION && (
+				(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_MIDDLE)) ||
+				((SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT)) && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LCTRL])
+				))
 			{
 				screen_pan.x -= event.motion.xrel;
 				screen_pan.y -= event.motion.yrel;
@@ -183,6 +186,8 @@ int main(int argc, char ** argv)
 
 				if(screen_pan.x > 10000) screen_pan.x = 10000;
 				if(screen_pan.y > 10000) screen_pan.y = 10000;
+
+				continue;
 			}
 
             ImGui_ImplSdlGL3_ProcessEvent(&event);
