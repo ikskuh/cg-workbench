@@ -224,6 +224,7 @@ int main(int argc, char ** argv)
 						{
 							Window::DestroyAll();
 							currentWindowID = 0; // reset window id counter
+							currentFileName = "";
 						}
 
 						if(ImGui::MenuItem("Open...", "CTRL+O"))

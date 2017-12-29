@@ -29,7 +29,7 @@ GLuint load_texture(std::string const & fileName, GLenum wrap, bool withMipMaps)
 		0,
 		0, 0,
 		w, h,
-		GL_BGRA,
+		GL_RGBA,
 		GL_UNSIGNED_BYTE,
 		ptr);
 
