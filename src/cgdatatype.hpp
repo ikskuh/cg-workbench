@@ -3,6 +3,7 @@
 #include <GL/gl3w.h>
 #include <glm/glm.hpp>
 #include <imgui.h>
+#include "geometry.hpp"
 
 enum class CgDataType
 {
@@ -38,7 +39,7 @@ MAPTYPE(UniformMat4, glm::mat4, (void)value; ImGui::Text("%f %f %f %f\n%f %f %f 
 
 MAPTYPE(Texture2D, GLuint, ImGui::Image((ImTextureID)uintptr_t(value), ImVec2(128, 128)));
 MAPTYPE(Shader, GLuint, (void)value);
-MAPTYPE(Geometry, GLuint, (void)value);
+MAPTYPE(Geometry, Geometry, ImGui::Text("%d vertices", value.VertexCount));
 
 #undef MAPTYPE
 

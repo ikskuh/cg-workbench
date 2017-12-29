@@ -28,22 +28,48 @@ static Source * GetGeometryDefault()
 
 	glCreateBuffers(1, &vertexBuffer);
 
-	float vertices[] = {
-		-1.0f, -1.0f, 0.0f,
-		 1.0f, -1.0f, 0.0f,
-		-1.0f,  1.0f, 0.0f,
+	Vertex vertices[] = {
+	    Vertex {
+	        position: { -1.0f, -1.0f, 0.0f },
+	        normal: { 0,0,1 },
+	        uv: { 0,0 }
+	    },
+		Vertex {
+	        position: {1.0f, -1.0f, 0.0f},
+	        normal: {0,0,1},
+	        uv: {1,0}
+	    },
+		Vertex {
+	        position: {-1.0f,  1.0f, 0.0f},
+	        normal: {0,0,1},
+	        uv: {0,1}
+	    },
 
-	     1.0f,  1.0f, 0.0f,
-		 1.0f, -1.0f, 0.0f,
-		-1.0f,  1.0f, 0.0f,
+		Vertex {
+	        position: {1.0f,  1.0f, 0.0f},
+	        normal: {0,0,1},
+	        uv: {1,1}
+	    },
+		Vertex {
+	        position: {1.0f, -1.0f, 0.0f},
+	        normal: {0,0,1},
+	        uv: {1,0}
+	    },
+		Vertex {
+	        position: {-1.0f,  1.0f, 0.0f},
+	        normal: {0,0,1},
+	        uv: {0,1}
+	    },
 	};
 	glNamedBufferData(
 		vertexBuffer,
-		sizeof(vertices),
+		6 * sizeof(Vertex),
 	    vertices,
 		GL_STATIC_DRAW);
 
 	glEnableVertexArrayAttrib(vao, 0);
+	glEnableVertexArrayAttrib(vao, 1);
+	glEnableVertexArrayAttrib(vao, 2);
 
 	glVertexArrayAttribFormat(
 		vao,
@@ -51,21 +77,47 @@ static Source * GetGeometryDefault()
 		3,
 		GL_FLOAT,
 		GL_FALSE,
-		0);
+		offsetof(Vertex,position));
+	glVertexArrayAttribFormat(
+		vao,
+		1, // attrib
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		offsetof(Vertex,normal));
+	glVertexArrayAttribFormat(
+		vao,
+		2, // attrib
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		offsetof(Vertex,uv));
 
 	glVertexArrayVertexBuffer(
 		vao,
 		0,                  // binding index
 		vertexBuffer,
 		0,                  // offset
-		sizeof(float) * 3); // stride
+		sizeof(Vertex)); // stride
 
 	glVertexArrayAttribBinding(
 		vao,
 		0,  // attrib index
 		0); // binding index
+	glVertexArrayAttribBinding(
+		vao,
+		1,  // attrib index
+		0); // binding index
+	glVertexArrayAttribBinding(
+		vao,
+		2,  // attrib index
+		0); // binding index
 
-	src = new Source(CgDataType::Geometry, "Shape", &vao);
+	static Geometry geom;
+	geom.VertexArray = vao;
+	geom.VertexCount = 6;
+
+	src = new Source(CgDataType::Geometry, "Shape", &geom);
 	return src;
 }
 

@@ -109,6 +109,106 @@
                 12,
                 1
             ]
+        },
+        {
+            "from": [
+                4,
+                0
+            ],
+            "to": [
+                14,
+                1
+            ]
+        },
+        {
+            "from": [
+                19,
+                0
+            ],
+            "to": [
+                14,
+                2
+            ]
+        },
+        {
+            "from": [
+                18,
+                0
+            ],
+            "to": [
+                14,
+                3
+            ]
+        },
+        {
+            "from": [
+                16,
+                0
+            ],
+            "to": [
+                14,
+                4
+            ]
+        },
+        {
+            "from": [
+                17,
+                0
+            ],
+            "to": [
+                14,
+                5
+            ]
+        },
+        {
+            "from": [
+                14,
+                0
+            ],
+            "to": [
+                15,
+                1
+            ]
+        },
+        {
+            "from": [
+                18,
+                0
+            ],
+            "to": [
+                16,
+                0
+            ]
+        },
+        {
+            "from": [
+                16,
+                0
+            ],
+            "to": [
+                17,
+                0
+            ]
+        },
+        {
+            "from": [
+                19,
+                0
+            ],
+            "to": [
+                18,
+                0
+            ]
+        },
+        {
+            "from": [
+                4,
+                0
+            ],
+            "to": [
+                19,
+                0
+            ]
         }
     ],
     "type": "cg-workbench-file",
@@ -149,18 +249,19 @@
             ]
         },
         {
-            "scale": 9,
+            "depthtest": true,
+            "scale": 8,
             "type": "renderer",
             "window-id": 4,
             "window-pos": [
-                1356.0,
-                79.0
+                1468.0,
+                156.0
             ],
             "window-size": [
-                528.0,
-                566.0
+                272.0,
+                310.0
             ],
-            "wireframe": false
+            "wireframe": true
         },
         {
             "type": "matrix-lookat",
@@ -192,7 +293,7 @@
             ]
         },
         {
-            "current": 2434.95947265625,
+            "current": 4289.7822265625,
             "speed": 1.0,
             "type": "timer",
             "window-id": 7,
@@ -244,6 +345,7 @@
             ]
         },
         {
+            "file": "/home/felix/projects/tinyobjloader/models/cornell_box.obj",
             "type": "geometry",
             "window-id": 11,
             "window-pos": [
@@ -282,6 +384,91 @@
             "window-size": [
                 262.0,
                 54.0
+            ]
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D image;\nuniform sampler2D lag0;\nuniform sampler2D lag1;\nuniform sampler2D lag2;\nuniform sampler2D lag3;\n\nvec4 filt(sampler2D tex, vec2 pos, float r)\n{\n\tvec4 sum = vec4(0.0);\n\tfor(int x = -3; x <= 3; x++)\n\t\tfor(int y = -3; y <= 3; y++)\n\t\t\tsum += texture(tex, pos + r * vec2(float(x),float(y)));\n\tsum /= 7.0 * 7.0;\n\treturn sum;\n}\n\nvoid main() {\n\n\tfloat rpx = 1.0 / 512.0;\n\n\tcolor =\n\t\t0.10 * filt(lag3, uv, 8 * rpx)\n\t  + 0.25 * filt(lag2, uv, 4 * rpx)\n\t  + 0.50 * filt(lag1, uv, 2 * rpx)\n\t  + 0.75 * filt(lag0, uv, rpx)\n      + 1.00 * texture(image, uv);\n\n}\n",
+                    "type": 35632
+                }
+            ],
+            "type": "shader",
+            "window-id": 14,
+            "window-pos": [
+                2057.0,
+                110.0
+            ],
+            "window-size": [
+                527.0,
+                436.0
+            ]
+        },
+        {
+            "depthtest": true,
+            "scale": 10,
+            "type": "renderer",
+            "window-id": 15,
+            "window-pos": [
+                2697.0,
+                22.0
+            ],
+            "window-size": [
+                1040.0,
+                1078.0
+            ],
+            "wireframe": false
+        },
+        {
+            "type": "image-buffer",
+            "window-id": 16,
+            "window-pos": [
+                2232.0,
+                728.0
+            ],
+            "window-size": [
+                134.0,
+                61.0
+            ]
+        },
+        {
+            "type": "image-buffer",
+            "window-id": 17,
+            "window-pos": [
+                2411.0,
+                796.0
+            ],
+            "window-size": [
+                134.0,
+                61.0
+            ]
+        },
+        {
+            "type": "image-buffer",
+            "window-id": 18,
+            "window-pos": [
+                2060.0,
+                668.0
+            ],
+            "window-size": [
+                134.0,
+                61.0
+            ]
+        },
+        {
+            "type": "image-buffer",
+            "window-id": 19,
+            "window-pos": [
+                1930.0,
+                577.0
+            ],
+            "window-size": [
+                134.0,
+                61.0
             ]
         }
     ]

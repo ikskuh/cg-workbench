@@ -8,7 +8,7 @@ PKGCONFIG += lua gl sdl2 SDL2_image
 
 LIBS += -lm -ldl
 
-INCLUDEPATH += ext/gl3w ext/stb ext/imgui ext/json ext/nativefiledialog/src/include
+INCLUDEPATH += ext/gl3w ext/stb ext/imgui ext/json ext/nativefiledialog/src/include ext/tinyobjloader
 
 LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a $$system(pkg-config --libs gtk+-3.0)
 
@@ -46,7 +46,9 @@ SOURCES += \
     src/windows/imagesource.cpp \
     src/windows/trigger.cpp \
     src/windows/imagebuffer.cpp \
-    src/windows/matrixtransforms.cpp
+    src/windows/matrixtransforms.cpp \
+    src/geometry.cpp \
+    ext/tinyobjloader/tiny_obj_loader.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -80,4 +82,6 @@ HEADERS += \
     src/windows/trigger.hpp \
     src/windows/imagebuffer.hpp \
     src/windows/matrixtransforms.hpp \
-    src/windows/typemap.hpp
+    src/windows/typemap.hpp \
+    src/geometry.hpp \
+    ext/tinyobjloader/tiny_obj_loader.h

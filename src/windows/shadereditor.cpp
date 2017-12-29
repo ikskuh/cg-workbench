@@ -2,18 +2,20 @@
 #include <cstdio>
 
 char const * defaultVertexShader = R"glsl(#version 330
-layout(location = 0) in vec3 position;
+layout(location = 0) in vec3 vPosition;
+layout(location = 1) in vec3 vNormal;
+layout(location = 2) in vec2 vUV;
 
+out vec3 position;
+out vec3 normal;
 out vec2 uv;
 
-uniform mat4 transform;0
-        0
-        000
-        00
-
+uniform mat4 transform;
 
 void main() {
-	uv = 0.5 + 0.5 * position.xy;
+	position = vPosition;
+	normal = vNormal;
+	uv = vUV;
 	gl_Position = transform * vec4(position, 1.0);
 }
 )glsl";
@@ -21,6 +23,8 @@ void main() {
 char const * defaultFragmentShader = R"glsl(#version 330
 out vec4 color;
 
+in vec3 position;
+in vec3 normal;
 in vec2 uv;
 
 void main() {

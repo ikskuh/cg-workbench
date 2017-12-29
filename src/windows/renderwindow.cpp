@@ -6,7 +6,7 @@
 RenderWindow::RenderWindow() :
     Window("Render Window", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize),
     texSize(512,512),
-    scale(9), wireframe(false),
+    scale(9), wireframe(false), depthtest(true),
     mousePressed(0.0f), mousePos(256,256)
 {
 	glCreateTextures(GL_TEXTURE_2D, 1, &this->tex);
@@ -19,12 +19,24 @@ RenderWindow::RenderWindow() :
 	glTextureParameteri(this->tex, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTextureParameteri(this->tex, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	glCreateRenderbuffers(1, &this->depthbuf);
+	glNamedRenderbufferStorage(
+		this->depthbuf,
+		GL_DEPTH24_STENCIL8,
+		this->texSize.x,
+		this->texSize.y);
+
 	glCreateFramebuffers(1, &this->fb);
 	glNamedFramebufferTexture(
 		this->fb,
 		GL_COLOR_ATTACHMENT0,
 	    this->tex,
 		0);
+	glNamedFramebufferRenderbuffer(
+		this->fb,
+		GL_DEPTH_STENCIL_ATTACHMENT,
+		GL_RENDERBUFFER,
+		this->depthbuf);
 	auto status = glCheckNamedFramebufferStatus(this->fb, GL_DRAW_FRAMEBUFFER);
 	if(status != GL_FRAMEBUFFER_COMPLETE)
 		throw "foo";
@@ -43,6 +55,7 @@ RenderWindow::~RenderWindow()
 {
 	glDeleteFramebuffers(1, &this->fb);
 	glDeleteTextures(1, &this->tex);
+	glDeleteRenderbuffers(1, &this->depthbuf);
 }
 
 void RenderWindow::OnRender()
@@ -52,21 +65,29 @@ void RenderWindow::OnRender()
 	glViewport(0, 0, this->texSize.x, this->texSize.y);
 	glDisable(GL_SCISSOR_TEST);
 
-	glDisable(GL_DEPTH_TEST);
+	if(this->depthtest)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
+
 	if(this->shader->HasSource() && this->geom->HasSource())
 	{
+		glClearDepth(1.0f);
 		glClearColor(0.0,0.0,0.0,1);
-		glClear(GL_COLOR_BUFFER_BIT);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		auto const & geom = this->geom->GetObject<CgDataType::Geometry>();
 
 		glUseProgram(this->shader->GetObject<CgDataType::Shader>());
-		glBindVertexArray(this->geom->GetObject<CgDataType::Geometry>());
+		glBindVertexArray(geom.VertexArray);
 
 		if(this->wireframe)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawArrays(GL_TRIANGLES, 0, geom.VertexCount);
 	}
 	else
 	{
@@ -130,7 +151,12 @@ void RenderWindow::OnUpdate()
 				ImGui::EndMenu();
 			}
 
+			ImGui::Separator();
+
 			ImGui::MenuItem("Wireframe", nullptr, &this->wireframe);
+			ImGui::MenuItem("Depth Test", nullptr, &this->depthtest);
+
+			ImGui::Separator();
 
 			if(ImGui::MenuItem("Export..."))
 			{
@@ -200,11 +226,13 @@ nlohmann::json RenderWindow::Serialize() const
 		{ "type", "renderer" },
 		{ "scale", this->scale },
 		{ "wireframe", this->wireframe },
+		{ "depthtest", this->depthtest },
 	};
 }
 
 void RenderWindow::Deserialize(const nlohmann::json &value)
 {
 	this->scale = value["scale"];
-	this->wireframe = value["wireframe"];
+	this->wireframe = value.value("wireframe", false);
+	this->depthtest = value.value("depthtest", true);
 }

@@ -10,9 +10,11 @@ private:
 	GLuint fb;
 	GLuint tex;
 	ImVec2 texSize;
+	GLuint depthbuf;
 
 	int scale;
 	bool wireframe;
+	bool depthtest;
 
 	Sink * geom;
 	Sink * shader;
