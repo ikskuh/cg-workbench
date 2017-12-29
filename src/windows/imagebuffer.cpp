@@ -46,6 +46,8 @@ void ImageBuffer::OnRender()
 			    this->img,
 				0);
 		}
+
+		this->imgEditor.SetTexture(this->img);
 	}
 
 	if((src == 0) && (this->img == 0))
@@ -75,4 +77,7 @@ void ImageBuffer::OnRender()
 void ImageBuffer::OnUpdate()
 {
 	ImGui::Text("Buffers a texture\nfor one frame.");
+
+	if(this->img != 0)
+		this->imgEditor.Show();
 }

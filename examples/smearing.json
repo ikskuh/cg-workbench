@@ -118,8 +118,8 @@
             "type": "shader",
             "window-id": 4,
             "window-pos": [
-                492.0,
-                41.0
+                417.0,
+                51.0
             ],
             "window-size": [
                 714.0,
@@ -129,12 +129,19 @@
         },
         {
             "depthtest": true,
+            "rt0-settings": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 33071,
+                "wrap-s": 33071,
+                "wrap-t": 33071
+            },
             "scale": 9,
             "type": "renderer",
             "window-id": 5,
             "window-pos": [
-                1320.0,
-                119.0
+                1303.0,
+                81.0
             ],
             "window-size": [
                 528.0,
@@ -158,9 +165,9 @@
         },
         {
             "color": [
-                1.0,
-                0.490196079015732,
                 0.0,
+                1.0,
+                0.38043475151062,
                 0.929411768913269
             ],
             "type": "uniform-color",
@@ -179,12 +186,12 @@
             "type": "image-buffer",
             "window-id": 8,
             "window-pos": [
-                766.0,
-                455.0
+                788.0,
+                476.0
             ],
             "window-size": [
-                134.0,
-                61.0
+                297.0,
+                176.0
             ],
             "window-title": "Image Buffer"
         },
@@ -204,7 +211,7 @@
         },
         {
             "type": "uniform-float",
-            "value": -60.060001373291,
+            "value": 60.060001373291,
             "window-id": 10,
             "window-pos": [
                 33.0,
@@ -217,7 +224,7 @@
             "window-title": "Smear Speed"
         },
         {
-            "current": 12296.7001953125,
+            "current": 12429.5048828125,
             "speed": 1.0,
             "type": "timer",
             "window-id": 11,
@@ -236,8 +243,8 @@
             "type": "note",
             "window-id": 12,
             "window-pos": [
-                407.0,
-                429.0
+                399.0,
+                452.0
             ],
             "window-size": [
                 188.0,
