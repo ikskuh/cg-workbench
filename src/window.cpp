@@ -269,14 +269,11 @@ void Window::Update()
 
 		if(ImGui::BeginPopupContextWindow())
 		{
-			ImGui::InputText("Node Name", this->titleEditBuffer, 256, ImGuiInputTextFlags_AutoSelectAll);
-
-			if(ImGui::Button("Rename"))
+			if(ImGui::InputText("Node Name", this->titleEditBuffer, 256, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
 			{
 				this->title = std::string(this->titleEditBuffer);
 				this->wantsResize = true;
 			}
-
 
 			ImGui::EndPopup();
 		}

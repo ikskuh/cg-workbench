@@ -17,7 +17,6 @@ This project would be much harder without those great libraries:
 - Renderer Node
 	- Setable Rendertarget Size
 - Geometry Node
-	- Load OBJ file
 	- Primitives
 		- Quad
 		- Sphere

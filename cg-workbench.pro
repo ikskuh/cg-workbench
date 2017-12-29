@@ -48,7 +48,8 @@ SOURCES += \
     src/windows/imagebuffer.cpp \
     src/windows/matrixtransforms.cpp \
     src/geometry.cpp \
-    ext/tinyobjloader/tiny_obj_loader.cpp
+    ext/tinyobjloader/tiny_obj_loader.cpp \
+    src/textureeditor.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -84,4 +85,5 @@ HEADERS += \
     src/windows/matrixtransforms.hpp \
     src/windows/typemap.hpp \
     src/geometry.hpp \
-    ext/tinyobjloader/tiny_obj_loader.h
+    ext/tinyobjloader/tiny_obj_loader.h \
+    src/textureeditor.hpp

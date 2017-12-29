@@ -41,6 +41,8 @@ RenderWindow::RenderWindow() :
 	if(status != GL_FRAMEBUFFER_COMPLETE)
 		throw "foo";
 
+	rt0Settings.SetTexture(this->tex);
+
 	this->AddSink(this->geom = new Sink(CgDataType::Geometry, "Geometry"));
 	this->AddSink(this->shader = new Sink(CgDataType::Shader, "Shader"));
 
@@ -151,6 +153,12 @@ void RenderWindow::OnUpdate()
 				ImGui::EndMenu();
 			}
 
+			if(ImGui::BeginMenu("Filter Settings"))
+			{
+				this->rt0Settings.Show();
+				ImGui::EndMenu();
+			}
+
 			ImGui::Separator();
 
 			ImGui::MenuItem("Wireframe", nullptr, &this->wireframe);
@@ -205,18 +213,22 @@ void RenderWindow::OnUpdate()
 	float size = (1 << this->scale);
 
 	auto pos = ImGui::GetCursorPos();
-	ImGui::Image(
+	auto vpsize = ImVec2(size, (size / w) * h);
+	ImGui::ImageButton(
 		ImTextureID(uintptr_t(this->tex)),
-	    ImVec2(size, (size / w) * h));
+	    vpsize,
+		ImVec2(0.0f, 0.0f),
+		ImVec2(1.0f, 1.0f),
+		0);
 	if(ImGui::IsItemHovered())
 	{
-		this->mousePressed = ImGui::IsMouseDown(1);
+		this->mousePressed = ImGui::IsMouseDown(0);
 
 		this->mousePos = ImGui::GetMousePos();
 		this->mousePos -= (glm::vec2)ImGui::GetWindowPos();
 		this->mousePos -= (glm::vec2)pos;
 
-		this->mousePosNormalized = this->mousePos / glm::vec2(w, h);
+		this->mousePosNormalized = this->mousePos / glm::vec2(vpsize.x, vpsize.y);
 	}
 }
 
@@ -227,6 +239,7 @@ nlohmann::json RenderWindow::Serialize() const
 		{ "scale", this->scale },
 		{ "wireframe", this->wireframe },
 		{ "depthtest", this->depthtest },
+		{ "rt0-settings", this->rt0Settings.Serialize() },
 	};
 }
 
@@ -235,4 +248,10 @@ void RenderWindow::Deserialize(const nlohmann::json &value)
 	this->scale = value["scale"];
 	this->wireframe = value.value("wireframe", false);
 	this->depthtest = value.value("depthtest", true);
+
+	try {
+		this->rt0Settings.Deserialize(value.at("rt0-settings"));
+	} catch(nlohmann::detail::out_of_range const & ex) {
+
+	}
 }

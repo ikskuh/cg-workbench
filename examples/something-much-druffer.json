@@ -112,12 +112,52 @@
         },
         {
             "from": [
+                21,
+                0
+            ],
+            "to": [
+                14,
+                5
+            ]
+        },
+        {
+            "from": [
+                23,
+                0
+            ],
+            "to": [
+                14,
+                6
+            ]
+        },
+        {
+            "from": [
                 14,
                 0
             ],
             "to": [
                 16,
                 1
+            ]
+        },
+        {
+            "from": [
+                24,
+                0
+            ],
+            "to": [
+                23,
+                0
+            ]
+        },
+        {
+            "from": [
+                16,
+                4
+            ],
+            "to": [
+                24,
+                0
             ]
         }
     ],
@@ -149,12 +189,19 @@
         },
         {
             "depthtest": true,
+            "rt0-settings": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 33071,
+                "wrap-s": 33071,
+                "wrap-t": 33071
+            },
             "scale": 8,
             "type": "renderer",
             "window-id": 2,
             "window-pos": [
-                1408.0,
-                207.0
+                1367.0,
+                41.0
             ],
             "window-size": [
                 272.0,
@@ -164,7 +211,7 @@
             "wireframe": false
         },
         {
-            "current": 4741.7119140625,
+            "current": 365.302825927734,
             "speed": 1.0,
             "type": "timer",
             "window-id": 3,
@@ -211,8 +258,13 @@
         },
         {
             "file": "/home/felix/projects/cg-workbench/examples/plume.png",
-            "mag-filt": 9729,
-            "min-filt": 9987,
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9987,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
             "type": "image",
             "window-id": 9,
             "window-pos": [
@@ -223,10 +275,7 @@
                 297.0,
                 425.0
             ],
-            "window-title": "Plume",
-            "wrap-r": 10497,
-            "wrap-s": 10497,
-            "wrap-t": 10497
+            "window-title": "Plume"
         },
         {
             "type": "uniform-float",
@@ -263,15 +312,15 @@
                     "type": 35633
                 },
                 {
-                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform float iTime;\n\nuniform sampler2D blume;\nuniform sampler2D background;\nuniform sampler2D cloud;\n\nvoid mkcl(vec2 offset)\n{\n\tvec2 xy = clamp(\n\t\t(uv - offset),\n\t\tvec2(0.01),\n\t\tvec2(0.99));\n\tvec4 c = texture(cloud, xy);\n\t\n\tcolor = mix(color, vec4(1,1,1,1), 0.8 * length(c.rgb));\n\t\n}\n\nvoid spawn(vec2 pos, float scale)\n{\n\tvec2 xy = clamp(\n\t\t(uv - pos) / scale,\n\t\tvec2(0.01),\n\t\tvec2(0.99));\n\n\tvec4 c = texture(blume, xy);\n\n\tcolor = mix(color, c, c.a);\n}\n\nvec2 wave(vec2 ip)\n{\n\treturn ip + vec2(0, 0.01 * sin(2 * iTime + 17 * ip.x));\n}\n\nvoid main() {\n\t\n\tcolor = texture(background, uv);\n\n\tmkcl(vec2(mod(0.2 * iTime, 8) - 4,0));\n\tmkcl(vec2(mod(0.1 * iTime, 9) - 3,-0.1));\n\tmkcl(vec2(mod(0.15 * iTime, 6) - 7,0.15));\n\n\tspawn(wave(vec2(-0.1,0.55)), 0.5);\n\tspawn(wave(vec2(0.45,0.53)), 0.5);\n\tspawn(wave(vec2(0.17,0.57)), 0.5);\n\n\tspawn(vec2(0,0), 1.0);\n}\n",
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform float iTime;\n\nuniform sampler2D blume;\nuniform sampler2D background;\nuniform sampler2D cloud;\n\nuniform sampler2D beeee;\n\nuniform vec2 iMousePos;\n\nvoid mkcl(vec2 offset)\n{\n\tvec2 xy = (uv - offset);\n\tvec4 c = texture(cloud, xy);\n\tcolor = mix(color, vec4(1,1,1,1), 0.8 * length(c.rgb));\n\t\n}\n\nvoid spawn(vec2 pos, float scale)\n{\n\tvec2 xy = (uv - pos) / scale;\n\tvec4 c = texture(blume, xy);\n\tcolor = mix(color, c, c.a);\n}\n\nvec2 wave(vec2 ip)\n{\n\treturn ip + vec2(0, 0.01 * sin(2 * iTime + 17 * ip.x));\n}\n\nvoid main() {\n\t\n\tcolor = texture(background, uv);\n\n\tmkcl(vec2(mod(0.2 * iTime, 8) - 4,0));\n\tmkcl(vec2(mod(0.1 * iTime, 9) - 3,-0.1));\n\tmkcl(vec2(mod(0.15 * iTime, 6) - 7,0.15));\n\n\tspawn(wave(vec2(-0.1,0.55)), 0.5);\n\tspawn(wave(vec2(0.45,0.53)), 0.5);\n\tspawn(wave(vec2(0.17,0.57)), 0.5);\n\n\tspawn(vec2(0,0), 1.0);\n\n\tvec2 xy = (uv - iMousePos) * 4.0 + vec2(0.5);\n    vec4 b = texture(beeee, xy);\n    color = mix(color, b, b.a);\n}\n",
                     "type": 35632
                 }
             ],
             "type": "shader",
             "window-id": 14,
             "window-pos": [
-                2189.0,
-                132.0
+                2196.0,
+                144.0
             ],
             "window-size": [
                 551.0,
@@ -281,6 +330,13 @@
         },
         {
             "depthtest": true,
+            "rt0-settings": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
             "scale": 10,
             "type": "renderer",
             "window-id": 16,
@@ -296,7 +352,7 @@
             "wireframe": false
         },
         {
-            "current": 2787.74755859375,
+            "current": 4089.25048828125,
             "speed": 1.0,
             "type": "timer",
             "window-id": 17,
@@ -312,27 +368,34 @@
         },
         {
             "file": "/home/felix/projects/cg-workbench/examples/clouds.png",
-            "mag-filt": 9729,
-            "min-filt": 9987,
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9987,
+                "wrap-r": 33071,
+                "wrap-s": 33071,
+                "wrap-t": 33071
+            },
             "type": "image",
             "window-id": 18,
             "window-pos": [
-                1735.0,
-                717.0
+                1380.0,
+                563.0
             ],
             "window-size": [
                 297.0,
                 425.0
             ],
-            "window-title": "Wolke 7",
-            "wrap-r": 10497,
-            "wrap-s": 10497,
-            "wrap-t": 10497
+            "window-title": "Wolke 7"
         },
         {
             "file": "/home/felix/projects/cg-workbench/examples/sky.png",
-            "mag-filt": 9729,
-            "min-filt": 9987,
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9987,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
             "type": "image",
             "window-id": 20,
             "window-pos": [
@@ -343,10 +406,60 @@
                 297.0,
                 425.0
             ],
-            "window-title": "Himmel",
-            "wrap-r": 10497,
-            "wrap-s": 10497,
-            "wrap-t": 10497
+            "window-title": "Himmel"
+        },
+        {
+            "file": "/home/felix/projects/cg-workbench/examples/beeeeee.png",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9987,
+                "wrap-r": 33071,
+                "wrap-s": 33071,
+                "wrap-t": 33071
+            },
+            "type": "image",
+            "window-id": 21,
+            "window-pos": [
+                1711.0,
+                739.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "window-title": "Image"
+        },
+        {
+            "length": 1.0,
+            "smooth": false,
+            "type": "buffer-vec2",
+            "useTime": true,
+            "window-id": 23,
+            "window-pos": [
+                2290.0,
+                977.0
+            ],
+            "window-size": [
+                276.0,
+                138.0
+            ],
+            "window-title": "Buffer"
+        },
+        {
+            "length": 0.100000001490116,
+            "smooth": true,
+            "type": "buffer-vec2",
+            "useTime": true,
+            "window-id": 24,
+            "window-pos": [
+                2512.0,
+                820.0
+            ],
+            "window-size": [
+                276.0,
+                138.0
+            ],
+            "window-title": "Buffer"
         }
     ]
 }

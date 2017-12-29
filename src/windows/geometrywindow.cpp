@@ -218,37 +218,39 @@ void GeometryWindow::LoadObj(std::string const & fileName)
 
 void GeometryWindow::LoadQuad()
 {
+#define A 0
+#define B 1
 	this->currentFile = "*quad";
 	this->vertices = {
 		Vertex {
 			position: { -1.0f, -1.0f, 0.0f },
 			normal: { 0,0,1 },
-			uv: { 0,0 }
+			uv: { 0,A }
 		},
 		Vertex {
 			position: {1.0f, -1.0f, 0.0f},
 			normal: {0,0,1},
-			uv: {1,0}
+			uv: {1,A}
 		},
 		Vertex {
 			position: {-1.0f,  1.0f, 0.0f},
 			normal: {0,0,1},
-			uv: {0,1}
+			uv: {0,B}
 		},
 		Vertex {
 			position: {1.0f,  1.0f, 0.0f},
 			normal: {0,0,1},
-			uv: {1,1}
+			uv: {1,B}
 		},
 		Vertex {
 			position: {1.0f, -1.0f, 0.0f},
 			normal: {0,0,1},
-			uv: {1,0}
+			uv: {1,A}
 		},
 		Vertex {
 			position: {-1.0f,  1.0f, 0.0f},
 			normal: {0,0,1},
-			uv: {0,1}
+			uv: {0,B}
 		},
 	};
 	this->Reload();

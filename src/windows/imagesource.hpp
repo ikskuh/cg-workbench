@@ -1,14 +1,15 @@
 #pragma once
 
 #include "../window.hpp"
+#include "../textureeditor.hpp"
 
 class ImageSource :
 	public Window
 {
 private:
 	GLuint img;
-	GLenum minFilter, magFilter;
-	GLenum wrapR, wrapS, wrapT;
+
+	TextureEditor imgSettings;
 
 	std::string currentFile;
 

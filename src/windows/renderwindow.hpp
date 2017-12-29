@@ -2,6 +2,7 @@
 #define RENDERWINDOW_HPP
 
 #include "../window.hpp"
+#include "../textureeditor.hpp"
 
 class RenderWindow :
 	public Window
@@ -23,6 +24,7 @@ private:
 	float mousePressed;
 	glm::vec2 mousePos, mousePosNormalized;
 
+	TextureEditor rt0Settings;
 
 	static void SizeConstraint(ImGuiSizeConstraintCallbackData * data);
 protected:
