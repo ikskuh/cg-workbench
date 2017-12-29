@@ -92,7 +92,7 @@
         },
         {
             "from": [
-                15,
+                20,
                 0
             ],
             "to": [
@@ -144,7 +144,8 @@
             "window-size": [
                 853.0,
                 675.0
-            ]
+            ],
+            "window-title": "Wub Wub"
         },
         {
             "depthtest": true,
@@ -152,17 +153,18 @@
             "type": "renderer",
             "window-id": 2,
             "window-pos": [
-                1461.0,
-                303.0
+                1408.0,
+                207.0
             ],
             "window-size": [
                 272.0,
                 310.0
             ],
+            "window-title": "Render Window",
             "wireframe": false
         },
         {
-            "current": 3084.58618164062,
+            "current": 4741.7119140625,
             "speed": 1.0,
             "type": "timer",
             "window-id": 3,
@@ -173,36 +175,39 @@
             "window-size": [
                 262.0,
                 94.0
-            ]
+            ],
+            "window-title": "Timer"
         },
         {
             "type": "uniform-vec2",
             "value": [
-                0.290000021457672,
-                -0.330000013113022
+                0.320000022649765,
+                -0.320000022649765
             ],
             "window-id": 7,
             "window-pos": [
-                45.0,
-                260.0
+                42.0,
+                267.0
             ],
             "window-size": [
                 262.0,
                 54.0
-            ]
+            ],
+            "window-title": "Wub-Position"
         },
         {
             "type": "uniform-float",
             "value": 0.660000026226044,
             "window-id": 8,
             "window-pos": [
-                59.0,
-                363.0
+                35.0,
+                377.0
             ],
             "window-size": [
                 262.0,
                 54.0
-            ]
+            ],
+            "window-title": "Wub-Radius"
         },
         {
             "file": "/home/felix/projects/cg-workbench/examples/plume.png",
@@ -218,53 +223,38 @@
                 297.0,
                 425.0
             ],
-            "wrap-r": 10497,
-            "wrap-s": 10497,
-            "wrap-t": 10497
-        },
-        {
-            "file": "/home/felix/projects/cg-workbench/examples/colors.png",
-            "mag-filt": 9729,
-            "min-filt": 9987,
-            "type": "image",
-            "window-id": 10,
-            "window-pos": [
-                546.0,
-                959.0
-            ],
-            "window-size": [
-                297.0,
-                169.0
-            ],
+            "window-title": "Plume",
             "wrap-r": 10497,
             "wrap-s": 10497,
             "wrap-t": 10497
         },
         {
             "type": "uniform-float",
-            "value": 14.9600009918213,
+            "value": 14.0,
             "window-id": 12,
             "window-pos": [
-                45.0,
+                54.0,
                 536.0
             ],
             "window-size": [
                 262.0,
                 54.0
-            ]
+            ],
+            "window-title": "Boom-Factor"
         },
         {
             "type": "uniform-float",
-            "value": 18.1800003051758,
+            "value": 18.6600017547607,
             "window-id": 13,
             "window-pos": [
-                46.0,
-                459.0
+                49.0,
+                465.0
             ],
             "window-size": [
                 262.0,
                 54.0
-            ]
+            ],
+            "window-title": "BPM"
         },
         {
             "items": [
@@ -280,31 +270,14 @@
             "type": "shader",
             "window-id": 14,
             "window-pos": [
-                2733.0,
-                125.0
+                2189.0,
+                132.0
             ],
             "window-size": [
                 551.0,
                 641.0
-            ]
-        },
-        {
-            "file": "/home/felix/projects/cg-workbench/examples/sky.png",
-            "mag-filt": 9729,
-            "min-filt": 9987,
-            "type": "image",
-            "window-id": 15,
-            "window-pos": [
-                1779.0,
-                342.0
             ],
-            "window-size": [
-                297.0,
-                425.0
-            ],
-            "wrap-r": 10497,
-            "wrap-s": 10497,
-            "wrap-t": 10497
+            "window-title": "Compose"
         },
         {
             "depthtest": true,
@@ -312,28 +285,30 @@
             "type": "renderer",
             "window-id": 16,
             "window-pos": [
-                3387.0,
-                130.0
+                2918.0,
+                67.0
             ],
             "window-size": [
                 1040.0,
                 1078.0
             ],
+            "window-title": "Finish",
             "wireframe": false
         },
         {
-            "current": 1137.29089355469,
+            "current": 2787.74755859375,
             "speed": 1.0,
             "type": "timer",
             "window-id": 17,
             "window-pos": [
-                2341.0,
-                88.0
+                1773.0,
+                48.0
             ],
             "window-size": [
                 262.0,
                 94.0
-            ]
+            ],
+            "window-title": "Timer"
         },
         {
             "file": "/home/felix/projects/cg-workbench/examples/clouds.png",
@@ -342,13 +317,33 @@
             "type": "image",
             "window-id": 18,
             "window-pos": [
-                2135.0,
-                537.0
+                1735.0,
+                717.0
             ],
             "window-size": [
                 297.0,
                 425.0
             ],
+            "window-title": "Wolke 7",
+            "wrap-r": 10497,
+            "wrap-s": 10497,
+            "wrap-t": 10497
+        },
+        {
+            "file": "/home/felix/projects/cg-workbench/examples/sky.png",
+            "mag-filt": 9729,
+            "min-filt": 9987,
+            "type": "image",
+            "window-id": 20,
+            "window-pos": [
+                1748.0,
+                268.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "window-title": "Himmel",
             "wrap-r": 10497,
             "wrap-s": 10497,
             "wrap-t": 10497

@@ -28,6 +28,8 @@ void APIENTRY GpuErrorLog::LogMessage(GLenum source,GLenum type,GLuint id,GLenum
 
 	if(entries.size() > 1000)
 		entries.pop_back();
+
+	fprintf(stderr, "[GL] %s\n", log.message.c_str());
 }
 
 GpuErrorLog::GpuErrorLog() :

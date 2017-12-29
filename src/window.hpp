@@ -27,10 +27,8 @@ private:
 	std::vector<std::unique_ptr<Source>> sources;
 	std::vector<std::unique_ptr<Sink>> sinks;
 
+	char titleEditBuffer[256];
 protected:
-	char const * MakeTitle(char const * text);
-	static char const * MakeTitle(char const * text, void const * ptr);
-
 	void AddSource(Source * source);
 	void AddSink(Sink * sink);
 

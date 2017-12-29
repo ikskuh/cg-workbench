@@ -377,6 +377,7 @@ void save(std::string const & fileName)
 			win->GetSize().x,
 			win->GetSize().y
 		};
+		window["window-title"] = win->GetTitle();
 
 		windows += window;
 
@@ -468,6 +469,7 @@ void load(std::string const & fileName)
 		win->pos  = ImVec2(pos[0], pos[1]);
 		win->size = ImVec2(size[0], size[1]);
 		win->id =   window["window-id"];
+		win->title = window.value("window-title", win->title);
 
 		win->Deserialize(window);
 

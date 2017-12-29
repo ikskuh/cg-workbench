@@ -69,6 +69,9 @@ void Window::UpdateNodes()
 	static Source * currentSource = nullptr;
 	static Sink * currentSink = nullptr;
 
+	Sink * hoveredSink = nullptr;
+	Source * hoveredSource = nullptr;
+
 	int offset;
 	int margin = 4;
 	int size = 24;
@@ -120,26 +123,9 @@ void Window::UpdateNodes()
 				ImGui::PopStyleColor();
 			}
 			if(ImGui::IsItemHovered())
-				ImGui::SetTooltip("%s : %s", sink->GetName().c_str(), DisplayName(sink->GetType()));
-
-			if(sink->GetSource(false) != nullptr)
 			{
-				auto * src = sink->GetSource();
-				auto * srcwin = src->GetWindow();
-				auto srcpos = srcwin->GetPosition();
-				auto srcsize = srcwin->GetSize();
-				int index = src->GetWindowIndex();
-
-				ImVec2 from(srcpos.x + srcsize.x + margin + size, srcpos.y + margin + (size + margin) * index + size / 2);
-				ImVec2 to(pos.x, pos.y + size / 2);
-
-				draw->AddBezierCurve(
-					from,
-				    ImVec2(from.x + 64, from.y),
-					ImVec2(to.x - 64, to.y),
-					to,
-					ImColor(0.7f,0.7f,0.7f,1.0f),
-					2.0f);
+				hoveredSink = sink.get();
+				ImGui::SetTooltip("%s : %s", sink->GetName().c_str(), DisplayName(sink->GetType()));
 			}
 		}
 	}
@@ -157,6 +143,7 @@ void Window::UpdateNodes()
 			ImGui::PopID();
 			if(ImGui::IsItemHovered())
 			{
+				hoveredSource = source.get();
 				ImGui::BeginTooltip();
 
 				ImGui::Text("%s : %s", source->GetName().c_str(), DisplayName(source->GetType()));
@@ -172,7 +159,7 @@ void Window::UpdateNodes()
 				draw->AddLine(
 					ImGui::CalcItemRectClosestPoint(io.MousePos, true, -2.0f),
 					io.MousePos,
-					ImColor(1.0f, 0.0f, 0.0f, 1.0f),
+					ImColor(0.7f,0.7f,0.7f,1.0f),
 					4.0f);
 				draw->PopClipRect();
 			}
@@ -185,6 +172,36 @@ void Window::UpdateNodes()
 				currentSource = nullptr;
 			}
 			offset += size + margin;
+		}
+	}
+	for(auto const & win : windows)
+	{
+		for(auto const & sink : win->sinks)
+		{
+			if(sink->GetSource(false) != nullptr)
+			{
+				ImVec2 pos(
+					win->pos.x - size - margin,
+					win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
+
+				auto * src = sink->GetSource();
+				auto * srcwin = src->GetWindow();
+				auto srcpos = srcwin->GetPosition();
+				auto srcsize = srcwin->GetSize();
+				int index = src->GetWindowIndex();
+
+				ImVec2 from(srcpos.x + srcsize.x + margin + size, srcpos.y + margin + (size + margin) * index + size / 2);
+				ImVec2 to(pos.x, pos.y + size / 2);
+
+				bool selected = (src == hoveredSource || sink.get() == hoveredSink);
+				draw->AddBezierCurve(
+					from,
+				    ImVec2(from.x + 64, from.y),
+					ImVec2(to.x - 64, to.y),
+					to,
+					selected ? ImColor(1.0f, 0.4f, 0.4f, 1.0f) : ImColor(0.7f,0.7f,0.7f,1.0f),
+					selected ? 4.0f : 2.0f);
+			}
 		}
 	}
 	ImGui::PopStyleVar();
@@ -208,7 +225,7 @@ Window::Window(std::string const & title, ImGuiWindowFlags flags) :
     flags(flags),
     wantsResize(false)
 {
-
+	strcpy(this->titleEditBuffer, this->title.c_str());
 }
 
 Window::~Window()
@@ -241,14 +258,34 @@ void Window::Update()
 		this->wantsResize = false;
 	}
 
-	if(ImGui::Begin(MakeTitle(this->title.c_str()), &this->isOpen, this->flags))
+	ImGui::PushID(this);
+
+	char namebuf[512];
+	snprintf(namebuf, 512, "%s##%p", this->title.c_str(), this);
+
+	if(ImGui::Begin(namebuf, &this->isOpen, this->flags))
 	{
 		this->OnUpdate();
+
+		if(ImGui::BeginPopupContextWindow())
+		{
+			ImGui::InputText("Node Name", this->titleEditBuffer, 256, ImGuiInputTextFlags_AutoSelectAll);
+
+			if(ImGui::Button("Rename"))
+			{
+				this->title = std::string(this->titleEditBuffer);
+				this->wantsResize = true;
+			}
+
+
+			ImGui::EndPopup();
+		}
 
 		this->pos = ImGui::GetWindowPos();
 		this->size = ImGui::GetWindowSize();
 	}
 	ImGui::End();
+	ImGui::PopID();
 }
 
 void Window::OnSetup()
@@ -270,19 +307,6 @@ void Window::Close()
 {
 	this->isOpen = false;
 }
-
-char const * Window::MakeTitle(char const * text)
-{
-	return MakeTitle(text, this);
-}
-
-char const * Window::MakeTitle(char const * text, void const * ptr)
-{
-	static char buffer[256];
-	snprintf(buffer, 256, "%s##%p", text, ptr);
-	return buffer;
-}
-
 
 void Window::AddSource(Source * source)
 {
