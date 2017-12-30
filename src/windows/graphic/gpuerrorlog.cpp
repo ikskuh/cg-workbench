@@ -1,5 +1,6 @@
 #include "gpuerrorlog.hpp"
 #include <mutex>
+#include <signal.h>
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(GpuErrorLog, Menu::Tools, "gpu-error-log", "OpenGL Log");
@@ -15,6 +16,8 @@ struct logentry
 
 static std::mutex mutex;
 static std::vector<logentry> entries;
+
+static bool breakOnNextError = true;
 
 void APIENTRY GpuErrorLog::LogMessage(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam)
 {
@@ -33,6 +36,16 @@ void APIENTRY GpuErrorLog::LogMessage(GLenum source,GLenum type,GLuint id,GLenum
 		entries.pop_back();
 
 	fprintf(stderr, "[GL] %s\n", log.message.c_str());
+
+	if(breakOnNextError && severity == GL_DEBUG_SEVERITY_HIGH)
+	{
+#ifdef _MSC_VER
+#define DEBUG_BREAK __debugbreak()
+#else
+		raise(SIGTRAP);
+#endif
+	}
+	breakOnNextError = false;
 }
 
 GpuErrorLog::GpuErrorLog() :

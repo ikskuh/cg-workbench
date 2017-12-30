@@ -33,14 +33,29 @@ void ImageBuffer::OnRender()
 		if(src != 0)
 		{
 			int w, h;
+			GLenum type;
 			glGetTextureLevelParameteriv(src, 0, GL_TEXTURE_WIDTH, &w);
 			glGetTextureLevelParameteriv(src, 0, GL_TEXTURE_HEIGHT, &h);
+			glGetTextureLevelParameteriv(src, 0, GL_TEXTURE_RED_TYPE, reinterpret_cast<GLint*>(&type));
+
+			int idx = 0;
+			switch(type)
+			{
+				case GL_UNSIGNED_NORMALIZED: idx = 0; break;
+				case GL_FLOAT:               idx = 1; break;
+				case GL_INT:                 idx = 2; break;
+				case GL_UNSIGNED_INT:        idx = 3; break;
+				default:                     idx = 0; break;
+			}
+			static GLenum formats[] = {
+			    GL_RGBA8, GL_RGBA32F, GL_RGBA8I, GL_RGBA8UI
+			};
 
 			glCreateTextures(GL_TEXTURE_2D, 1, &this->img);
 			glTextureStorage2D(
 				this->img,
 				1,
-				GL_RGBA8,
+				formats[idx],
 				w, h);
 
 			glNamedFramebufferTexture(
@@ -79,7 +94,7 @@ void ImageBuffer::OnRender()
 
 void ImageBuffer::OnUpdate()
 {
-	ImGui::Text("Buffers a texture\nfor one frame.");
+	ImGui::Text("Buffers a texturefor one frame.");
 
 	if(this->img != 0)
 		this->imgEditor.Show();

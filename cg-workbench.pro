@@ -57,7 +57,8 @@ SOURCES += \
     src/windows/numeric/graphwindow.cpp \
     src/windows/numeric/vectoradapter.cpp \
     src/windows/numeric/matrixtransforms.cpp \
-    src/windowregistry.cpp
+    src/windowregistry.cpp \
+    src/shaderprogram.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -95,4 +96,5 @@ HEADERS += \
     src/windows/numeric/graphwindow.hpp \
     src/windows/numeric/vectoradapter.hpp \
     src/windows/numeric/matrixtransforms.hpp \
-    src/windowregistry.hpp
+    src/windowregistry.hpp \
+    src/shaderprogram.hpp

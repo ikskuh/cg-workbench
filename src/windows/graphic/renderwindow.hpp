@@ -9,9 +9,13 @@ class RenderWindow :
 {
 private:
 	GLuint fb;
-	GLuint tex;
+	GLuint tex0;
+	GLuint tex1;
+	GLuint tex2;
+	GLuint tex3;
 	ImVec2 texSize;
 	GLuint depthbuf;
+	int editsize[2];
 
 	int scale;
 	bool wireframe;
@@ -25,8 +29,19 @@ private:
 	glm::vec2 mousePos, mousePosNormalized;
 
 	TextureEditor rt0Settings;
+	TextureEditor rt1Settings;
+	TextureEditor rt2Settings;
+	TextureEditor rt3Settings;
+
+	int shownTexture;
 
 	static void SizeConstraint(ImGuiSizeConstraintCallbackData * data);
+
+	void Export(GLuint tex);
+
+	void Regen(GLuint & tex, GLenum format);
+
+	void FmtEdit(GLuint & tex);
 protected:
 	void OnRender() override;
 	void OnUpdate() override;

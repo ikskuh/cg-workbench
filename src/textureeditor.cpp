@@ -47,7 +47,10 @@ static int GetCurrent(GLenum const * items, int cnt, GLenum current)
 }
 
 
-TextureEditor::TextureEditor()
+TextureEditor::TextureEditor() :
+    img(0),
+    MinFilter(GL_LINEAR), MagFilter(GL_LINEAR),
+    WrapR(GL_REPEAT), WrapS(GL_REPEAT), WrapT(GL_REPEAT)
 {
 
 }

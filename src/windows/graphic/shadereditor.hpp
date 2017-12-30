@@ -48,17 +48,20 @@ struct Uniform
 class ShaderEditor :
 	public Window
 {
+	friend class ShaderProgram;
 private:
 	GLuint program;
+	ShaderProgram pgm;
 	std::vector<std::unique_ptr<Shader>> shaders;
 	std::vector<Uniform> uniforms;
 
 	std::string shaderLog;
 
 	void Compile();
+
+	void BindUniforms();
 protected:
 	void OnUpdate() override;
-	void OnRender() override;
 public:
 	ShaderEditor();
 	virtual ~ShaderEditor();

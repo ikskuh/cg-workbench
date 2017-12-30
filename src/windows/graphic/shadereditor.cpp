@@ -105,10 +105,11 @@ void Shader::Compile()
 ShaderEditor::ShaderEditor() :
     Window("Shader Editor"),
 	program(glCreateProgram()),
+    pgm(this),
     shaders(),
     shaderLog()
 {
-	this->AddSource(new Source(CgDataType::Shader, "Shader", &this->program));
+	this->AddSource(new Source(CgDataType::Shader, "Shader", &this->pgm));
 
 	this->shaders.emplace_back(new Shader(GL_VERTEX_SHADER));
 	this->shaders.emplace_back(new Shader(GL_FRAGMENT_SHADER));
@@ -121,7 +122,7 @@ ShaderEditor::~ShaderEditor()
 	glDeleteProgram(this->program);
 }
 
-void ShaderEditor::OnRender()
+void ShaderEditor::BindUniforms()
 {
 	int index = 0;
 	for(Uniform const & u : this->uniforms)
