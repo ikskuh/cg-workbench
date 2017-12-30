@@ -73,4 +73,8 @@ namespace Menu
 	{
 		WindowCategory Instance(&Menu::Instance, "Tools");
 	}
+	namespace Noise
+	{
+		WindowCategory Instance(&Menu::Instance, "Noise");
+	}
 }

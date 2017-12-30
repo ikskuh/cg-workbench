@@ -60,7 +60,8 @@ SOURCES += \
     src/windows/numeric/matrixtransforms.cpp \
     src/windowregistry.cpp \
     src/shaderprogram.cpp \
-    src/fileio.cpp
+    src/fileio.cpp \
+    src/windows/generic/linearnoisenode.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -101,4 +102,5 @@ HEADERS += \
     src/windows/numeric/matrixtransforms.hpp \
     src/windowregistry.hpp \
     src/shaderprogram.hpp \
-    src/fileio.hpp
+    src/fileio.hpp \
+    src/windows/generic/linearnoisenode.hpp

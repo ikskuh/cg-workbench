@@ -83,6 +83,10 @@ namespace Menu
 	{
 		extern WindowCategory Instance;
 	}
+	namespace Noise
+	{
+		extern WindowCategory Instance;
+	}
 }
 
 #define REGISTER_WINDOW_CLASS(_Class, _Category, _ID, _DisplayName) \

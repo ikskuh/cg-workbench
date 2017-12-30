@@ -15,8 +15,6 @@ This project would be much harder without those great libraries:
 - [github.com/cxong/tinydir](https://github.com/cxong/tinydir)
 
 ## Ideas / Missing Nodes
-- Renderer Node
-	- Setable Rendertarget Size
 - Geometry Node
 	- Primitives
 		- Quad

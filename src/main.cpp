@@ -36,6 +36,9 @@
 
 #include "windowregistry.hpp"
 
+#define STB_PERLIN_IMPLEMENTATION
+#include <stb_perlin.h>
+
 std::string currentFileName;
 
 void save(std::string const & fileName);
@@ -161,6 +164,8 @@ static Window * createMenu()
 
 extern ImVec2 screen_pan;
 
+float deltatime;
+
 int main(int argc, char ** argv)
 {
     // Setup SDL
@@ -221,6 +226,9 @@ int main(int argc, char ** argv)
     // Main loop
     bool done = false;
 	ImVec2 spawn;
+	Uint32 currentTime, lastTime;
+	currentTime = SDL_GetTicks();
+	lastTime = currentTime;
     while (!done)
     {
         SDL_Event event;
@@ -372,6 +380,12 @@ int main(int argc, char ** argv)
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui::Render();
         SDL_GL_SwapWindow(window);
+
+		currentTime = SDL_GetTicks();
+
+		deltatime = (currentTime - lastTime) / 1000.0;
+
+		lastTime = currentTime;
     }
 
 	Window::DestroyAll();
