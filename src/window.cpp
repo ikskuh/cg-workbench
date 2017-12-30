@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <memory>
 #include <cstdio>
+#include <windowregistry.hpp>
 
 #include "resources.hpp"
 #include "fileio.hpp"
@@ -311,6 +312,30 @@ void Window::Update()
 				}
 			}
 
+			ImGui::Separator();
+
+			if(ImGui::MenuItem("Duplicate"))
+			{
+				auto obj = this->Serialize();
+				obj["window-type"] = this->GetTypeID();
+				obj["window-title"] = this->GetTitle();
+
+				auto * win = Window::CreateFromJSON(obj);
+
+				if(win)
+				{
+					win->pos = this->dupSpawnPos;
+					win->size = this->size;
+					win->wantsResize = true;
+
+					Window::Register(win);
+				}
+			}
+			else
+			{
+				this->dupSpawnPos = ImGui::GetIO().MousePos;
+			}
+
 			ImGui::EndPopup();
 		}
 
@@ -438,4 +463,28 @@ Sink const * Window::GetSink(std::string name) const
 		if(src->GetName() == name)
 			return src.get();
 	return nullptr;
+}
+
+Window * Window::CreateFromJSON(nlohmann::json const & window)
+{
+	if(window.is_null())
+		return nullptr;
+
+	Window * win = nullptr;
+	nlohmann::json type = window["window-type"];
+
+	for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
+	{
+		if(type != cl->GetID())
+			continue;
+		win = cl->CreateInstance();
+		break;
+	}
+	if(win == nullptr)
+		return nullptr;
+
+	win->Deserialize(window);
+	win->title = window.value("window-title", win->title);
+
+	return win;
 }

@@ -16,7 +16,6 @@ class Window
 {
 	friend void load(std::string const & fileName);
 	friend void save(std::string const & fileName);
-	friend Window * loadTemplate(std::string const & fileName);
 	friend int main(int argc, char ** argv);
 private:
 	int id;
@@ -31,6 +30,8 @@ private:
 	std::vector<std::unique_ptr<Sink>> sinks;
 
 	char titleEditBuffer[256];
+
+	ImVec2 dupSpawnPos;
 protected:
 	void AddSource(Source * source);
 	void AddSink(Sink * sink);
@@ -95,6 +96,8 @@ public:
 	static void RenderAll();
 
 	static void DestroyAll();
+
+	static Window * CreateFromJSON(nlohmann::json const & window);
 
 public:
 	static std::vector<std::unique_ptr<Window>>::iterator Begin();

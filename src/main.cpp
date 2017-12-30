@@ -78,26 +78,7 @@ Window * loadTemplate(std::string const & fileName)
 	std::ifstream stream(fileName);
 	stream >> window;
 
-	if(window.is_null())
-		return nullptr;
-
-	Window * win = nullptr;
-	nlohmann::json type = window["window-type"];
-
-	for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
-	{
-		if(type != cl->GetID())
-			continue;
-		win = cl->CreateInstance();
-		break;
-	}
-	if(win == nullptr)
-		return nullptr;
-
-	win->Deserialize(window);
-	win->title = window.value("window-title", win->title);
-
-	return win;
+	return Window::CreateFromJSON(window);
 }
 
 static Window * templateMenu(std::string root)
