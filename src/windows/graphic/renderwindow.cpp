@@ -1,10 +1,11 @@
 #include "renderwindow.hpp"
-#include <nfd.h>
 #include <fstream>
 #include <unistd.h>
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(RenderWindow, Menu, "renderer", "Renderer");
+
+#include "fileio.hpp"
 
 static int gentex(ImVec2 size, GLenum format)
 {
@@ -409,37 +410,26 @@ void RenderWindow::Resize(int w, int h)
 
 void RenderWindow::Export(GLuint tex)
 {
-	char cwd[256];
-	nfdchar_t *outPath = NULL;
-	nfdresult_t result = NFD_SaveDialog("ppm", getcwd(cwd, sizeof(cwd)), &outPath );
-	if ( result == NFD_OKAY )
-	{
-		std::string fileName(outPath);
-		free(outPath);
+	auto path = FileIO::SaveDialog("ppm");
+	if(path.empty())
+		return;
 
-		int w = this->texSize.x;
-		int h = this->texSize.y;
+	int w = this->texSize.x;
+	int h = this->texSize.y;
 
-		std::vector<char> bits(w * h * 3);
-		glGetTextureImage(
-			tex,
-			0,
-			GL_RGB,
-			GL_UNSIGNED_BYTE,
-			bits.size(),
-			bits.data());
+	std::vector<char> bits(w * h * 3);
+	glGetTextureImage(
+		tex,
+		0,
+		GL_RGB,
+		GL_UNSIGNED_BYTE,
+		bits.size(),
+		bits.data());
 
-		std::ofstream stream(fileName);
-		stream << "P6 " << w << " " << h << " 255" << "\n";
-		stream.write(bits.data(), bits.size());
-		stream.flush();
-	}
-	else if ( result == NFD_CANCEL )
-		; // Silently ignore cancel
-	else
-	{
-		printf("Error: %s\n", NFD_GetError() );
-	}
+	std::ofstream stream(path);
+	stream << "P6 " << w << " " << h << " 255" << "\n";
+	stream.write(bits.data(), bits.size());
+	stream.flush();
 }
 
 void RenderWindow::FmtEdit(int idx)

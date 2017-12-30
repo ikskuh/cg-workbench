@@ -6,12 +6,12 @@
 #include <GL/gl3w.h>    // This example is using gl3w to access OpenGL functions (because it is small). You may use glew/glad/glLoadGen/etc. whatever already works for you.
 #include <SDL.h>
 #include "imgui_impl.h"
-#include <nfd.h>
 #include <unistd.h>
 #include <json.hpp>
 #include <fstream>
 
 #include "window.hpp"
+#include "fileio.hpp"
 
 #include "windows/graphic/shadereditor.hpp"
 #include "windows/graphic/renderwindow.hpp"
@@ -132,7 +132,6 @@ int main(int argc, char ** argv)
 
     // Main loop
     bool done = false;
-	static char cwd[256];
 	ImVec2 spawn;
     while (!done)
     {
@@ -200,20 +199,9 @@ int main(int argc, char ** argv)
 
 						if(ImGui::MenuItem("Open...", "CTRL+O"))
 						{
-							nfdchar_t *outPath = NULL;
-							nfdresult_t result = NFD_OpenDialog("json", getcwd(cwd, sizeof(cwd)), &outPath );
-							if ( result == NFD_OKAY )
-							{
-								currentFileName = std::string(outPath);
-								free(outPath);
-								load(currentFileName);
-							}
-							else if ( result == NFD_CANCEL )
-								; // Silently ignore cancel
-							else
-							{
-								printf("Error: %s\n", NFD_GetError() );
-							}
+							auto path = FileIO::OpenDialog("jgraph");
+							if(!path.empty())
+								load(currentFileName = path);
 						}
 						ImGui::Separator();
 
@@ -227,20 +215,9 @@ int main(int argc, char ** argv)
 						}
 						if(ImGui::MenuItem("Save As...", "CTRL+SHIFT+S") || requiresSaveAs)
 						{
-							nfdchar_t *outPath = NULL;
-							nfdresult_t result = NFD_SaveDialog("json", getcwd(cwd, sizeof(cwd)), &outPath );
-							if ( result == NFD_OKAY )
-							{
-								currentFileName = std::string(outPath);
-								free(outPath);
-								save(currentFileName);
-							}
-							else if ( result == NFD_CANCEL )
-								; // Silently ignore cancel
-							else
-							{
-								printf("Error: %s\n", NFD_GetError() );
-							}
+							auto path = FileIO::SaveDialog("jgraph");
+							if(!path.empty())
+								save(currentFileName = path);
 						}
 						ImGui::Separator();
 						if(ImGui::MenuItem("Exit", "ALT+F4"))

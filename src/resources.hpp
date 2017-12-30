@@ -16,6 +16,8 @@ namespace resources
 		extern GLuint genericSource;
 		extern GLuint matrix;
 		extern GLuint scalar;
-		extern GLuint vector;
+		extern GLuint vector2;
+		extern GLuint vector3;
+		extern GLuint vector4;
 	}
 }

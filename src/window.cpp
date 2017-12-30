@@ -51,9 +51,9 @@ static ImTextureID GetSocketIcon(CgDataType type, bool isSource)
 		case CgDataType::Shader: return (ImTextureID)uintptr_t(resources::icons::shader);
 		case CgDataType::Texture2D: return (ImTextureID)uintptr_t(resources::icons::image);
 		case CgDataType::UniformFloat: return (ImTextureID)uintptr_t(resources::icons::scalar);
-		case CgDataType::UniformVec2: return (ImTextureID)uintptr_t(resources::icons::vector);
-		case CgDataType::UniformVec3: return (ImTextureID)uintptr_t(resources::icons::vector);
-		case CgDataType::UniformVec4: return (ImTextureID)uintptr_t(resources::icons::vector);
+		case CgDataType::UniformVec2: return (ImTextureID)uintptr_t(resources::icons::vector2);
+		case CgDataType::UniformVec3: return (ImTextureID)uintptr_t(resources::icons::vector3);
+		case CgDataType::UniformVec4: return (ImTextureID)uintptr_t(resources::icons::vector4);
 		case CgDataType::UniformMat3: return (ImTextureID)uintptr_t(resources::icons::matrix);
 		case CgDataType::UniformMat4: return (ImTextureID)uintptr_t(resources::icons::matrix);
 		default:

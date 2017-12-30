@@ -1,10 +1,11 @@
 #include "imagesource.hpp"
-#include <nfd.h>
 #include <unistd.h>
 #include "imageloader.hpp"
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(ImageSource, Menu, "image", "Image");
+
+#include "fileio.hpp"
 
 ImageSource::ImageSource() :
     Window("Image", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar),
@@ -29,24 +30,11 @@ void ImageSource::OnUpdate()
 		{
 			if(ImGui::MenuItem("Load..."))
 			{
-				nfdchar_t *outPath = NULL;
-				nfdresult_t result = NFD_OpenDialog("png,jpeg,jpg,bmp", getcwd(cwd, sizeof(cwd)), &outPath );
-				if ( result == NFD_OKAY )
-				{
-					std::string fileName(outPath);
-					free(outPath);
-
-					GLuint i = load_texture(fileName);
-					if(i != 0) {
-						this->SetTexture(i);
-						this->currentFile = fileName;
-					}
-				}
-				else if ( result == NFD_CANCEL )
-					; // Silently ignore cancel
-				else
-				{
-					printf("Error: %s\n", NFD_GetError() );
+				auto path =FileIO::OpenDialog("png,jpeg,jpg,bmp");
+				GLuint i = load_texture(path);
+				if(i != 0) {
+					this->SetTexture(i);
+					this->currentFile = path;
 				}
 			}
 			ImGui::EndMenu();

@@ -15,7 +15,9 @@ namespace resources
 		ICON(genericSink, "power-socket.png");
 		ICON(genericSource, "power-plug.png");
 		ICON(scalar, "numeric.png");
-		ICON(vector, "numeric.png");
+		ICON(vector2, "vec2.png");
+		ICON(vector3, "vec3.png");
+		ICON(vector4, "vec4.png");
 		ICON(matrix, "matrix.png");
 	}
 
@@ -28,6 +30,8 @@ namespace resources
 		GLuint genericSource;
 		GLuint matrix;
 		GLuint scalar;
-		GLuint vector;
+		GLuint vector2;
+		GLuint vector3;
+		GLuint vector4;
 	}
 }

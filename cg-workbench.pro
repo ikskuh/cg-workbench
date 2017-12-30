@@ -58,7 +58,8 @@ SOURCES += \
     src/windows/numeric/vectoradapter.cpp \
     src/windows/numeric/matrixtransforms.cpp \
     src/windowregistry.cpp \
-    src/shaderprogram.cpp
+    src/shaderprogram.cpp \
+    src/fileio.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -97,4 +98,5 @@ HEADERS += \
     src/windows/numeric/vectoradapter.hpp \
     src/windows/numeric/matrixtransforms.hpp \
     src/windowregistry.hpp \
-    src/shaderprogram.hpp
+    src/shaderprogram.hpp \
+    src/fileio.hpp

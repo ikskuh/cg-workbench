@@ -1,11 +1,12 @@
 #include "geometrywindow.hpp"
 #include <stddef.h>
 #include <unistd.h>
-#include <nfd.h>
 #include <tiny_obj_loader.h>
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(GeometryWindow, Menu, "geometry", "Geometry");
+
+#include "fileio.hpp"
 
 GeometryWindow::GeometryWindow() :
     Window("Geometry"),
@@ -85,7 +86,6 @@ static void ta4(float * d, glm::vec3 v)
 
 void GeometryWindow::OnUpdate()
 {
-	char cwd[256];
 	if(ImGui::BeginMenuBar())
 	{
 		if(ImGui::BeginMenu("Geometry"))
@@ -97,21 +97,9 @@ void GeometryWindow::OnUpdate()
 			}
 			if(ImGui::MenuItem("Load OBJ..."))
 			{
-				nfdchar_t *outPath = NULL;
-				nfdresult_t result = NFD_OpenDialog("obj", getcwd(cwd, sizeof(cwd)), &outPath );
-				if ( result == NFD_OKAY )
-				{
-					std::string fileName(outPath);
-					free(outPath);
-
-					this->LoadObj(fileName);
-				}
-				else if ( result == NFD_CANCEL )
-					; // Silently ignore cancel
-				else
-				{
-					printf("Error: %s\n", NFD_GetError() );
-				}
+				auto path = FileIO::OpenDialog("obj");
+				if(!path.empty())
+					this->LoadObj(path);
 			}
 			ImGui::EndMenu();
 		}
