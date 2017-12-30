@@ -16,7 +16,7 @@ class Window
 {
 	friend void load(std::string const & fileName);
 	friend void save(std::string const & fileName);
-	friend Window * createMenu();
+	friend Window * loadTemplate(std::string const & fileName);
 	friend int main(int argc, char ** argv);
 private:
 	int id;

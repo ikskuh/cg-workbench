@@ -12,6 +12,7 @@ This project would be much harder without those great libraries:
 - [github.com/mlabbe/nativefiledialog](https://github.com/mlabbe/nativefiledialog)
 - [github.com/nothings/stb](https://github.com/nothings/stb)
 - [github.com/syoyo/tinyobjloader](https://github.com/syoyo/tinyobjloader)
+- [github.com/cxong/tinydir](https://github.com/cxong/tinydir)
 
 ## Ideas / Missing Nodes
 - Renderer Node

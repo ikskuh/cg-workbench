@@ -15,7 +15,8 @@ INCLUDEPATH += \
 	$$PWD/ext/imgui \
 	$$PWD/ext/json \
 	$$PWD/ext/nativefiledialog/src/include \
-	$$PWD/ext/tinyobjloader
+	$$PWD/ext/tinyobjloader \
+	$$PWD/ext/tinydir
 
 LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a $$system(pkg-config --libs gtk+-3.0)
 
@@ -67,6 +68,7 @@ HEADERS += \
 	ext/imgui/imgui.h \
 	ext/imgui/imgui_internal.h \
 	ext/json/json.hpp \
+	ext/tinydir/tinydir.h \
 	ext/nativefiledialog/src/include/nfd.h \
     src/window.hpp \
     ext/imgui/imconfig.h \

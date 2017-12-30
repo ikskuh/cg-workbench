@@ -10,6 +10,8 @@
 #include <json.hpp>
 #include <fstream>
 
+#include <tinydir.h>
+
 #include "window.hpp"
 #include "fileio.hpp"
 
@@ -66,7 +68,73 @@ static Window * ClassMenu(WindowCategory const * root)
 	return result;
 }
 
-Window * createMenu()
+Window * loadTemplate(std::string const & fileName)
+{
+	nlohmann::json window;
+
+	std::ifstream stream(fileName);
+	stream >> window;
+
+	if(window.is_null())
+		return nullptr;
+
+	Window * win = nullptr;
+	nlohmann::json type = window["window-type"];
+
+	for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
+	{
+		if(type != cl->GetID())
+			continue;
+		win = cl->CreateInstance();
+		break;
+	}
+	if(win == nullptr)
+		return nullptr;
+
+	win->Deserialize(window);
+	win->title = window.value("window-title", win->title);
+
+	return win;
+}
+
+static Window * templateMenu(std::string root)
+{
+	tinydir_dir dir;
+	Window * result = nullptr;
+
+	tinydir_open_sorted(&dir, root.c_str());
+
+	for (size_t i = 0; i < dir.n_files; i++)
+	{
+		tinydir_file file;
+		tinydir_readfile_n(&dir, &file, i);
+
+		if(strcmp(file.name, ".") == 0 || strcmp(file.name, "..") == 0)
+			continue;
+
+		if(file.is_dir)
+		{
+			if(ImGui::BeginMenu(file.name))
+			{
+				auto * res = templateMenu(root + "/" + file.name);
+				if(res != nullptr)
+					result = res;
+				ImGui::EndMenu();
+			}
+		}
+		else if(file.is_reg)
+		{
+			if(ImGui::MenuItem(file.name))
+				Window::Register(result = loadTemplate(file.path));
+		}
+	}
+
+	tinydir_close(&dir);
+
+	return result;
+}
+
+static Window * createMenu()
 {
 	Window * result = ClassMenu(&Menu::Instance);
 
@@ -76,30 +144,17 @@ Window * createMenu()
 	{
 		auto path = FileIO::OpenDialog("jnode");
 		if(!path.empty())
-		{
-			nlohmann::json window;
-
-			std::ifstream stream(path);
-			stream >> window;
-
-			Window * win = nullptr;
-			nlohmann::json type = window["window-type"];
-
-			for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
-			{
-				if(type != cl->GetID())
-					continue;
-				win = cl->CreateInstance();
-				break;
-			}
-			if(win)
-			{
-				win->Deserialize(window);
-				win->title = window.value("window-title", win->title);
-				Window::Register(result = win);
-			}
-		}
+			Window::Register(result = loadTemplate(path));
 	}
+
+	if(ImGui::BeginMenu("Templates"))
+	{
+		auto * res = templateMenu("/home/felix/projects/cg-workbench/templates");
+		if(res)
+			result = res;
+		ImGui::EndMenu();
+	}
+
 
 	return result;
 }
