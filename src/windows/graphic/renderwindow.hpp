@@ -42,6 +42,8 @@ private:
 	void Regen(GLuint & tex, GLenum format);
 
 	void FmtEdit(GLuint & tex);
+
+	void Resize(int w, int h);
 protected:
 	void OnRender() override;
 	void OnUpdate() override;

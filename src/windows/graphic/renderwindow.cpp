@@ -52,6 +52,7 @@ RenderWindow::RenderWindow() :
     shownTexture(0)
 {
 	glCreateRenderbuffers(1, &this->depthbuf);
+
 	glNamedRenderbufferStorage(
 		this->depthbuf,
 		GL_DEPTH24_STENCIL8,
@@ -215,11 +216,7 @@ void RenderWindow::OnUpdate()
 
 			if(ImGui::Button("Resize"))
 			{
-				this->texSize = ImVec2(this->editsize[0], this->editsize[1]);
-				this->Regen(this->tex0, GetFormat(this->tex0));
-				this->Regen(this->tex1, GetFormat(this->tex1));
-				this->Regen(this->tex2, GetFormat(this->tex2));
-				this->Regen(this->tex3, GetFormat(this->tex3));
+				this->Resize(this->editsize[0], this->editsize[1]);
 			}
 
 			ImGui::Separator();
@@ -351,6 +348,8 @@ void RenderWindow::Deserialize(const nlohmann::json &value)
 		{
 			this->texSize.x = value["size"][0];
 			this->texSize.y = value["size"][1];
+
+			this->Resize(this->texSize.x, this->texSize.y);
 		}
 	} catch(nlohmann::detail::exception const & ex) { }
 
@@ -370,7 +369,6 @@ void RenderWindow::Deserialize(const nlohmann::json &value)
 		this->rt3Settings.Deserialize(value.at("rt3-settings"));
 	} catch(nlohmann::detail::exception const & ex) { }
 
-
 	this->Regen(this->tex0, value.value("tex-0", GL_RGBA8));
 	this->Regen(this->tex1, value.value("tex-1", GL_RGBA8));
 	this->Regen(this->tex2, value.value("tex-2", GL_RGBA8));
@@ -378,6 +376,22 @@ void RenderWindow::Deserialize(const nlohmann::json &value)
 }
 
 
+
+void RenderWindow::Resize(int w, int h)
+{
+	this->texSize = ImVec2(w, h);
+
+	glNamedRenderbufferStorage(
+		this->depthbuf,
+		GL_DEPTH24_STENCIL8,
+		this->texSize.x,
+		this->texSize.y);
+
+	this->Regen(this->tex0, GetFormat(this->tex0));
+	this->Regen(this->tex1, GetFormat(this->tex1));
+	this->Regen(this->tex2, GetFormat(this->tex2));
+	this->Regen(this->tex3, GetFormat(this->tex3));
+}
 
 void RenderWindow::Export(GLuint tex)
 {

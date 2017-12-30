@@ -12,13 +12,16 @@ public:
 	typedef typename UniformType<_Type>::type data_t;
 	typedef data_t (*unop_t)(data_t);
 	typedef data_t (*binop_t)(data_t, data_t);
+	typedef data_t (*triop_t)(data_t, data_t, data_t);
 private:
 	static std::pair<char const*,unop_t> unaryOps[];
 	static std::pair<char const *,binop_t> binaryOps[];
+	static std::pair<char const *,triop_t> trinaryOps[];
 private:
 	data_t value;
 	Sink * operand0;
 	Sink * operand1;
+	Sink * operand2;
 	int op;
 
 	void SetOp(int idx)
@@ -41,6 +44,13 @@ private:
 				this->AddSink(this->operand1 = new Sink(_Type, "1"));
 			return;
 		}
+		idx -= ARITHARRAYSIZ(binaryOps);
+		if(size_t(idx) < ARITHARRAYSIZ(trinaryOps))
+		{
+			if(!operand2)
+				this->AddSink(this->operand2 = new Sink(_Type, "2"));
+			return;
+		}
 		abort();
 	}
 
@@ -56,6 +66,12 @@ private:
 		if(size_t(idx) < ARITHARRAYSIZ(binaryOps))
 		{
 			*str = binaryOps[idx].first;
+			return true;
+		}
+		idx -= ARITHARRAYSIZ(binaryOps);
+		if(size_t(idx) < ARITHARRAYSIZ(trinaryOps))
+		{
+			*str = trinaryOps[idx].first;
 			return true;
 		}
 		return false;
@@ -77,6 +93,15 @@ protected:
 				operand1->GetObject<_Type>());
 			return;
 		}
+		idx -= ARITHARRAYSIZ(binaryOps);
+		if(size_t(idx) < ARITHARRAYSIZ(trinaryOps))
+		{
+			this->value = trinaryOps[idx].second(
+				operand0->GetObject<_Type>(),
+				operand1->GetObject<_Type>(),
+				operand2->GetObject<_Type>());
+			return;
+		}
 	}
 
 	void OnUpdate() override
@@ -87,7 +112,7 @@ protected:
 			&current,
 			GetIndex,
 			nullptr,
-			int(ARITHARRAYSIZ(unaryOps) + ARITHARRAYSIZ(binaryOps)));
+			int(ARITHARRAYSIZ(unaryOps) + ARITHARRAYSIZ(binaryOps) + ARITHARRAYSIZ(trinaryOps)));
 		this->SetOp(current);
 	}
 public:
@@ -96,6 +121,7 @@ public:
 	    value(),
 	    operand0(new Sink(_Type, "0")),
 	    operand1(nullptr),
+	    operand2(nullptr),
 	    op(-1)
 	{
 		this->AddSource(new Source(_Type, "F", &this->value));
@@ -143,6 +169,15 @@ std::pair<char const *,typename ArithmeticWindow<_Type>::binop_t> ArithmeticWind
     { "Modulo", [](data_t x, data_t y) { return glm::mod(x, y); } },
 	{ "Pow", [](data_t x, data_t y) { return glm::pow(x, y); } },
     { "Log", [](data_t x, data_t y) { return glm::log(x) / glm::log(y); } },
+    { "Min", [](data_t x, data_t y) { return glm::min(x, y); } },
+    { "Max", [](data_t x, data_t y) { return glm::max(x, y); } },
+};
+
+template<CgDataType _Type>
+std::pair<char const *,typename ArithmeticWindow<_Type>::triop_t> ArithmeticWindow<_Type>::trinaryOps[] =
+{
+    { "Lerp / Mix",    [](data_t x, data_t y, data_t z) { return glm::mix(x, y, z); } },
+    { "Clamp / Limit", [](data_t x, data_t y, data_t z) { return glm::clamp(x, y, z); } },
 };
 
 #undef data_t
