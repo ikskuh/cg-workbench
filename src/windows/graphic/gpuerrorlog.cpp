@@ -44,8 +44,8 @@ void APIENTRY GpuErrorLog::LogMessage(GLenum source,GLenum type,GLuint id,GLenum
 #else
 		raise(SIGTRAP);
 #endif
+		breakOnNextError = false;
 	}
-	breakOnNextError = false;
 }
 
 GpuErrorLog::GpuErrorLog() :

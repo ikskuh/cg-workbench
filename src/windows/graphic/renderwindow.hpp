@@ -9,10 +9,7 @@ class RenderWindow :
 {
 private:
 	GLuint fb;
-	GLuint tex0;
-	GLuint tex1;
-	GLuint tex2;
-	GLuint tex3;
+	GLuint tex[4];
 	ImVec2 texSize;
 	GLuint depthbuf;
 	int editsize[2];
@@ -21,6 +18,10 @@ private:
 	bool wireframe;
 	bool depthtest;
 
+	bool doClearDepth, doClearColor[4];
+	float clearDepth;
+	ImVec4 clearColor[4];
+
 	Sink * geom;
 	Sink * shader;
 	Sink * transform;
@@ -28,10 +29,7 @@ private:
 	float mousePressed;
 	glm::vec2 mousePos, mousePosNormalized;
 
-	TextureEditor rt0Settings;
-	TextureEditor rt1Settings;
-	TextureEditor rt2Settings;
-	TextureEditor rt3Settings;
+	TextureEditor rtSettings[4];
 
 	int shownTexture;
 
@@ -39,9 +37,11 @@ private:
 
 	void Export(GLuint tex);
 
-	void Regen(GLuint & tex, GLenum format);
+	void Regen(int idx, GLenum format);
 
-	void FmtEdit(GLuint & tex);
+	void FmtEdit(int idx);
+
+	void ClearEdit(int idx);
 
 	void Resize(int w, int h);
 protected:

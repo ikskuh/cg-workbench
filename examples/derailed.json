@@ -1,0 +1,97 @@
+{
+    "signals": null,
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "depthtest": false,
+            "scale": 8,
+            "size": [
+                512.0,
+                384.0
+            ],
+            "tex": [
+                {
+                    "clear": false,
+                    "color": [
+                        2.38220738935219e-44,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        1.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "clear": false,
+                    "color": [
+                        0.0,
+                        0.0,
+                        1.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "clear": false,
+                    "color": [
+                        1.0,
+                        1.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "type": "renderer",
+            "window-id": 1,
+            "window-pos": [
+                372.0,
+                211.0
+            ],
+            "window-size": [
+                272.0,
+                246.0
+            ],
+            "window-title": "Render Window",
+            "wireframe": true
+        }
+    ]
+}

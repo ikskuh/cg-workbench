@@ -43,14 +43,27 @@ static GLenum GetFormat(GLuint tex)
 	return formats[idx];
 }
 
+static const ImVec4 Black(0.0f, 0.0f, 0.0f, 1.0f);
+
 RenderWindow::RenderWindow() :
     Window("Render Window", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize),
-    tex0(0), tex1(0), tex2(0), tex3(0),
-    texSize(512,512), editsize({512,512}),
+    texSize(512,512), editsize(),
     scale(8), wireframe(false), depthtest(true),
+    doClearDepth(true), doClearColor(),
+	clearDepth(1.0f),
+    clearColor(),
     mousePressed(0.0f), mousePos(256,256),
     shownTexture(0)
 {
+	this->editsize[0] = this->texSize.x;
+	this->editsize[1] = this->texSize.y;
+	for(int i = 0; i < 4; i++)
+	{
+		this->tex[i] = 0;
+		this->doClearColor[i] = true;
+		this->clearColor[i] = Black;
+	}
+
 	glCreateRenderbuffers(1, &this->depthbuf);
 
 	glNamedRenderbufferStorage(
@@ -61,10 +74,10 @@ RenderWindow::RenderWindow() :
 
 	glCreateFramebuffers(1, &this->fb);
 
-	this->Regen(this->tex0, GL_RGBA8);
-	this->Regen(this->tex1, GL_RGBA8);
-	this->Regen(this->tex2, GL_RGBA8);
-	this->Regen(this->tex3, GL_RGBA8);
+	this->Regen(0, GL_RGBA8);
+	this->Regen(1, GL_RGBA8);
+	this->Regen(2, GL_RGBA8);
+	this->Regen(3, GL_RGBA8);
 
 	glNamedFramebufferRenderbuffer(
 		this->fb,
@@ -75,18 +88,13 @@ RenderWindow::RenderWindow() :
 	if(status != GL_FRAMEBUFFER_COMPLETE)
 		throw "foo";
 
-	rt0Settings.SetTexture(this->tex0);
-	rt1Settings.SetTexture(this->tex1);
-	rt2Settings.SetTexture(this->tex2);
-	rt3Settings.SetTexture(this->tex3);
-
 	this->AddSink(this->geom = new Sink(CgDataType::Geometry, "Geometry"));
 	this->AddSink(this->shader = new Sink(CgDataType::Shader, "Shader"));
 
-	this->AddSource(new Source(CgDataType::Texture2D, "Image 0", &this->tex0));
-	this->AddSource(new Source(CgDataType::Texture2D, "Image 1", &this->tex1));
-	this->AddSource(new Source(CgDataType::Texture2D, "Image 2", &this->tex2));
-	this->AddSource(new Source(CgDataType::Texture2D, "Image 3", &this->tex3));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image 0", &this->tex[0]));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image 1", &this->tex[1]));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image 2", &this->tex[2]));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image 3", &this->tex[3]));
 
 	this->AddSource(new Source(CgDataType::UniformVec2, "Image Size", &this->texSize.x));
 	this->AddSource(new Source(CgDataType::UniformFloat, "Mouse Pressed", &this->mousePressed));
@@ -97,10 +105,8 @@ RenderWindow::RenderWindow() :
 RenderWindow::~RenderWindow()
 {
 	glDeleteFramebuffers(1, &this->fb);
-	if(this->tex0 != 0) glDeleteTextures(1, &this->tex0);
-	if(this->tex1 != 0) glDeleteTextures(1, &this->tex1);
-	if(this->tex2 != 0) glDeleteTextures(1, &this->tex2);
-	if(this->tex3 != 0) glDeleteTextures(1, &this->tex3);
+	for(int i = 0; i < 4; i++)
+		if(this->tex[0] != 0) glDeleteTextures(1, &this->tex[0]);
 	glDeleteRenderbuffers(1, &this->depthbuf);
 }
 
@@ -116,13 +122,25 @@ void RenderWindow::OnRender()
 	else
 		glDisable(GL_DEPTH_TEST);
 
+	glClearDepth(this->clearDepth);
+	if(this->doClearDepth)
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+	for(int i = 0; i < 4; i++)
+	{
+		if(this->doClearColor[i] == false)
+			continue;
+		glDrawBuffer(GL_COLOR_ATTACHMENT0 + i);
+		glClearColor(
+			this->clearColor[i].x,
+			this->clearColor[i].y,
+			this->clearColor[i].z,
+			this->clearColor[i].w);
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
 	if(this->shader->HasSource() && this->geom->HasSource())
 	{
-		glClearDepth(1.0f);
-		glClearColor(0.0,0.0,0.0,1);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		auto const & geom = this->geom->GetObject<CgDataType::Geometry>();
 
 		this->shader->GetObject<CgDataType::Shader>().Use();
@@ -130,10 +148,10 @@ void RenderWindow::OnRender()
 		glBindVertexArray(geom.VertexArray);
 
 		GLenum DrawBuffers[4] = {
-		    GL_COLOR_ATTACHMENT0,
-		    GL_COLOR_ATTACHMENT1,
-		    GL_COLOR_ATTACHMENT2,
-		    GL_COLOR_ATTACHMENT3,
+			GL_COLOR_ATTACHMENT0,
+			GL_COLOR_ATTACHMENT1,
+			GL_COLOR_ATTACHMENT2,
+			GL_COLOR_ATTACHMENT3,
 		};
 		glDrawBuffers(4, DrawBuffers); // "1" is the size of DrawBuffers
 
@@ -145,11 +163,6 @@ void RenderWindow::OnRender()
 		glDrawArrays(GL_TRIANGLES, 0, geom.VertexCount);
 
 		glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-	}
-	else
-	{
-		glClearColor(1,0,0,1);
-		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -221,62 +234,66 @@ void RenderWindow::OnUpdate()
 
 			ImGui::Separator();
 
-			if(ImGui::BeginMenu("Target 0"))
+			for(int i = 0; i < 4; i++)
 			{
-				this->FmtEdit(this->tex0);
-				this->rt0Settings.Show();
-				ImGui::EndMenu();
-			}
+				char buffer[64];
+				snprintf(buffer, 64, "Target %d", i);
 
-			if(ImGui::BeginMenu("Target 1"))
-			{
-				this->FmtEdit(this->tex1);
-				this->rt1Settings.Show();
-				ImGui::EndMenu();
-			}
-
-			if(ImGui::BeginMenu("Target 2"))
-			{
-				this->FmtEdit(this->tex2);
-				this->rt2Settings.Show();
-				ImGui::EndMenu();
-			}
-
-			if(ImGui::BeginMenu("Target 3"))
-			{
-				this->FmtEdit(this->tex3);
-				this->rt3Settings.Show();
-				ImGui::EndMenu();
+				ImGui::PushID(&this->tex[i]);
+				if(ImGui::BeginMenu(buffer))
+				{
+					this->ClearEdit(i);
+					this->FmtEdit(i);
+					this->rtSettings[i].Show();
+					ImGui::EndMenu();
+				}
+				ImGui::PopID();
 			}
 
 			ImGui::Separator();
 
-			ImGui::MenuItem("Wireframe", nullptr, &this->wireframe);
-			ImGui::MenuItem("Depth Test", nullptr, &this->depthtest);
+			if(ImGui::BeginMenu("Render Options"))
+			{
+				ImGui::Checkbox("Wireframe", &this->wireframe);
+				ImGui::Checkbox("Depth Test", &this->depthtest);
+
+				ImGui::Separator();
+
+				ImGui::Checkbox("Clear Depth", &this->doClearDepth);
+
+				ImGui::SliderFloat("Depth", &this->clearDepth, 0.0f, 1.0f);
+
+				ImGui::EndMenu();
+			}
 
 			ImGui::EndMenu();
 		}
 		if(ImGui::BeginMenu("Display"))
 		{
-			bool b0 = (this->shownTexture == 0);
-			bool b1 = (this->shownTexture == 1);
-			bool b2 = (this->shownTexture == 2);
-			bool b3 = (this->shownTexture == 3);
+			bool temps[4];
+			for(int i = 0; i < 4; i++)
+			{
+				char buffer[64];
+				snprintf(buffer, 64, "Target %d", i);
 
-			if(ImGui::MenuItem("Target 0", nullptr, &b0)) this->shownTexture = 0;
-			if(ImGui::MenuItem("Target 1", nullptr, &b1)) this->shownTexture = 1;
-			if(ImGui::MenuItem("Target 2", nullptr, &b2)) this->shownTexture = 2;
-			if(ImGui::MenuItem("Target 3", nullptr, &b3)) this->shownTexture = 3;
+				temps[i] = (this->shownTexture == i);
+
+				if(ImGui::MenuItem(buffer, nullptr, &temps[i]))
+					this->shownTexture = i;
+			}
 
 			ImGui::EndMenu();
 		}
 
 		if(ImGui::BeginMenu("Export to PGM"))
 		{
-			if(ImGui::MenuItem("Target 0")) this->Export(this->tex0);
-			if(ImGui::MenuItem("Target 1")) this->Export(this->tex1);
-			if(ImGui::MenuItem("Target 2")) this->Export(this->tex2);
-			if(ImGui::MenuItem("Target 3")) this->Export(this->tex3);
+			for(int i = 0; i < 4; i++)
+			{
+				char buffer[64];
+				snprintf(buffer, 64, "Target %d", i);
+				if(ImGui::MenuItem(buffer))
+					this->Export(this->tex[i]);
+			}
 			ImGui::EndMenu();
 		}
 
@@ -290,17 +307,9 @@ void RenderWindow::OnUpdate()
 
 	auto pos = ImGui::GetCursorPos();
 	auto vpsize = ImVec2(size, (size / w) * h);
-	GLuint tex = this->tex0;
-	switch(this->shownTexture)
-	{
-		case 0: tex = this->tex0; break;
-		case 1: tex = this->tex1; break;
-		case 2: tex = this->tex2; break;
-		case 3: tex = this->tex3; break;
-	}
 
 	ImGui::ImageButton(
-		ImTextureID(uintptr_t(tex)),
+		ImTextureID(uintptr_t(this->tex[this->shownTexture])),
 	    vpsize,
 		ImVec2(0.0f, 0.0f),
 		ImVec2(1.0f, 1.0f),
@@ -317,22 +326,39 @@ void RenderWindow::OnUpdate()
 	}
 }
 
+void RenderWindow::ClearEdit(int idx)
+{
+	ImGui::Checkbox("Clear", &this->doClearColor[idx]);
+	ImGui::ColorEdit4("Color", &this->clearColor[idx].x,
+		ImGuiColorEditFlags_AlphaPreviewHalf
+	  | ImGuiColorEditFlags_AlphaBar
+	  | ImGuiColorEditFlags_Float
+	  | ImGuiColorEditFlags_HDR
+	  );
+}
+
 nlohmann::json RenderWindow::Serialize() const
 {
+	using namespace nlohmann;
+
+	json array;
+	for(int i = 0; i < 4; i++)
+	{
+		array[i] = {
+			{ "format", GetFormat(this->tex[i]) },
+		    { "settings", this->rtSettings[i].Serialize() },
+		    { "color", { this->clearColor[i].x, this->clearColor[i].y, this->clearColor[i].z, this->clearColor[i].w } },
+		    { "clear", this->doClearColor[i] },
+		};
+	}
+
 	return {
 		{ "type", RenderWindowID },
 		{ "scale", this->scale },
 		{ "wireframe", this->wireframe },
 		{ "depthtest", this->depthtest },
 		{ "size", { this->texSize.x, this->texSize.y } },
-		{ "tex-0", GetFormat(this->tex0) },
-		{ "tex-1", GetFormat(this->tex1) },
-		{ "tex-2", GetFormat(this->tex2) },
-		{ "tex-3", GetFormat(this->tex3) },
-		{ "rt0-settings", this->rt0Settings.Serialize() },
-		{ "rt1-settings", this->rt1Settings.Serialize() },
-		{ "rt2-settings", this->rt2Settings.Serialize() },
-		{ "rt3-settings", this->rt3Settings.Serialize() },
+		{ "tex", array }
 	};
 }
 
@@ -342,37 +368,27 @@ void RenderWindow::Deserialize(const nlohmann::json &value)
 	this->wireframe = value.value("wireframe", false);
 	this->depthtest = value.value("depthtest", true);
 
-	try
+	this->texSize.x = value["size"][0];
+	this->texSize.y = value["size"][1];
+	this->Resize(this->texSize.x, this->texSize.y);
+
+	auto loadtex = [this](int idx, nlohmann::json const & val)
 	{
-		if(value.find("size") != value.end())
-		{
-			this->texSize.x = value["size"][0];
-			this->texSize.y = value["size"][1];
+		try {
+			this->rtSettings[idx].Deserialize(val["settings"]);
+		} catch(nlohmann::detail::exception const & ex) { }
+		this->Regen(idx, val.value("format", GL_RGBA8));
 
-			this->Resize(this->texSize.x, this->texSize.y);
-		}
-	} catch(nlohmann::detail::exception const & ex) { }
+		this->clearColor[idx].x = val["color"][0];
+		this->clearColor[idx].y = val["color"][1];
+		this->clearColor[idx].z = val["color"][2];
+		this->clearColor[idx].w = val["color"][3];
 
-	try {
-		this->rt0Settings.Deserialize(value.at("rt0-settings"));
-	} catch(nlohmann::detail::exception const & ex) { }
+		this->doClearColor[idx] = val["clear"];
+	};
 
-	try {
-		this->rt1Settings.Deserialize(value.at("rt1-settings"));
-	} catch(nlohmann::detail::exception const & ex) { }
-
-	try {
-		this->rt2Settings.Deserialize(value.at("rt2-settings"));
-	} catch(nlohmann::detail::exception const & ex) { }
-
-	try {
-		this->rt3Settings.Deserialize(value.at("rt3-settings"));
-	} catch(nlohmann::detail::exception const & ex) { }
-
-	this->Regen(this->tex0, value.value("tex-0", GL_RGBA8));
-	this->Regen(this->tex1, value.value("tex-1", GL_RGBA8));
-	this->Regen(this->tex2, value.value("tex-2", GL_RGBA8));
-	this->Regen(this->tex3, value.value("tex-3", GL_RGBA8));
+	for(int i = 0; i < 4; i++)
+		loadtex(0, value["tex"][i]);
 }
 
 
@@ -387,10 +403,8 @@ void RenderWindow::Resize(int w, int h)
 		this->texSize.x,
 		this->texSize.y);
 
-	this->Regen(this->tex0, GetFormat(this->tex0));
-	this->Regen(this->tex1, GetFormat(this->tex1));
-	this->Regen(this->tex2, GetFormat(this->tex2));
-	this->Regen(this->tex3, GetFormat(this->tex3));
+	for(int i = 0; i < 4; i++)
+		this->Regen(i, GetFormat(this->tex[i]));
 }
 
 void RenderWindow::Export(GLuint tex)
@@ -428,19 +442,19 @@ void RenderWindow::Export(GLuint tex)
 	}
 }
 
-void RenderWindow::FmtEdit(GLuint & tex)
+void RenderWindow::FmtEdit(int idx)
 {
 	GLenum type;
-	glGetTextureLevelParameteriv(tex, 0, GL_TEXTURE_RED_TYPE, reinterpret_cast<GLint*>(&type));
+	glGetTextureLevelParameteriv(this->tex[idx], 0, GL_TEXTURE_RED_TYPE, reinterpret_cast<GLint*>(&type));
 
-	int idx = 0;
+	int fmt = 0;
 	switch(type)
 	{
-		case GL_UNSIGNED_NORMALIZED: idx = 0; break;
-		case GL_FLOAT:               idx = 1; break;
-		case GL_INT:                 idx = 2; break;
-		case GL_UNSIGNED_INT:        idx = 3; break;
-		default:                     idx = 0; break;
+		case GL_UNSIGNED_NORMALIZED: fmt = 0; break;
+		case GL_FLOAT:               fmt = 1; break;
+		case GL_INT:                 fmt = 2; break;
+		case GL_UNSIGNED_INT:        fmt = 3; break;
+		default:                     fmt = 0; break;
 	}
 	static char const * names[] = {
 		"default",
@@ -452,38 +466,22 @@ void RenderWindow::FmtEdit(GLuint & tex)
 	    GL_RGBA8, GL_RGBA32F, GL_RGBA8I, GL_RGBA8UI
 	};
 
-	if(ImGui::Combo("Format", &idx, names, 4))
-		this->Regen(tex, formats[idx]);
+	if(ImGui::Combo("Format", &fmt, names, 4))
+		this->Regen(idx, formats[fmt]);
 }
 
-void RenderWindow::Regen(GLuint & tex, GLenum format)
+void RenderWindow::Regen(int idx, GLenum format)
 {
-	if(tex)
-		glDeleteTextures(1, &tex);
+	if(this->tex[idx])
+		glDeleteTextures(1, &this->tex[idx]);
 
-	tex = gentex(this->texSize, format);
+	this->tex[idx] = gentex(this->texSize, format);
 
-	GLenum target;
-	if(&tex == &this->tex0) {
-		target = GL_COLOR_ATTACHMENT0;
-		rt0Settings.SetTexture(tex);
-	}
-	else if(&tex == &this->tex1) {
-		target = GL_COLOR_ATTACHMENT1;
-		rt1Settings.SetTexture(tex);
-	}
-	else if(&tex == &this->tex2) {
-		target = GL_COLOR_ATTACHMENT2;
-		rt2Settings.SetTexture(tex);
-	}
-	else if(&tex == &this->tex3) {
-		target = GL_COLOR_ATTACHMENT3;
-		rt3Settings.SetTexture(tex);
-	}
+	rtSettings[idx].SetTexture(this->tex[idx]);
 
 	glNamedFramebufferTexture(
 		this->fb,
-		target,
-	    tex,
+		GL_COLOR_ATTACHMENT0 + idx,
+	    this->tex[idx],
 		0);
 }
