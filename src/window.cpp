@@ -370,3 +370,36 @@ void Window::Deserialize(nlohmann::json const & value)
 {
 	fprintf(stderr, "Deserialize: %s\n", value.dump().c_str());
 }
+
+
+Source * Window::GetSource(std::string name)
+{
+	for(auto const & src : this->sources)
+		if(src->GetName() == name)
+			return src.get();
+	return nullptr;
+}
+
+Source const * Window::GetSource(std::string name) const
+{
+	for(auto const & src : this->sources)
+		if(src->GetName() == name)
+			return src.get();
+	return nullptr;
+}
+
+Sink * Window::GetSink(std::string name)
+{
+	for(auto const & src : this->sinks)
+		if(src->GetName() == name)
+			return src.get();
+	return nullptr;
+}
+
+Sink const * Window::GetSink(std::string name) const
+{
+	for(auto const & src : this->sinks)
+		if(src->GetName() == name)
+			return src.get();
+	return nullptr;
+}

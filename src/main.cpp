@@ -363,14 +363,14 @@ void save(std::string const & fileName)
 						"from",
 						{
 							sink->GetSource(false)->GetWindow()->GetID(),
-							sink->GetSource(false)->GetWindowIndex()
+							sink->GetSource(false)->GetName()
 						}
 					},
 					{
 						"to",
 						{
 							sink->GetWindow()->GetID(),
-							sink->GetWindowIndex(),
+							sink->GetName(),
 						}
 					}
 				};
@@ -455,6 +455,25 @@ void load(std::string const & fileName)
 		Window * src = windowById.at(from[0]);
 		Window * dst = windowById.at(to[0]);
 
-		dst->GetSink(to[1])->SetSource(src->GetSource(from[1]));
+		Sink * sink;
+		Source * source;
+
+		if(from[1].is_number())
+			source = src->GetSource(from[1].get<int>());
+		else
+			source = src->GetSource(from[1].get<std::string>());
+
+		if(to[1].is_number())
+			sink = dst->GetSink(to[1].get<int>());
+		else
+			sink = dst->GetSink(to[1].get<std::string>());
+
+		if(source == nullptr)
+			continue;
+		if(sink == nullptr)
+			continue;
+
+		if(source->GetType() == sink->GetType())
+			sink->SetSource(source);
 	}
 }

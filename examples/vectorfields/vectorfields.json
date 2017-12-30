@@ -3,271 +3,271 @@
         {
             "from": [
                 3,
-                0
+                "Shader"
             ],
             "to": [
                 1,
-                1
+                "Shader"
             ]
         },
         {
             "from": [
                 1,
-                0
+                "Image 0"
             ],
             "to": [
                 2,
-                0
+                "Input"
             ]
         },
         {
             "from": [
                 2,
-                0
+                "Output"
             ],
             "to": [
                 3,
-                1
+                "vectorfield"
             ]
         },
         {
             "from": [
                 1,
-                3
+                "Mouse Pos"
             ],
             "to": [
                 3,
-                2
+                "mouse"
             ]
         },
         {
             "from": [
                 6,
-                0
+                "Output"
             ],
             "to": [
                 3,
-                3
+                "mouse_hist"
             ]
         },
         {
             "from": [
                 1,
-                1
+                "Image Size"
             ],
             "to": [
                 3,
-                4
+                "fieldsize"
             ]
         },
         {
             "from": [
                 1,
-                2
+                "Mouse Pressed"
             ],
             "to": [
                 3,
-                5
+                "pressed"
             ]
         },
         {
             "from": [
                 8,
-                0
+                "Value"
             ],
             "to": [
                 3,
-                6
+                "strength"
             ]
         },
         {
             "from": [
                 5,
-                0
+                "Value"
             ],
             "to": [
                 3,
-                7
+                "radius"
             ]
         },
         {
             "from": [
                 18,
-                0
+                "Value"
             ],
             "to": [
                 3,
-                8
+                "shape"
             ]
         },
         {
             "from": [
                 19,
-                0
+                "Value"
             ],
             "to": [
                 3,
-                9
+                "clear"
             ]
         },
         {
             "from": [
                 1,
-                3
+                "Mouse Pos"
             ],
             "to": [
                 6,
-                0
+                "Input"
             ]
         },
         {
             "from": [
                 10,
-                0
+                "Shader"
             ],
             "to": [
                 9,
-                1
+                "Shader"
             ]
         },
         {
             "from": [
                 1,
-                0
+                "Image 0"
             ],
             "to": [
                 10,
-                1
+                "vectorfield"
             ]
         },
         {
             "from": [
                 24,
-                0
+                "Output"
             ],
             "to": [
                 10,
-                2
+                "simfield"
             ]
         },
         {
             "from": [
                 16,
-                0
+                "Output"
             ],
             "to": [
                 10,
-                3
+                "colorin"
             ]
         },
         {
             "from": [
                 12,
-                1
+                "Delta"
             ],
             "to": [
                 10,
-                4
+                "dt"
             ]
         },
         {
             "from": [
                 9,
-                1
+                "Image Size"
             ],
             "to": [
                 10,
-                5
+                "texsize"
             ]
         },
         {
             "from": [
                 9,
-                3
+                "Mouse Pos"
             ],
             "to": [
                 10,
-                6
+                "mouse"
             ]
         },
         {
             "from": [
                 9,
-                2
+                "Mouse Pressed"
             ],
             "to": [
                 10,
-                7
+                "pressed"
             ]
         },
         {
             "from": [
                 11,
-                0
+                "Texture"
             ],
             "to": [
                 10,
-                8
+                "cookie"
             ]
         },
         {
             "from": [
                 13,
-                0
+                "Value"
             ],
             "to": [
                 10,
-                9
+                "radius"
             ]
         },
         {
             "from": [
                 20,
-                0
+                "Value"
             ],
             "to": [
                 10,
-                10
+                "pers"
             ]
         },
         {
             "from": [
                 23,
-                0
+                "Value"
             ],
             "to": [
                 10,
-                11
+                "clear"
             ]
         },
         {
             "from": [
                 14,
-                0
+                "Value"
             ],
             "to": [
                 10,
-                12
+                "speedmul"
             ]
         },
         {
             "from": [
                 9,
-                5
+                "Image 1"
             ],
             "to": [
                 16,
-                0
+                "Input"
             ]
         },
         {
             "from": [
                 9,
-                6
+                "Image 2"
             ],
             "to": [
                 24,
-                0
+                "Input"
             ]
         }
     ],
@@ -305,6 +305,14 @@
                 "wrap-t": 95
             },
             "scale": 9,
+            "size": [
+                512.0,
+                512.0
+            ],
+            "tex-0": 32856,
+            "tex-1": 32856,
+            "tex-2": 32856,
+            "tex-3": 32856,
             "type": "renderer",
             "window-id": 1,
             "window-pos": [
@@ -436,6 +444,14 @@
                 "wrap-t": 0
             },
             "scale": 9,
+            "size": [
+                512.0,
+                512.0
+            ],
+            "tex-0": 32856,
+            "tex-1": 32856,
+            "tex-2": 32856,
+            "tex-3": 32856,
             "type": "renderer",
             "window-id": 9,
             "window-pos": [
@@ -494,7 +510,7 @@
             "window-title": "Image"
         },
         {
-            "current": 2213.9951171875,
+            "current": 2216.45849609375,
             "speed": 1.0,
             "type": "timer",
             "window-id": 12,

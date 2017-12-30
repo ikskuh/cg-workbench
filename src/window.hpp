@@ -58,10 +58,17 @@ public:
 	int GetSourceCount() const { return this->sources.size(); }
 
 	Source * GetSource(int idx) { return this->sources[idx].get(); }
+
 	Source const * GetSource(int idx) const { return this->sources[idx].get(); }
+
+	Source * GetSource(std::string name);
+	Source const * GetSource(std::string name) const;
 
 	Sink * GetSink(int idx) { return this->sinks[idx].get(); }
 	Sink const * GetSink(int idx) const { return this->sinks[idx].get(); }
+
+	Sink * GetSink(std::string name);
+	Sink const * GetSink(std::string name) const;
 
 	int GetID() const { return this->id; }
 

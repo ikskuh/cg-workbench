@@ -11,5 +11,5 @@ Trigger::Trigger() :
 
 void Trigger::OnUpdate()
 {
-	this->value = ImGui::Button("Fire!") ? 1.0f : 0.0f;
+	this->value = ImGui::Button(this->GetTitle().c_str()) ? 1.0f : 0.0f;
 }

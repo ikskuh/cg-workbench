@@ -83,15 +83,14 @@ RenderWindow::RenderWindow() :
 	this->AddSink(this->shader = new Sink(CgDataType::Shader, "Shader"));
 
 	this->AddSource(new Source(CgDataType::Texture2D, "Image 0", &this->tex0));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image 1", &this->tex1));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image 2", &this->tex2));
+	this->AddSource(new Source(CgDataType::Texture2D, "Image 3", &this->tex3));
 
 	this->AddSource(new Source(CgDataType::UniformVec2, "Image Size", &this->texSize.x));
 	this->AddSource(new Source(CgDataType::UniformFloat, "Mouse Pressed", &this->mousePressed));
 	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos", &this->mousePos.x));
 	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos (Normalized)", &this->mousePosNormalized.x));
-
-	this->AddSource(new Source(CgDataType::Texture2D, "Image 1", &this->tex1));
-	this->AddSource(new Source(CgDataType::Texture2D, "Image 2", &this->tex2));
-	this->AddSource(new Source(CgDataType::Texture2D, "Image 3", &this->tex3));
 }
 
 RenderWindow::~RenderWindow()
