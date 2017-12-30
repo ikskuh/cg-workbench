@@ -1,7 +1,7 @@
 #include "imagebuffer.hpp"
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(ImageBuffer, Menu::Buffer, "image-buffer", "Image Buffer");
+REGISTER_WINDOW_CLASS(ImageBuffer, Menu::Buffer, "image-buffer", "Image Buffer")
 
 ImageBuffer::ImageBuffer() :
     Window("Image Buffer", ImGuiWindowFlags_AlwaysAutoResize),
@@ -105,7 +105,6 @@ void ImageBuffer::OnUpdate()
 nlohmann::json ImageBuffer::Serialize() const
 {
 	return {
-		{ "type", ImageBufferID },
 		{ "filter", this->imgEditor.Serialize() }
 	};
 }

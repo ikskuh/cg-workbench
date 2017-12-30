@@ -48,6 +48,7 @@ struct Uniform
 class ShaderEditor :
 	public Window
 {
+	WINDOW_PREAMBLE
 	friend class ShaderProgram;
 private:
 	GLuint program;

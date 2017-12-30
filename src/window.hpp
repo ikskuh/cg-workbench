@@ -15,6 +15,8 @@
 class Window
 {
 	friend void load(std::string const & fileName);
+	friend void save(std::string const & fileName);
+	friend Window * createMenu();
 	friend int main(int argc, char ** argv);
 private:
 	int id;
@@ -40,6 +42,7 @@ protected:
 	virtual void OnUpdate() = 0;
 	virtual void OnRender();
 	virtual void OnSetup();
+	virtual std::string GetTypeID() const = 0;
 public:
 	virtual ~Window();
 
@@ -98,15 +101,8 @@ public:
 	static std::vector<std::unique_ptr<Window>>::iterator End();
 };
 
-
-#define TRIVIAL_SERIALIZE(_Name) \
-	nlohmann::json Serialize() const override \
-	{ \
-		return { { "type", _Name } }; \
-	} \
-	void Deserialize(nlohmann::json const & value) override \
-	{ \
-		(void)value; \
-	}
+#define WINDOW_PREAMBLE \
+	protected: \
+		virtual std::string GetTypeID() const;
 
 #endif // WINDOW_HPP

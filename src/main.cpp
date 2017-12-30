@@ -66,9 +66,42 @@ static Window * ClassMenu(WindowCategory const * root)
 	return result;
 }
 
-static Window * createMenu()
+Window * createMenu()
 {
-	return ClassMenu(&Menu::Instance);
+	Window * result = ClassMenu(&Menu::Instance);
+
+	ImGui::Separator();
+
+	if(ImGui::MenuItem("Import Node..."))
+	{
+		auto path = FileIO::OpenDialog("jnode");
+		if(!path.empty())
+		{
+			nlohmann::json window;
+
+			std::ifstream stream(path);
+			stream >> window;
+
+			Window * win = nullptr;
+			nlohmann::json type = window["window-type"];
+
+			for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
+			{
+				if(type != cl->GetID())
+					continue;
+				win = cl->CreateInstance();
+				break;
+			}
+			if(win)
+			{
+				win->Deserialize(window);
+				win->title = window.value("window-title", win->title);
+				Window::Register(result = win);
+			}
+		}
+	}
+
+	return result;
 }
 
 extern ImVec2 screen_pan;
@@ -326,6 +359,7 @@ void save(std::string const & fileName)
 			win->GetSize().y
 		};
 		window["window-title"] = win->GetTitle();
+		window["window-type"] = win->GetTypeID();
 
 		windows += window;
 
@@ -396,7 +430,7 @@ void load(std::string const & fileName)
 	for(json window : windows)
 	{
 		Window * win = nullptr;
-		json type = window["type"];
+		json type = window["window-type"];
 
 		for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
 		{

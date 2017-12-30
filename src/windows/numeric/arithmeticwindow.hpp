@@ -8,6 +8,7 @@ template<CgDataType _Type>
 class ArithmeticWindow :
 	public Window
 {
+	WINDOW_PREAMBLE
 public:
 	typedef typename UniformType<_Type>::type data_t;
 	typedef data_t (*unop_t)(data_t);

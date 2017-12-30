@@ -5,6 +5,7 @@
 class VectorSplitter :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	glm::vec4 output;
 	Sink * input;
@@ -25,6 +26,7 @@ public:
 class VectorMerger :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	glm::vec4 output;
 	Sink * inputX;
@@ -36,6 +38,4 @@ protected:
 	void OnUpdate() override { }
 public:
 	VectorMerger();
-
-	TRIVIAL_SERIALIZE("vector-merger")
 };

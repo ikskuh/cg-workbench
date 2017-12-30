@@ -3,7 +3,7 @@
 #include <SDL.h>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(TimerWindow, Menu::Values, "timer", "Time");
+REGISTER_WINDOW_CLASS(TimerWindow, Menu::Values, "timer", "Time")
 
 TimerWindow::TimerWindow() :
     Window("Timer", ImGuiWindowFlags_AlwaysAutoResize),
@@ -44,7 +44,6 @@ void TimerWindow::OnUpdate()
 nlohmann::json TimerWindow::Serialize() const
 {
 	return {
-		{ "type", TimerWindowID },
 		{ "current", this->total },
 		{ "speed", this->speed }
 	};

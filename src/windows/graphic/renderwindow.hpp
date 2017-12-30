@@ -7,6 +7,7 @@
 class RenderWindow :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	GLuint fb;
 	GLuint tex[4];

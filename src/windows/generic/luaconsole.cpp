@@ -6,7 +6,7 @@ extern "C"
 }
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(LuaConsole, Menu::Tools, "lua-console", "Lua Console");
+REGISTER_WINDOW_CLASS(LuaConsole, Menu::Tools, "lua-console", "Lua Console")
 
 
 LuaConsole::LuaConsole() :

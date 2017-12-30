@@ -6,6 +6,7 @@
 class ImageSource :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	GLuint img;
 

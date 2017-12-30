@@ -14,6 +14,7 @@ extern "C"
 class LuaConsole :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	struct logentry
 	{

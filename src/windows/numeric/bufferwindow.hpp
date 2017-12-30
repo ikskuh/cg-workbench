@@ -8,6 +8,7 @@
 template<CgDataType _Type>
 class BufferWindow : public Window
 {
+	WINDOW_PREAMBLE
 	typedef typename UniformType<_Type>::type data_t;
 private:
 	std::vector<std::pair<uint32_t,data_t>> samples;
@@ -75,7 +76,6 @@ public:
 	nlohmann::json Serialize() const override
 	{
 		return {
-			{ "type", std::string("buffer-") + DisplayName(_Type) },
 			{ "length", this->bufferLength },
 			{ "useTime", this->useSeconds },
 			{ "smooth", this->useSmoothing },

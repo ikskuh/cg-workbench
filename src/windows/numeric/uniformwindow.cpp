@@ -3,12 +3,12 @@
 using namespace nlohmann;
 
 #include <windowregistry.hpp>
-REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformFloat>, Menu::Values, "uniform-float", "Float");
-REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformVec2>, Menu::Values, "uniform-vec2", "Vec2");
-REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformVec3>, Menu::Values, "uniform-vec3", "Vec3");
-REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformVec4>, Menu::Values, "uniform-vec4", "Vec4");
-REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformMat3>, Menu::Values, "uniform-mat3", "Mat3");
-REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformMat4>, Menu::Values, "uniform-mat4", "Mat4");
+REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformFloat>, Menu::Values, "uniform-float", "Float")
+REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformVec2>, Menu::Values, "uniform-vec2", "Vec2")
+REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformVec3>, Menu::Values, "uniform-vec3", "Vec3")
+REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformVec4>, Menu::Values, "uniform-vec4", "Vec4")
+REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformMat3>, Menu::Values, "uniform-mat3", "Mat3")
+REGISTER_GENERIC_WINDOW_CLASS(UniformWindow, <CgDataType::UniformMat4>, Menu::Values, "uniform-mat4", "Mat4")
 
 template<> char const * UniformWindow<CgDataType::UniformFloat>::GetTitle() { return "Value (float)"; }
 template<> char const * UniformWindow<CgDataType::UniformVec2>::GetTitle()  { return "Value (vec2)"; }

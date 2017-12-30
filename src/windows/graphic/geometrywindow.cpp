@@ -4,7 +4,7 @@
 #include <tiny_obj_loader.h>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(GeometryWindow, Menu, "geometry", "Geometry");
+REGISTER_WINDOW_CLASS(GeometryWindow, Menu, "geometry", "Geometry")
 
 #include "fileio.hpp"
 
@@ -130,7 +130,6 @@ void GeometryWindow::OnUpdate()
 nlohmann::json GeometryWindow::Serialize() const
 {
 	return {
-		{ "type", GeometryWindowID },
 		{ "file", this->currentFile }
 	};
 }

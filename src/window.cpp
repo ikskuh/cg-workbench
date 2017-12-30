@@ -5,6 +5,8 @@
 #include <cstdio>
 
 #include "resources.hpp"
+#include "fileio.hpp"
+#include <fstream>
 
 static std::vector<std::unique_ptr<Window>> windows;
 
@@ -273,6 +275,39 @@ void Window::Update()
 			{
 				this->title = std::string(this->titleEditBuffer);
 				this->wantsResize = true;
+			}
+
+			ImGui::Separator();
+
+			if(ImGui::MenuItem("Export Node..."))
+			{
+				auto path = FileIO::SaveDialog("jnode");
+				if(!path.empty())
+				{
+					auto obj = this->Serialize();
+					obj["window-type"] = this->GetTypeID();
+
+					std::ofstream stream(path);
+					stream << obj;
+					stream.flush();
+				}
+			}
+
+			if(ImGui::MenuItem("Import Node..."))
+			{
+				auto path = FileIO::OpenDialog("jnode");
+				if(!path.empty())
+				{
+					nlohmann::json data;
+
+					std::ifstream stream(path);
+					stream >> data;
+
+					if(data["window-type"] == this->GetTypeID())
+					{
+						this->Deserialize(data);
+					}
+				}
 			}
 
 			ImGui::EndPopup();

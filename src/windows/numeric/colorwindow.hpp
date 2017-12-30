@@ -4,6 +4,7 @@
 
 class ColorWindow : public Window
 {
+	WINDOW_PREAMBLE
 private:
 	glm::vec4 color;
 protected:

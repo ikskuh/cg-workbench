@@ -3,7 +3,7 @@
 #include "imageloader.hpp"
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(ImageSource, Menu, "image", "Image");
+REGISTER_WINDOW_CLASS(ImageSource, Menu, "image", "Image")
 
 #include "fileio.hpp"
 
@@ -23,7 +23,6 @@ ImageSource::~ImageSource()
 
 void ImageSource::OnUpdate()
 {
-	char cwd[256];
 	if(ImGui::BeginMenuBar())
 	{
 		if(ImGui::BeginMenu("Image"))
@@ -76,7 +75,6 @@ void ImageSource::SetTexture(GLuint tex)
 nlohmann::json ImageSource::Serialize() const
 {
 	return {
-		{ "type", ImageSourceID },
 		{ "filter", this->imgSettings.Serialize() },
 		{ "file", this->currentFile },
 	};

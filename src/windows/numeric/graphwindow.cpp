@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(GraphWindow, Menu, "graph", "Graph");
+REGISTER_WINDOW_CLASS(GraphWindow, Menu, "graph", "Graph")
 
 GraphWindow::GraphWindow() :
     Window("Graph", 0),
@@ -37,16 +37,4 @@ void GraphWindow::OnUpdate()
 		FLT_MAX,
 		FLT_MAX,
 		size);
-}
-
-nlohmann::json GraphWindow::Serialize() const
-{
-	return {
-		{ "type", GraphWindowID }
-	};
-}
-
-void GraphWindow::Deserialize(const nlohmann::json &value)
-{
-	(void)value;
 }

@@ -3,7 +3,7 @@
 #include <signal.h>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(GpuErrorLog, Menu::Tools, "gpu-error-log", "OpenGL Log");
+REGISTER_WINDOW_CLASS(GpuErrorLog, Menu::Tools, "gpu-error-log", "OpenGL Log")
 
 struct logentry
 {
@@ -37,6 +37,7 @@ void APIENTRY GpuErrorLog::LogMessage(GLenum source,GLenum type,GLuint id,GLenum
 
 	fprintf(stderr, "[GL] %s\n", log.message.c_str());
 
+	/*
 	if(breakOnNextError && severity == GL_DEBUG_SEVERITY_HIGH)
 	{
 #ifdef _MSC_VER
@@ -46,6 +47,7 @@ void APIENTRY GpuErrorLog::LogMessage(GLenum source,GLenum type,GLuint id,GLenum
 #endif
 		breakOnNextError = false;
 	}
+	*/
 }
 
 GpuErrorLog::GpuErrorLog() :

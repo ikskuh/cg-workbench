@@ -7,6 +7,7 @@
 class TimerWindow :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	float total;
 	float delta;

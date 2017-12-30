@@ -4,6 +4,7 @@
 
 class GraphWindow : public Window
 {
+	WINDOW_PREAMBLE
 private:
 	std::vector<float> samples;
 	Sink * input;
@@ -12,8 +13,4 @@ protected:
 	void OnUpdate() override;
 public:
 	GraphWindow();
-
-	nlohmann::json Serialize() const;
-
-	void Deserialize(const nlohmann::json &value);
 };

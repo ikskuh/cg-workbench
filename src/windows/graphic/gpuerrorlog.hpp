@@ -5,6 +5,7 @@
 class GpuErrorLog :
 	public Window
 {
+	WINDOW_PREAMBLE
 protected:
 	void OnUpdate() override;
 public:

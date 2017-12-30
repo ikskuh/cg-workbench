@@ -6,6 +6,7 @@ template<CgDataType _Type>
 class UniformWindow :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	typename UniformType<_Type>::type value;
 	static char const * GetTitle();

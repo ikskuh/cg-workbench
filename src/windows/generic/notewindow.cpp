@@ -21,7 +21,6 @@ void NoteWindow::OnUpdate()
 nlohmann::json NoteWindow::Serialize() const
 {
 	return {
-		{ "type", NoteWindowID },
 		{ "text", std::string(this->buffer) }
 	};
 }

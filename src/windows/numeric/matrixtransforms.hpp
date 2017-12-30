@@ -16,6 +16,7 @@ protected:
 class MatrixMult :
 	public MatrixTransforms
 {
+	WINDOW_PREAMBLE
 private:
 	Sink * lhs;
 	Sink * rhs;
@@ -23,13 +24,12 @@ protected:
 	void OnRender() override;
 public:
 	MatrixMult();
-
-	TRIVIAL_SERIALIZE("matrix-mult")
 };
 
 class MatrixTranslate :
 	public MatrixTransforms
 {
+	WINDOW_PREAMBLE
 private:
 	Sink * input;
 	Sink * offset;
@@ -37,13 +37,12 @@ protected:
 	void OnRender() override;
 public:
 	MatrixTranslate();
-
-	TRIVIAL_SERIALIZE("matrix-translate")
 };
 
 class MatrixRotate :
 	public MatrixTransforms
 {
+	WINDOW_PREAMBLE
 private:
 	Sink * input;
 	Sink * axis;
@@ -52,13 +51,12 @@ protected:
 	void OnRender() override;
 public:
 	MatrixRotate();
-
-	TRIVIAL_SERIALIZE("matrix-rotate")
 };
 
 class MatrixScale :
 	public MatrixTransforms
 {
+	WINDOW_PREAMBLE
 private:
 	Sink * input;
 	Sink * scaling;
@@ -66,13 +64,12 @@ protected:
 	void OnRender() override;
 public:
 	MatrixScale();
-
-	TRIVIAL_SERIALIZE("matrix-scale")
 };
 
 class MatrixLookAt :
 	public MatrixTransforms
 {
+	WINDOW_PREAMBLE
 private:
 	Sink * input;
 	Sink * eye;
@@ -82,13 +79,12 @@ protected:
 	void OnRender() override;
 public:
 	MatrixLookAt();
-
-	TRIVIAL_SERIALIZE("matrix-lookat")
 };
 
 class MatrixPerspective :
 	public MatrixTransforms
 {
+	WINDOW_PREAMBLE
 private:
 	Sink * input;
 	Sink * aspect;
@@ -99,6 +95,4 @@ protected:
 	void OnRender() override;
 public:
 	MatrixPerspective();
-
-	TRIVIAL_SERIALIZE("matrix-perspective")
 };

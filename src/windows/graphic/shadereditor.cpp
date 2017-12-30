@@ -2,7 +2,7 @@
 #include <cstdio>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(ShaderEditor, Menu, "shader", "Shader");
+REGISTER_WINDOW_CLASS(ShaderEditor, Menu, "shader", "Shader")
 
 char const * defaultVertexShader = R"glsl(#version 330
 layout(location = 0) in vec3 vPosition;
@@ -356,7 +356,6 @@ nlohmann::json ShaderEditor::Serialize() const
 	using namespace nlohmann;
 
 	json result;
-	result["type"] = ShaderEditorID;
 
 	json shaders;
 	for(auto const & sh : this->shaders)

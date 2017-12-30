@@ -1,7 +1,7 @@
 #include "colorwindow.hpp"
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(ColorWindow, Menu::Values, "uniform-color", "Color");
+REGISTER_WINDOW_CLASS(ColorWindow, Menu::Values, "uniform-color", "Color")
 
 ColorWindow::ColorWindow() :
     Window("Color", ImGuiWindowFlags_AlwaysAutoResize),
@@ -25,7 +25,6 @@ void ColorWindow::OnUpdate()
 nlohmann::json ColorWindow::Serialize() const
 {
 	return {
-		{ "type", ColorWindowID },
 		{ "color", { this->color.x, this->color.y, this->color.z, this->color.w } }
 	};
 }

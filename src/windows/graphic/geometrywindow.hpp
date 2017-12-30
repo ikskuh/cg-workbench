@@ -6,6 +6,7 @@
 class GeometryWindow :
 	public Window
 {
+	WINDOW_PREAMBLE
 private:
 	Geometry geom;
 	GLuint vertexBuffer;

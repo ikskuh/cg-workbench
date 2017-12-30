@@ -77,7 +77,6 @@ void VectorSplitter::OnUpdate()
 nlohmann::json VectorSplitter::Serialize() const
 {
 	return {
-		{ "type", VectorSplitterID },
 		{ "components", this->components }
 	};
 }

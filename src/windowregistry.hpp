@@ -87,9 +87,10 @@ namespace Menu
 
 #define REGISTER_WINDOW_CLASS(_Class, _Category, _ID, _DisplayName) \
 	WindowClass const __##_Class##__registration(_ID, _DisplayName, &_Category::Instance, []() -> Window * { return new _Class(); }); \
-	std::string const _Class##ID(_ID)
+	std::string _Class::GetTypeID() const { return _ID; }
 
 #define CONCAT_IMPL( x, y ) x##y
 #define MACRO_CONCAT( x, y ) CONCAT_IMPL( x, y )
 #define REGISTER_GENERIC_WINDOW_CLASS(_Class, _Arg, _Category, _ID, _DisplayName) \
-	WindowClass const MACRO_CONCAT(__##_Class##__registration_,__COUNTER__)(_ID, _DisplayName, &_Category::Instance, []() -> Window * { return new _Class _Arg(); })
+	WindowClass const MACRO_CONCAT(__##_Class##__registration_,__COUNTER__)(_ID, _DisplayName, &_Category::Instance, []() -> Window * { return new _Class _Arg(); }); \
+	template<> std::string _Class _Arg :: GetTypeID() const { return _ID; }

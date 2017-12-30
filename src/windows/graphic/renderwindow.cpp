@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(RenderWindow, Menu, "renderer", "Renderer");
+REGISTER_WINDOW_CLASS(RenderWindow, Menu, "renderer", "Renderer")
 
 #include "fileio.hpp"
 
@@ -354,7 +354,6 @@ nlohmann::json RenderWindow::Serialize() const
 	}
 
 	return {
-		{ "type", RenderWindowID },
 		{ "scale", this->scale },
 		{ "wireframe", this->wireframe },
 		{ "depthtest", this->depthtest },
