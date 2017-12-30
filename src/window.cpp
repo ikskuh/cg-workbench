@@ -286,6 +286,7 @@ void Window::Update()
 				{
 					auto obj = this->Serialize();
 					obj["window-type"] = this->GetTypeID();
+					obj["window-title"] = this->GetTitle();
 
 					std::ofstream stream(path);
 					stream << obj;
