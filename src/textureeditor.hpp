@@ -11,10 +11,13 @@ private:
 public:
 	GLenum MinFilter, MagFilter;
 	GLenum WrapR, WrapS, WrapT;
+private:
+	void ReadParams();
+	void WriteParams();
 public:
 	TextureEditor();
 
-	void SetTexture(GLuint tex);
+	void SetTexture(GLuint tex, bool overwriteParams = true);
 
 	void Show();
 

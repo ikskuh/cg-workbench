@@ -69,68 +69,6 @@ static Window * ClassMenu(WindowCategory const * root)
 static Window * createMenu()
 {
 	return ClassMenu(&Menu::Instance);
-
-	Window * result = nullptr;
-	if(ImGui::MenuItem("Shader"))   result = new ShaderEditor();
-	if(ImGui::MenuItem("Geometry")) result = new GeometryWindow();
-	if(ImGui::MenuItem("Renderer")) result = new RenderWindow();
-	if(ImGui::MenuItem("Graph")) result = new GraphWindow();
-	if(ImGui::MenuItem("Image")) result = new ImageSource();
-	if(ImGui::MenuItem("Trigger")) result = new Trigger();
-	if(ImGui::BeginMenu("Values"))
-	{
-		if(ImGui::MenuItem("Float")) result = new UniformWindow<CgDataType::UniformFloat>();
-		ImGui::Separator();
-		if(ImGui::MenuItem("Vec2")) result = new UniformWindow<CgDataType::UniformVec2>();
-		if(ImGui::MenuItem("Vec3")) result = new UniformWindow<CgDataType::UniformVec3>();
-		if(ImGui::MenuItem("Vec4")) result = new UniformWindow<CgDataType::UniformVec4>();
-		ImGui::Separator();
-		if(ImGui::MenuItem("Mat3")) result = new UniformWindow<CgDataType::UniformMat3>();
-		if(ImGui::MenuItem("Mat4")) result = new UniformWindow<CgDataType::UniformMat4>();
-		ImGui::Separator();
-		if(ImGui::MenuItem("Color")) result = new ColorWindow();
-		if(ImGui::MenuItem("Timer")) result = new TimerWindow();
-
-		ImGui::EndMenu();
-	}
-	if(ImGui::BeginMenu("Arithmetic"))
-	{
-		if(ImGui::MenuItem("float")) result = new ArithmeticWindow<CgDataType::UniformFloat>();
-		if(ImGui::MenuItem("vec2")) result = new ArithmeticWindow<CgDataType::UniformVec2>();
-		if(ImGui::MenuItem("vec3")) result = new ArithmeticWindow<CgDataType::UniformVec3>();
-		if(ImGui::MenuItem("vec4")) result = new ArithmeticWindow<CgDataType::UniformVec4>();
-		ImGui::Separator();
-		if(ImGui::MenuItem("vec to float")) result = new VectorSplitter();
-		if(ImGui::MenuItem("float to vec")) result = new VectorMerger();
-		ImGui::EndMenu();
-	}
-	if(ImGui::BeginMenu("Transforms"))
-	{
-		if(ImGui::MenuItem("Multiplication")) result = new MatrixMult();
-		if(ImGui::MenuItem("Translation")) result = new MatrixTranslate();
-		if(ImGui::MenuItem("Rotation")) result = new MatrixRotate();
-		if(ImGui::MenuItem("Scaling")) result = new MatrixScale();
-		if(ImGui::MenuItem("Look At")) result = new MatrixLookAt();
-		if(ImGui::MenuItem("Perspective")) result = new MatrixPerspective();
-		ImGui::EndMenu();
-	}
-	if(ImGui::BeginMenu("Buffer"))
-	{
-		if(ImGui::MenuItem("float")) result = new BufferWindow<CgDataType::UniformFloat>();
-		if(ImGui::MenuItem("vec2")) result = new BufferWindow<CgDataType::UniformVec2>();
-		if(ImGui::MenuItem("vec3")) result = new BufferWindow<CgDataType::UniformVec3>();
-		if(ImGui::MenuItem("vec4")) result = new BufferWindow<CgDataType::UniformVec4>();
-		ImGui::Separator();
-		if(ImGui::MenuItem("Image")) result = new ImageBuffer();
-		ImGui::EndMenu();
-	}
-
-	ImGui::Separator();
-	if(ImGui::MenuItem("Note")) result = new NoteWindow();
-
-	if(result)
-		Window::Register(result);
-	return result;
 }
 
 extern ImVec2 screen_pan;
@@ -481,19 +419,16 @@ void load(std::string const & fileName)
 	for(json window : windows)
 	{
 		Window * win = nullptr;
-
-		// renderer -> RenderWindow
-		// geometry -> GeometryWindow
-		// shader   -> ShaderEditor
 		json type = window["type"];
-		if(false)
-			;
-#define WINMAP(_Type,_Name) \
-		else if(type == _Name) \
-			win = new _Type();
-#include "windows/typemap.hpp"
-#undef WINMAP
-		else
+
+		for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
+		{
+			if(type != cl->GetID())
+				continue;
+			win = cl->CreateInstance();
+			break;
+		}
+		if(!win)
 			abort();
 
 		json pos  = window["window-pos"];

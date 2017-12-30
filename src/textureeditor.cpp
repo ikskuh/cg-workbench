@@ -52,16 +52,15 @@ TextureEditor::TextureEditor()
 
 }
 
-void TextureEditor::SetTexture(GLuint tex)
+void TextureEditor::SetTexture(GLuint tex, bool overwrite)
 {
 	if(this->img == tex)
 		return;
 	this->img = tex;
-	glGetTextureParameteriv(this->img, GL_TEXTURE_MIN_FILTER, reinterpret_cast<GLint*>(&this->MinFilter));
-	glGetTextureParameteriv(this->img, GL_TEXTURE_MAG_FILTER, reinterpret_cast<GLint*>(&this->MagFilter));
-	glGetTextureParameteriv(this->img, GL_TEXTURE_WRAP_R, reinterpret_cast<GLint*>(&this->WrapR));
-	glGetTextureParameteriv(this->img, GL_TEXTURE_WRAP_S, reinterpret_cast<GLint*>(&this->WrapS));
-	glGetTextureParameteriv(this->img, GL_TEXTURE_WRAP_T, reinterpret_cast<GLint*>(&this->WrapT));
+	if(overwrite)
+		this->WriteParams();
+	else
+		this->ReadParams();
 }
 
 void TextureEditor::Show()
@@ -115,6 +114,21 @@ void TextureEditor::Deserialize(nlohmann::json const & value)
 	if(this->img == 0)
 		return;
 
+	this->WriteParams();
+}
+
+
+void TextureEditor::ReadParams()
+{
+	glGetTextureParameteriv(this->img, GL_TEXTURE_MIN_FILTER, reinterpret_cast<GLint*>(&this->MinFilter));
+	glGetTextureParameteriv(this->img, GL_TEXTURE_MAG_FILTER, reinterpret_cast<GLint*>(&this->MagFilter));
+	glGetTextureParameteriv(this->img, GL_TEXTURE_WRAP_R, reinterpret_cast<GLint*>(&this->WrapR));
+	glGetTextureParameteriv(this->img, GL_TEXTURE_WRAP_S, reinterpret_cast<GLint*>(&this->WrapS));
+	glGetTextureParameteriv(this->img, GL_TEXTURE_WRAP_T, reinterpret_cast<GLint*>(&this->WrapT));
+}
+
+void TextureEditor::WriteParams()
+{
 	glTextureParameteri(this->img, GL_TEXTURE_WRAP_R, this->WrapR);
 	glTextureParameteri(this->img, GL_TEXTURE_WRAP_S, this->WrapS);
 	glTextureParameteri(this->img, GL_TEXTURE_WRAP_T, this->WrapT);

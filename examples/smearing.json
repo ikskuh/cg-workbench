@@ -118,8 +118,8 @@
             "type": "shader",
             "window-id": 4,
             "window-pos": [
-                417.0,
-                51.0
+                472.0,
+                61.0
             ],
             "window-size": [
                 714.0,
@@ -231,7 +231,7 @@
             "window-title": "Smear Speed"
         },
         {
-            "current": 12436.375,
+            "current": 12482.4677734375,
             "speed": 1.0,
             "type": "timer",
             "window-id": 11,
