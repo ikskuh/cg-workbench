@@ -183,6 +183,13 @@
             "window-title": "Brush Color"
         },
         {
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9986,
+                "wrap-r": 33071,
+                "wrap-s": 33071,
+                "wrap-t": 33071
+            },
             "type": "image-buffer",
             "window-id": 8,
             "window-pos": [
@@ -224,7 +231,7 @@
             "window-title": "Smear Speed"
         },
         {
-            "current": 12429.5048828125,
+            "current": 12436.375,
             "speed": 1.0,
             "type": "timer",
             "window-id": 11,

@@ -13,24 +13,26 @@
 
 #include "window.hpp"
 
-#include "windows/shadereditor.hpp"
-#include "windows/renderwindow.hpp"
-#include "windows/luaconsole.hpp"
-#include "windows/geometrywindow.hpp"
-#include "windows/gpuerrorlog.hpp"
-#include "windows/uniformwindow.hpp"
-#include "windows/colorwindow.hpp"
-#include "windows/timerwindow.hpp"
-#include "windows/arithmeticwindow.hpp"
-#include "windows/notewindow.hpp"
-#include "windows/bufferwindow.hpp"
-#include "windows/graphwindow.hpp"
-#include "windows/vectoradapter.hpp"
-#include "windows/imagesource.hpp"
-#include "windows/trigger.hpp"
-#include "windows/imagebuffer.hpp"
-#include "windows/matrixtransforms.hpp"
+#include "windows/graphic/shadereditor.hpp"
+#include "windows/graphic/renderwindow.hpp"
+#include "windows/generic/luaconsole.hpp"
+#include "windows/graphic/geometrywindow.hpp"
+#include "windows/graphic/gpuerrorlog.hpp"
+#include "windows/numeric/uniformwindow.hpp"
+#include "windows/numeric/colorwindow.hpp"
+#include "windows/numeric/timerwindow.hpp"
+#include "windows/numeric/arithmeticwindow.hpp"
+#include "windows/generic/notewindow.hpp"
+#include "windows/numeric/bufferwindow.hpp"
+#include "windows/numeric/graphwindow.hpp"
+#include "windows/numeric/vectoradapter.hpp"
+#include "windows/graphic/imagesource.hpp"
+#include "windows/generic/trigger.hpp"
+#include "windows/graphic/imagebuffer.hpp"
+#include "windows/numeric/matrixtransforms.hpp"
 #include "resources.hpp"
+
+#include "windowregistry.hpp"
 
 std::string currentFileName;
 
@@ -40,8 +42,34 @@ void load(std::string const & fileName);
 
 extern int currentWindowID;
 
+static Window * ClassMenu(WindowCategory const * root)
+{
+	Window * result = nullptr;
+
+	for(auto const * child : root->GetChildren())
+	{
+		if(ImGui::BeginMenu(child->GetName().c_str()) == false)
+			continue;
+		auto * r = ClassMenu(child);
+		if(r != nullptr)
+			result = r;
+
+		ImGui::EndMenu();
+	}
+
+	for(auto const * child : root->GetClasses())
+	{
+		if(ImGui::MenuItem(child->GetName().c_str()))
+			Window::Register(result = child->CreateInstance());
+	}
+
+	return result;
+}
+
 static Window * createMenu()
 {
+	return ClassMenu(&Menu::Instance);
+
 	Window * result = nullptr;
 	if(ImGui::MenuItem("Shader"))   result = new ShaderEditor();
 	if(ImGui::MenuItem("Geometry")) result = new GeometryWindow();

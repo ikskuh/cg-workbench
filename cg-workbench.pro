@@ -8,7 +8,14 @@ PKGCONFIG += lua gl sdl2 SDL2_image
 
 LIBS += -lm -ldl
 
-INCLUDEPATH += ext/gl3w ext/stb ext/imgui ext/json ext/nativefiledialog/src/include ext/tinyobjloader
+INCLUDEPATH += \
+	$$PWD/src \
+	$$PWD/ext/gl3w \
+	$$PWD/ext/stb \
+	$$PWD/ext/imgui \
+	$$PWD/ext/json \
+	$$PWD/ext/nativefiledialog/src/include \
+	$$PWD/ext/tinyobjloader
 
 LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a $$system(pkg-config --libs gtk+-3.0)
 
@@ -24,32 +31,33 @@ SOURCES += \
 	ext/imgui/imgui.cpp \
 	ext/imgui/imgui_demo.cpp \
 	ext/imgui/imgui_draw.cpp \
-    src/window.cpp \
-    src/windows/shadereditor.cpp \
-    src/windows/luaconsole.cpp \
-    src/windows/renderwindow.cpp \
     src/source.cpp \
     src/sink.cpp \
     src/slot.cpp \
-    src/windows/geometrywindow.cpp \
-    src/windows/gpuerrorlog.cpp \
     src/imageloader.cpp \
     src/resources.cpp \
-    src/windows/uniformwindow.cpp \
-    src/windows/colorwindow.cpp \
-    src/windows/timerwindow.cpp \
-    src/windows/arithmeticwindow.cpp \
-    src/windows/notewindow.cpp \
-    src/windows/bufferwindow.cpp \
-    src/windows/graphwindow.cpp \
-    src/windows/vectoradapter.cpp \
-    src/windows/imagesource.cpp \
-    src/windows/trigger.cpp \
-    src/windows/imagebuffer.cpp \
-    src/windows/matrixtransforms.cpp \
     src/geometry.cpp \
     ext/tinyobjloader/tiny_obj_loader.cpp \
-    src/textureeditor.cpp
+    src/textureeditor.cpp \
+    src/window.cpp \
+    src/windows/generic/luaconsole.cpp \
+    src/windows/generic/notewindow.cpp \
+    src/windows/generic/trigger.cpp \
+    src/windows/graphic/imagebuffer.cpp \
+    src/windows/graphic/imagesource.cpp \
+    src/windows/graphic/shadereditor.cpp \
+    src/windows/graphic/renderwindow.cpp \
+    src/windows/graphic/geometrywindow.cpp \
+    src/windows/graphic/gpuerrorlog.cpp \
+    src/windows/numeric/uniformwindow.cpp \
+    src/windows/numeric/colorwindow.cpp \
+    src/windows/numeric/timerwindow.cpp \
+    src/windows/numeric/arithmeticwindow.cpp \
+    src/windows/numeric/bufferwindow.cpp \
+    src/windows/numeric/graphwindow.cpp \
+    src/windows/numeric/vectoradapter.cpp \
+    src/windows/numeric/matrixtransforms.cpp \
+    src/windowregistry.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -59,31 +67,32 @@ HEADERS += \
 	ext/json/json.hpp \
 	ext/nativefiledialog/src/include/nfd.h \
     src/window.hpp \
-    src/windows/shadereditor.hpp \
-    src/windows/luaconsole.hpp \
     ext/imgui/imconfig.h \
-    src/windows/renderwindow.hpp \
     src/source.hpp \
     src/sink.hpp \
     src/cgdatatype.hpp \
     src/slot.hpp \
-    src/windows/geometrywindow.hpp \
-    src/windows/gpuerrorlog.hpp \
-    src/imageloader.hpp \
     src/resources.hpp \
-    src/windows/uniformwindow.hpp \
-    src/windows/colorwindow.hpp \
-    src/windows/timerwindow.hpp \
-    src/windows/arithmeticwindow.hpp \
-    src/windows/notewindow.hpp \
-    src/windows/bufferwindow.hpp \
-    src/windows/graphwindow.hpp \
-    src/windows/vectoradapter.hpp \
-    src/windows/imagesource.hpp \
-    src/windows/trigger.hpp \
-    src/windows/imagebuffer.hpp \
-    src/windows/matrixtransforms.hpp \
-    src/windows/typemap.hpp \
+    src/imageloader.hpp \
     src/geometry.hpp \
     ext/tinyobjloader/tiny_obj_loader.h \
-    src/textureeditor.hpp
+    src/textureeditor.hpp \
+    src/windows/typemap.hpp \
+    src/windows/generic/luaconsole.hpp \
+    src/windows/generic/notewindow.hpp \
+    src/windows/generic/trigger.hpp \
+    src/windows/graphic/shadereditor.hpp \
+    src/windows/graphic/renderwindow.hpp \
+    src/windows/graphic/geometrywindow.hpp \
+    src/windows/graphic/imagesource.hpp \
+    src/windows/graphic/gpuerrorlog.hpp \
+    src/windows/graphic/imagebuffer.hpp \
+    src/windows/numeric/uniformwindow.hpp \
+    src/windows/numeric/colorwindow.hpp \
+    src/windows/numeric/timerwindow.hpp \
+    src/windows/numeric/arithmeticwindow.hpp \
+    src/windows/numeric/bufferwindow.hpp \
+    src/windows/numeric/graphwindow.hpp \
+    src/windows/numeric/vectoradapter.hpp \
+    src/windows/numeric/matrixtransforms.hpp \
+    src/windowregistry.hpp

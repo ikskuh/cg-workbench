@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <functional>
 #include <json.hpp>
 
 #include "source.hpp"
@@ -89,6 +90,7 @@ public:
 	static std::vector<std::unique_ptr<Window>>::iterator Begin();
 	static std::vector<std::unique_ptr<Window>>::iterator End();
 };
+
 
 #define TRIVIAL_SERIALIZE(_Name) \
 	nlohmann::json Serialize() const override \
