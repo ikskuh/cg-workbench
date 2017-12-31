@@ -6,7 +6,7 @@
                 "Event"
             ],
             "to": [
-                3,
+                4,
                 "Input"
             ]
         },
@@ -16,7 +16,17 @@
                 "Event"
             ],
             "to": [
+                4,
+                "Input"
+            ]
+        },
+        {
+            "from": [
                 3,
+                "Event"
+            ],
+            "to": [
+                4,
                 "Input"
             ]
         }
@@ -27,8 +37,8 @@
         {
             "window-id": 1,
             "window-pos": [
-                359.0,
-                225.0
+                260.0,
+                238.0
             ],
             "window-size": [
                 72.0,
@@ -40,8 +50,8 @@
         {
             "window-id": 2,
             "window-pos": [
-                327.0,
-                353.0
+                202.0,
+                325.0
             ],
             "window-size": [
                 72.0,
@@ -53,12 +63,27 @@
         {
             "window-id": 3,
             "window-pos": [
-                557.0,
-                308.0
+                243.0,
+                421.0
             ],
             "window-size": [
-                262.0,
+                72.0,
                 54.0
+            ],
+            "window-title": "Trigger",
+            "window-type": "trigger"
+        },
+        {
+            "delay": 100,
+            "suppressor": 0,
+            "window-id": 4,
+            "window-pos": [
+                421.0,
+                381.0
+            ],
+            "window-size": [
+                304.0,
+                77.0
             ],
             "window-title": "Event Delay",
             "window-type": "event-delay"

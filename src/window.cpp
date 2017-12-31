@@ -344,17 +344,15 @@ Window::~Window()
 {
 	for(auto const & win : windows)
 	{
-		if(win.get() == nullptr)
+		if(win.get() == nullptr) // this is ourselves, as we are deleted right now
 			continue;
-		if(win.get() == this)
+		if(win.get() == this) // this is weird
 			continue;
+
 		for(auto const & source : this->sources)
 		{
 			for(auto const & sink : win->sinks)
-			{
-				if(sink->GetSource() == source.get())
-					sink->RemoveSource(source.get());
-			}
+				sink->RemoveSource(source.get());
 		}
 	}
 }

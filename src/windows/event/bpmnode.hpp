@@ -12,8 +12,9 @@ private:
 	Sink * stop;
 	bool ticking;
 	int frequency;
-	int offset;
 	int timer;
+
+	int lastTaps[4];
 protected:
 	void OnUpdate() override;
 public:
