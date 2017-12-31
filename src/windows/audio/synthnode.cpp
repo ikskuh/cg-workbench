@@ -50,3 +50,19 @@ void SynthNode::OnUpdate()
 	if(ImGui::RadioButton("Triangle Wave", (this->waveform == 2))) this->waveform = 2;
 	if(ImGui::RadioButton("Noise", (this->waveform == 3))) this->waveform = 3;
 }
+
+WINDOW_SERIALIZE_IMPL(SynthNode)
+{
+	return {
+		{ "freq", this->freq },
+		{ "dutycycle", this->dutyCycle },
+		{ "waveform", this->waveform },
+	};
+}
+
+WINDOW_DESERIALIZE_IMPL(SynthNode)
+{
+	this->freq = data.value("freq", 440);
+	this->dutyCycle = data.value("dutycycle", 0.5);
+	this->waveform = data.value("waveform", 0);
+}

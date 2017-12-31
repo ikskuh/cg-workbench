@@ -135,4 +135,10 @@ public:
 		nlohmann::json Serialize() const override; \
 		void Deserialize(nlohmann::json const & value) override;
 
+#define WINDOW_SERIALIZE_IMPL(_Type) \
+	nlohmann::json _Type::Serialize() const
+
+#define WINDOW_DESERIALIZE_IMPL(_Type) \
+	void _Type::Deserialize(nlohmann::json const & data)
+
 #endif // WINDOW_HPP

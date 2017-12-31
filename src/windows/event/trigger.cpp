@@ -1,7 +1,7 @@
 #include "trigger.hpp"
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(Trigger, Menu, "trigger", "Trigger")
+REGISTER_WINDOW_CLASS(Trigger, Menu::Event, "trigger", "Trigger")
 
 Trigger::Trigger() :
     Window("Trigger", ImGuiWindowFlags_AlwaysAutoResize)

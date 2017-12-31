@@ -81,4 +81,8 @@ namespace Menu
 	{
 		WindowCategory Instance(&Menu::Instance, "Audio");
 	}
+	namespace Event
+	{
+		WindowCategory Instance(&Menu::Instance, "Event");
+	}
 }

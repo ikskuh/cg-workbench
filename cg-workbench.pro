@@ -45,7 +45,7 @@ SOURCES += \
     src/window.cpp \
     src/windows/generic/luaconsole.cpp \
     src/windows/generic/notewindow.cpp \
-    src/windows/generic/trigger.cpp \
+    src/windows/event/trigger.cpp \
     src/windows/graphic/imagebuffer.cpp \
     src/windows/graphic/imagesource.cpp \
     src/windows/graphic/shadereditor.cpp \
@@ -72,7 +72,9 @@ SOURCES += \
     src/windows/audio/soundfile.cpp \
     src/event.cpp \
     src/windows/audio/synthnode.cpp \
-    src/windows/audio/waveformviewer.cpp
+    src/windows/audio/waveformviewer.cpp \
+    src/windows/event/bpmnode.cpp \
+    src/windows/event/eventdelay.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -96,7 +98,7 @@ HEADERS += \
     src/windows/typemap.hpp \
     src/windows/generic/luaconsole.hpp \
     src/windows/generic/notewindow.hpp \
-    src/windows/generic/trigger.hpp \
+    src/windows/event/trigger.hpp \
     src/windows/graphic/shadereditor.hpp \
     src/windows/graphic/renderwindow.hpp \
     src/windows/graphic/geometrywindow.hpp \
@@ -117,10 +119,12 @@ HEADERS += \
     src/windows/generic/linearnoisenode.hpp \
     src/windows/audio/audionode.hpp \
     src/audiostream.hpp \
+    src/event.hpp \
     src/windows/audio/audiooutput.hpp \
     src/windows/audio/splitchannelsnode.hpp \
     src/windows/audio/mergechannelsnode.hpp \
     src/windows/audio/soundfile.hpp \
-    src/event.hpp \
     src/windows/audio/synthnode.hpp \
-    src/windows/audio/waveformviewer.hpp
+    src/windows/audio/waveformviewer.hpp \
+    src/windows/event/bpmnode.hpp \
+    src/windows/event/eventdelay.hpp

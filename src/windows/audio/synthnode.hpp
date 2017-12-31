@@ -6,6 +6,7 @@ class SynthNode :
 	public AudioNode
 {
 	WINDOW_PREAMBLE
+	WINDOW_CUSTOM_SERIALIZE
 private:
 	AudioStream stream;
 

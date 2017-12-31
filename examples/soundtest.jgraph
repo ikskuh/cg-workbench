@@ -1,184 +1,23 @@
 {
-    "signals": [
-        {
-            "from": [
-                2,
-                "Sound"
-            ],
-            "to": [
-                1,
-                "Stream"
-            ]
-        },
-        {
-            "from": [
-                3,
-                "Event"
-            ],
-            "to": [
-                2,
-                "Restart"
-            ]
-        },
-        {
-            "from": [
-                5,
-                "Event"
-            ],
-            "to": [
-                4,
-                "Restart"
-            ]
-        },
-        {
-            "from": [
-                4,
-                "Sound"
-            ],
-            "to": [
-                6,
-                "Stream"
-            ]
-        },
-        {
-            "from": [
-                2,
-                "Sound"
-            ],
-            "to": [
-                7,
-                "Source"
-            ]
-        },
-        {
-            "from": [
-                4,
-                "Sound"
-            ],
-            "to": [
-                8,
-                "Source"
-            ]
-        }
-    ],
+    "signals": null,
     "type": "cg-workbench-file",
     "version": "1.0",
     "windows": [
         {
-            "muted": false,
-            "volumes": [
-                1.0,
-                1.0
-            ],
+            "dutycycle": 0.25,
+            "freq": 330.0,
+            "waveform": 2,
             "window-id": 1,
             "window-pos": [
-                791.0,
-                42.0
+                245.0,
+                153.0
             ],
             "window-size": [
-                88.0,
-                163.0
+                128.0,
+                165.0
             ],
-            "window-title": "Output",
-            "window-type": "audio-output"
-        },
-        {
-            "fileName": "/home/felix/projects/cg-workbench/examples/somesound.ogg",
-            "window-id": 2,
-            "window-pos": [
-                317.0,
-                126.0
-            ],
-            "window-size": [
-                134.0,
-                101.0
-            ],
-            "window-title": "Sound File",
-            "window-type": "audio-sound-file"
-        },
-        {
-            "window-id": 3,
-            "window-pos": [
-                117.0,
-                191.0
-            ],
-            "window-size": [
-                72.0,
-                54.0
-            ],
-            "window-title": "Trigger",
-            "window-type": "trigger"
-        },
-        {
-            "fileName": "/home/felix/projects/cg-workbench/examples/somesound.ogg",
-            "window-id": 4,
-            "window-pos": [
-                327.0,
-                292.0
-            ],
-            "window-size": [
-                134.0,
-                101.0
-            ],
-            "window-title": "Sound File",
-            "window-type": "audio-sound-file"
-        },
-        {
-            "window-id": 5,
-            "window-pos": [
-                103.0,
-                317.0
-            ],
-            "window-size": [
-                72.0,
-                54.0
-            ],
-            "window-title": "Trigger",
-            "window-type": "trigger"
-        },
-        {
-            "muted": false,
-            "volumes": [
-                1.0,
-                1.0
-            ],
-            "window-id": 6,
-            "window-pos": [
-                719.0,
-                400.0
-            ],
-            "window-size": [
-                88.0,
-                163.0
-            ],
-            "window-title": "Output",
-            "window-type": "audio-output"
-        },
-        {
-            "window-id": 7,
-            "window-pos": [
-                572.0,
-                182.0
-            ],
-            "window-size": [
-                85.0,
-                48.0
-            ],
-            "window-title": "Split Channels",
-            "window-type": "audio-split-channels"
-        },
-        {
-            "window-id": 8,
-            "window-pos": [
-                580.0,
-                265.0
-            ],
-            "window-size": [
-                85.0,
-                48.0
-            ],
-            "window-title": "Split Channels",
-            "window-type": "audio-split-channels"
+            "window-title": "Synthesizer",
+            "window-type": "audio-synth"
         }
     ]
 }
