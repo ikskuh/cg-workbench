@@ -69,7 +69,8 @@ SOURCES += \
     src/windows/audio/audiooutput.cpp \
     src/windows/audio/splitchannelsnode.cpp \
     src/windows/audio/mergechannelsnode.cpp \
-    src/windows/audio/soundfile.cpp
+    src/windows/audio/soundfile.cpp \
+    src/event.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -117,4 +118,5 @@ HEADERS += \
     src/windows/audio/audiooutput.hpp \
     src/windows/audio/splitchannelsnode.hpp \
     src/windows/audio/mergechannelsnode.hpp \
-    src/windows/audio/soundfile.hpp
+    src/windows/audio/soundfile.hpp \
+    src/event.hpp

@@ -17,8 +17,6 @@ struct logentry
 static std::mutex mutex;
 static std::vector<logentry> entries;
 
-static bool breakOnNextError = true;
-
 void APIENTRY GpuErrorLog::LogMessage(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,const void *userParam)
 {
 	(void)userParam;

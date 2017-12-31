@@ -138,6 +138,8 @@ extern ImVec2 screen_pan;
 
 float deltatime;
 
+ImFont * labelFont;
+
 int main(int argc, char ** argv)
 {
     // Setup SDL
@@ -173,13 +175,25 @@ int main(int argc, char ** argv)
 
     // Load Fonts
     // (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
-    //ImGuiIO& io = ImGui::GetIO();
-    //io.Fonts->AddFontDefault();
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/Cousine-Regular.ttf", 15.0f);
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/ProggyClean.ttf", 13.0f);
-    //io.Fonts->AddFontFromFileTTF("../../extra_fonts/ProggyTiny.ttf", 10.0f);
-    //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.Fonts->AddFontDefault();
+
+		ImFontConfig cfg;
+		cfg.PixelSnapH = true;
+		cfg.SizePixels = 10.0;
+		cfg.OversampleH = cfg.OversampleV = 1;
+		labelFont = io.Fonts->AddFontDefault(&cfg);
+		assert(labelFont != nullptr);
+
+		//io.Fonts->AddFontFromFileTTF("../../extra_fonts/Cousine-Regular.ttf", 15.0f);
+		//io.Fonts->AddFontFromFileTTF("../../extra_fonts/DroidSans.ttf", 16.0f);
+		//io.Fonts->AddFontFromFileTTF("../../extra_fonts/ProggyClean.ttf", 13.0f);
+		//io.Fonts->AddFontFromFileTTF("../../extra_fonts/ProggyTiny.ttf", 10.0f);
+		//io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
+
+	}
+
 
     bool show_test_window = false;
 	bool show_style_editor = false;
@@ -261,6 +275,11 @@ int main(int argc, char ** argv)
 
 		Window::RenderAll();
 
+		// start the new frame in the middle of our loop:
+		// Window::RenderAll requires the events still have
+		// the current time stamp whereas
+		// UpdateAll will set new events
+		Event::NewFrame();
         ImGui_ImplSdlGL3_NewFrame(window);
 
 		Window::UpdateAll();

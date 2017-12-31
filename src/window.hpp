@@ -29,11 +29,14 @@ private:
 
 	std::vector<std::unique_ptr<Source>> sources;
 	std::vector<std::unique_ptr<Sink>> sinks;
+	std::vector<std::unique_ptr<Event>> events;
 
 	char titleEditBuffer[256];
 
 	ImVec2 dupSpawnPos;
 protected:
+	Event * CreateEvent();
+
 	void AddSource(Source * source);
 	void AddSink(Sink * sink);
 

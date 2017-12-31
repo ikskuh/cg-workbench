@@ -8,19 +8,20 @@ REGISTER_WINDOW_CLASS(SoundFile, Menu::Audio, "audio-sound-file", "Sound File")
 SoundFile::SoundFile() :
     AudioNode("Sound File", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar),
     stream(1), offset(0.0f),
-    finished(false),
     soundFile(""),
     vorbis(nullptr),
-    playing(false)
+    playing(false), donePlaying(false)
 {
 	this->start = this->AddSink<CgDataType::Event>("Start");
 	this->pause = this->AddSink<CgDataType::Event>("Pause");
 	this->stop = this->AddSink<CgDataType::Event>("Stop");
 	this->restart = this->AddSink<CgDataType::Event>("Restart");
 
+	this->finished = this->CreateEvent();
+
 	this->AddSource<CgDataType::Audio>("Sound", &this->stream);
 	this->AddSource<CgDataType::UniformFloat>("Offset", &this->offset);
-	this->AddSource<CgDataType::Event>("Finished", &this->finished);
+	this->AddSource<CgDataType::Event>("Finished", this->finished);
 }
 
 SoundFile::~SoundFile()
@@ -36,11 +37,13 @@ void SoundFile::OnRenderAudio()
 	{
 		return;
 	}
-	stb_vorbis_get_samples_float_interleaved(
+	int len = stb_vorbis_get_samples_float_interleaved(
 			this->vorbis,
 			this->stream.GetChannels(),
 			this->stream.GetData(),
 			this->stream.GetChannels() * this->stream.GetLength());
+	if(len == 0)
+		this->donePlaying = true;
 
 	stb_vorbis_info info = stb_vorbis_get_info(this->vorbis);
 	unsigned int offset = stb_vorbis_get_sample_offset(this->vorbis);
@@ -50,7 +53,12 @@ void SoundFile::OnRenderAudio()
 
 void SoundFile::OnUpdate()
 {
-	// TODO: Implement 'finished' event
+	if(this->donePlaying && this->playing)
+	{
+		this->finished->Trigger();
+		this->playing = false;
+		this->donePlaying = false;
+	}
 
 	bool rewind = false;
 	if(this->restart->GetObject<CgDataType::Event>())
@@ -67,7 +75,6 @@ void SoundFile::OnUpdate()
 	}
 	if(this->pause->GetObject<CgDataType::Event>())
 		this->playing = false;
-
 
 	if(rewind && this->vorbis != nullptr)
 		stb_vorbis_seek_start(this->vorbis);

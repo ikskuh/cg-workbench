@@ -20,7 +20,8 @@ namespace resources
 		ICON(vector4, "vec4.png");
 		ICON(matrix, "matrix.png");
 		ICON(audio, "audio.png");
-		ICON(event, "event.png");
+		ICON(event_source, "event_source.png");
+		ICON(event_listener, "event_listener.png");
 	}
 
 	namespace icons
@@ -29,7 +30,8 @@ namespace resources
 		GLuint shader;
 		GLuint image;
 		GLuint audio;
-		GLuint event;
+		GLuint event_source;
+		GLuint event_listener;
 		GLuint genericSink;
 		GLuint genericSource;
 		GLuint matrix;

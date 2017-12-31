@@ -6,6 +6,7 @@
 #include "geometry.hpp"
 #include "shaderprogram.hpp"
 #include "audiostream.hpp"
+#include "event.hpp"
 
 enum class CgDataType
 {
@@ -45,7 +46,7 @@ MAPTYPE(Texture2D, GLuint, ImGui::Image((ImTextureID)uintptr_t(value), ImVec2(12
 MAPTYPE(Shader, ShaderProgram, (void)value);
 MAPTYPE(Geometry, Geometry, ImGui::Text("%d vertices", value.VertexCount));
 MAPTYPE(Audio, AudioStream, ImGui::Text("%d channels", value.GetChannels()));
-MAPTYPE(Event, bool, (void)value );
+MAPTYPE(Event, Event, ImGui::Text("Triggered %d times", value.GetCounter()) );
 
 #undef MAPTYPE
 

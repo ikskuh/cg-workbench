@@ -12,7 +12,7 @@ class SoundFile :
 private:
 	AudioStream stream;
 	float offset;
-	bool finished;
+	Event * finished;
 	std::string soundFile;
 	stb_vorbis * vorbis;
 
@@ -22,6 +22,8 @@ private:
 	Sink * stop;
 
 	bool playing;
+
+	bool donePlaying;
 
 	void LoadOgg(std::string name);
 protected:

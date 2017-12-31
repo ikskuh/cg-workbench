@@ -54,7 +54,11 @@ static ImTextureID GetSocketIcon(CgDataType type, bool isSource)
 		case CgDataType::Shader: return (ImTextureID)uintptr_t(resources::icons::shader);
 		case CgDataType::Texture2D: return (ImTextureID)uintptr_t(resources::icons::image);
 		case CgDataType::Audio: return (ImTextureID)uintptr_t(resources::icons::audio);
-		case CgDataType::Event: return (ImTextureID)uintptr_t(resources::icons::event);
+		case CgDataType::Event:
+			if(isSource)
+				return (ImTextureID)uintptr_t(resources::icons::event_source);
+			else
+				return (ImTextureID)uintptr_t(resources::icons::event_listener);
 		case CgDataType::UniformFloat: return (ImTextureID)uintptr_t(resources::icons::scalar);
 		case CgDataType::UniformVec2: return (ImTextureID)uintptr_t(resources::icons::vector2);
 		case CgDataType::UniformVec3: return (ImTextureID)uintptr_t(resources::icons::vector3);
@@ -68,6 +72,8 @@ static ImTextureID GetSocketIcon(CgDataType type, bool isSource)
 				return (ImTextureID)uintptr_t(resources::icons::genericSink);
 	}
 }
+
+extern ImFont * labelFont;
 
 void Window::UpdateNodes()
 {
@@ -86,7 +92,69 @@ void Window::UpdateNodes()
 
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
 
+	ImVec4 slotBaseColor(0.3f, 0.3f, 0.3f, 1.0f);
+	ImVec4 linkBaseColor(0.3f, 0.3f, 0.3f, 0.8f);
+	ImVec4 linkHoverColor(0.8f, 0.3f, 0.3f, 1.0f);
+
+	float labelSize = labelFont->FontSize;
+	ImColor labelColor(1.0f, 1.0f, 1.0f, 0.9f);
+
 	currentSink = nullptr;
+
+	for(auto const & win : windows)
+	{
+		for(auto const & sink : win->sinks)
+		{
+			if(sink->GetSource(false) != nullptr)
+			{
+				ImVec2 pos(
+					win->pos.x - size - margin,
+					win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
+
+				auto * src = sink->GetSource();
+				auto * srcwin = src->GetWindow();
+				auto srcpos = srcwin->GetPosition();
+				auto srcsize = srcwin->GetSize();
+				int index = src->GetWindowIndex();
+
+				ImVec2 from(srcpos.x + srcsize.x + margin + size, srcpos.y + margin + (size + margin) * index + size / 2);
+				ImVec2 to(pos.x, pos.y + size / 2);
+
+				bool selected = (src == hoveredSource || sink.get() == hoveredSink);
+
+				float width = 2.0;
+				ImColor color(linkBaseColor);
+
+				if(selected)
+				{
+					color = linkHoverColor;
+					width = 4.0;
+				}
+
+				if(src->GetType() == CgDataType::Event)
+				{
+					float str = 0.3 - glm::clamp<float>(
+						src->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
+						0.0,
+						0.3);
+					// TODO: Make better animation here!
+					width += 4.0 * str;
+					color.Value.x += str;
+					color.Value.y += str;
+					color.Value.z += str;
+				}
+
+				draw->AddBezierCurve(
+					from,
+				    ImVec2(from.x + 64, from.y),
+					ImVec2(to.x - 64, to.y),
+					to,
+					color,
+					width);
+			}
+		}
+	}
+
 	for(auto const & win : windows)
 	{
 		for(auto const & sink : win->sinks)
@@ -102,9 +170,22 @@ void Window::UpdateNodes()
 			        && (m.y < (pos.y + size));
 
 			ImGui::SetCursorScreenPos(pos);
+
+			ImVec4 color(slotBaseColor);
+
+			if(sink->HasSourceConnected() && sink->GetSource(true)->GetType() == CgDataType::Event)
+			{
+				float str = 0.3 - glm::clamp<float>(
+					sink->GetSource(true)->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
+					0.0,
+					0.3);
+				color.x += str;
+				color.y += str;
+				color.z += str;
+			}
+
 			if(currentSource != nullptr)
 			{
-				ImVec4 color(1.0f,0.0f,0.0f,1.0f);
 				if(sink->GetType() == currentSource->GetType())
 				{
 					if(hovered)
@@ -117,16 +198,27 @@ void Window::UpdateNodes()
 						color = ImVec4(0.0f,1.0f,0.0f,1.0f);
 					}
 				}
-				ImGui::PushStyleColor(ImGuiCol_Button, color);
 			}
+			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			ImGui::PushID(sink.get());
 			if(ImGui::ImageButton(GetSocketIcon(sink->GetType(), false) , ImVec2(size, size)))
 				sink->SetSource(nullptr);
 			ImGui::PopID();
-			if(currentSource != nullptr)
-			{
-				ImGui::PopStyleColor();
-			}
+			ImGui::PopStyleColor();
+
+			ImVec2 label = ImGui::GetFont()->CalcTextSizeA(
+				labelSize,
+				1000.0f,
+				1000.0f,
+				sink->GetName().c_str());
+
+			draw->AddText(
+				labelFont,
+				labelSize,
+				ImVec2(pos.x - margin - label.x, pos.y + (size - labelSize) / 2),
+				labelColor,
+				sink->GetName().c_str());
+
 			if(ImGui::IsItemHovered())
 			{
 				hoveredSink = sink.get();
@@ -140,12 +232,36 @@ void Window::UpdateNodes()
 		offset = margin;
 		for(auto const & source : win->sources)
 		{
-			ImGui::SetCursorScreenPos(ImVec2(
+			ImVec2 pos(
 				win->pos.x + win->size.x + margin,
-				win->pos.y + offset));
+				win->pos.y + offset);
+			ImGui::SetCursorScreenPos(pos);
+			ImVec4 color(slotBaseColor);
+
+			if(source->GetType() == CgDataType::Event)
+			{
+				float str = 0.3 - glm::clamp<float>(
+					source->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
+					0.0,
+					0.3);
+				color.x += str;
+				color.y += str;
+				color.z += str;
+			}
+
+			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			ImGui::PushID(source.get());
 			ImGui::ImageButton(GetSocketIcon(source->GetType(), true), ImVec2(size, size));
 			ImGui::PopID();
+			ImGui::PopStyleColor();
+
+			draw->AddText(
+				labelFont,
+				labelSize,
+				ImVec2(pos.x + margin + size, pos.y + (size - labelSize) / 2),
+				labelColor,
+				source->GetName().c_str());
+
 			if(ImGui::IsItemHovered())
 			{
 				hoveredSource = source.get();
@@ -177,36 +293,6 @@ void Window::UpdateNodes()
 				currentSource = nullptr;
 			}
 			offset += size + margin;
-		}
-	}
-	for(auto const & win : windows)
-	{
-		for(auto const & sink : win->sinks)
-		{
-			if(sink->GetSource(false) != nullptr)
-			{
-				ImVec2 pos(
-					win->pos.x - size - margin,
-					win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
-
-				auto * src = sink->GetSource();
-				auto * srcwin = src->GetWindow();
-				auto srcpos = srcwin->GetPosition();
-				auto srcsize = srcwin->GetSize();
-				int index = src->GetWindowIndex();
-
-				ImVec2 from(srcpos.x + srcsize.x + margin + size, srcpos.y + margin + (size + margin) * index + size / 2);
-				ImVec2 to(pos.x, pos.y + size / 2);
-
-				bool selected = (src == hoveredSource || sink.get() == hoveredSink);
-				draw->AddBezierCurve(
-					from,
-				    ImVec2(from.x + 64, from.y),
-					ImVec2(to.x - 64, to.y),
-					to,
-					selected ? ImColor(1.0f, 0.4f, 0.4f, 1.0f) : ImColor(0.7f,0.7f,0.7f,1.0f),
-					selected ? 4.0f : 2.0f);
-			}
 		}
 	}
 	ImGui::PopStyleVar();
@@ -254,6 +340,9 @@ Window::~Window()
 
 void Window::Update()
 {
+	for(auto & ev : this->events)
+		ev->triggered = false;
+
 	this->OnSetup();
 
 	if(this->wantsResize)
@@ -465,6 +554,14 @@ Sink const * Window::GetSink(std::string name) const
 		if(src->GetName() == name)
 			return src.get();
 	return nullptr;
+}
+
+
+Event * Window::CreateEvent()
+{
+	Event * ev;
+	this->events.emplace_back(ev = new Event());
+	return ev;
 }
 
 Window * Window::CreateFromJSON(nlohmann::json const & window)
