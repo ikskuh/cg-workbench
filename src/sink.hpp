@@ -47,7 +47,7 @@ public:
 			return _default;
 	}
 
-	bool HasSource(int index = 0) const { return (this->GetSource(index) != nullptr); }
+	bool HasSource(int index = 0) const { return (this->GetSource(true, index) != nullptr); }
 
 	bool HasSourceConnected() const { return (this->sources.size() > 0); }
 };

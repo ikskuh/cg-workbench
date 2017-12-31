@@ -89,8 +89,8 @@ RenderWindow::RenderWindow() :
 	if(status != GL_FRAMEBUFFER_COMPLETE)
 		throw "foo";
 
-	this->AddSink(this->geom = new Sink(CgDataType::Geometry, "Geometry"));
-	this->AddSink(this->shader = new Sink(CgDataType::Shader, "Shader"));
+	this->geom = this->AddSink<CgDataType::Geometry>("Geometry");
+	this->shader = this->AddSink<CgDataType::Shader>("Shader");
 
 	this->AddSource(new Source(CgDataType::Texture2D, "Image 0", &this->tex[0]));
 	this->AddSource(new Source(CgDataType::Texture2D, "Image 1", &this->tex[1]));

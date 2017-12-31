@@ -23,7 +23,7 @@ This project would be much harder without those great libraries:
 		- Cube
 - Event Nodes
 	- Counter Node
-	- 
+	- Signal Node (generate a kind of pulse)
 - Noise Node
 	- Output: Value, 1D Image, 2D Image, 3D Texture
 - Buffer -> Texture
