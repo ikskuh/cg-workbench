@@ -6,6 +6,7 @@ class BPMNode :
 	public Window
 {
 	WINDOW_PREAMBLE
+	WINDOW_CUSTOM_SERIALIZE
 private:
 	Event * tick;
 	Sink * start;
@@ -14,6 +15,7 @@ private:
 	int frequency;
 	int timer;
 
+	int startupDelay;
 	int lastTaps[4];
 protected:
 	void OnUpdate() override;

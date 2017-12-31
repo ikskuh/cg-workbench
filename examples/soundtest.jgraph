@@ -1,23 +1,142 @@
 {
-    "signals": null,
+    "signals": [
+        {
+            "from": [
+                2,
+                "Event"
+            ],
+            "to": [
+                1,
+                "Start"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Finished"
+            ],
+            "to": [
+                1,
+                "Stop"
+            ]
+        },
+        {
+            "from": [
+                2,
+                "Event"
+            ],
+            "to": [
+                3,
+                "Restart"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Sound"
+            ],
+            "to": [
+                4,
+                "Stream"
+            ]
+        },
+        {
+            "from": [
+                5,
+                "Sound"
+            ],
+            "to": [
+                4,
+                "Stream"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Tick"
+            ],
+            "to": [
+                5,
+                "Restart"
+            ]
+        }
+    ],
     "type": "cg-workbench-file",
     "version": "1.0",
     "windows": [
         {
-            "dutycycle": 0.25,
-            "freq": 330.0,
-            "waveform": 2,
+            "frequency": 100,
+            "offset": 0,
             "window-id": 1,
             "window-pos": [
-                245.0,
-                153.0
+                353.0,
+                250.0
             ],
             "window-size": [
-                128.0,
-                165.0
+                346.0,
+                100.0
             ],
-            "window-title": "Synthesizer",
-            "window-type": "audio-synth"
+            "window-title": "BPM Node",
+            "window-type": "event-bpm"
+        },
+        {
+            "window-id": 2,
+            "window-pos": [
+                70.0,
+                247.0
+            ],
+            "window-size": [
+                72.0,
+                54.0
+            ],
+            "window-title": "Trigger",
+            "window-type": "trigger"
+        },
+        {
+            "fileName": "/home/felix/projects/cg-workbench/examples/somesound.ogg",
+            "window-id": 3,
+            "window-pos": [
+                177.0,
+                431.0
+            ],
+            "window-size": [
+                134.0,
+                101.0
+            ],
+            "window-title": "Sound File",
+            "window-type": "audio-sound-file"
+        },
+        {
+            "muted": false,
+            "volumes": [
+                1.0,
+                1.0
+            ],
+            "window-id": 4,
+            "window-pos": [
+                1039.0,
+                480.0
+            ],
+            "window-size": [
+                88.0,
+                163.0
+            ],
+            "window-title": "Output",
+            "window-type": "audio-output"
+        },
+        {
+            "fileName": "/home/felix/projects/cg-workbench/examples/kickbass.ogg",
+            "window-id": 5,
+            "window-pos": [
+                834.0,
+                319.0
+            ],
+            "window-size": [
+                134.0,
+                101.0
+            ],
+            "window-title": "Sound File",
+            "window-type": "audio-sound-file"
         }
     ]
 }

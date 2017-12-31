@@ -8,7 +8,8 @@ REGISTER_WINDOW_CLASS(BPMNode, Menu::Event, "event-bpm", "BPM Node")
 BPMNode::BPMNode() :
     Window("BPM Node", ImGuiWindowFlags_AlwaysAutoResize),
     ticking(false),
-    frequency(60.0)
+    frequency(60.0),
+    startupDelay(0)
 {
 	this->tick = this->CreateEvent();
 
@@ -30,9 +31,17 @@ void BPMNode::OnUpdate()
 
 	ImGui::DragInt("BPM", &this->frequency, 1, 1, 1000); // 1000 BPM!
 
-	if(ImGui::Button("Start") || Event::Any(this->start))
+	ImGui::DragInt("Start Event Delay", &this->startupDelay, 1.0, 0, INT_MAX);
+
+	if(ImGui::Button("Start"))
 	{
 		this->timer = SDL_GetTicks();
+		this->ticking = true;
+	}
+
+	if(Event::Any(this->start))
+	{
+		this->timer = SDL_GetTicks() + this->startupDelay;
 		this->ticking = true;
 	}
 
@@ -62,4 +71,18 @@ void BPMNode::OnUpdate()
 			this->frequency = 60000 / delta;
 		}
 	}
+}
+
+WINDOW_SERIALIZE_IMPL(BPMNode)
+{
+	return {
+		{ "frequency", this->frequency },
+		{ "offset", this->startupDelay },
+	};
+}
+
+WINDOW_DESERIALIZE_IMPL(BPMNode)
+{
+	this->frequency = data.value("frequency", 60);
+	this->startupDelay = data.value("offset", 0);
 }
