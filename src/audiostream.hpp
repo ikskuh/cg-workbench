@@ -2,7 +2,7 @@
 
 #include <vector>
 
-extern int audio_bitrate;
+extern int audio_samplerate;
 
 extern int audio_buffersize;
 
@@ -36,6 +36,8 @@ public:
 	int GetChannels() const { return this->channels; }
 
 	int GetLength() const { return this->samples.size() / this->channels; }
+
+	void CopyTo(AudioStream & target) const;
 
 	sample_t * GetData() { return this->samples.data(); }
 	sample_t const * GetData() const { return this->samples.data(); }

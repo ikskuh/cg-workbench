@@ -70,7 +70,9 @@ SOURCES += \
     src/windows/audio/splitchannelsnode.cpp \
     src/windows/audio/mergechannelsnode.cpp \
     src/windows/audio/soundfile.cpp \
-    src/event.cpp
+    src/event.cpp \
+    src/windows/audio/synthnode.cpp \
+    src/windows/audio/waveformviewer.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -119,4 +121,6 @@ HEADERS += \
     src/windows/audio/splitchannelsnode.hpp \
     src/windows/audio/mergechannelsnode.hpp \
     src/windows/audio/soundfile.hpp \
-    src/event.hpp
+    src/event.hpp \
+    src/windows/audio/synthnode.hpp \
+    src/windows/audio/waveformviewer.hpp

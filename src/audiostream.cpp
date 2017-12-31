@@ -6,6 +6,11 @@
 #undef STB_VORBIS_HEADER_ONLY
 #include <stb_vorbis.h>
 
+int audio_samplerate;
+int audio_buffersize;
+int audio_channels;
+
+
 AudioStream::AudioStream(int channels) :
     samples(audio_buffersize * channels),
     channels(channels)
@@ -51,4 +56,10 @@ void AudioStream::SetChannels(int chans)
 	this->channels = chans;
 	this->samples.resize(audio_buffersize * this->channels);
 	this->Clear();
+}
+
+void AudioStream::CopyTo(AudioStream & target) const
+{
+	target.channels = this->channels;
+	target.samples = this->samples;
 }

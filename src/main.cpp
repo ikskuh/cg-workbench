@@ -28,10 +28,6 @@
 
 std::string currentFileName;
 
-int audio_buffersize = 0;
-int audio_bitrate = 0;
-int audio_channels = 0;
-
 void save(std::string const & fileName);
 
 void load(std::string const & fileName);
@@ -206,7 +202,7 @@ int main(int argc, char ** argv)
 	{
 		SDL_AudioSpec want,got; // the specs of our piece of music
 		SDL_zero(want);
-		want.freq = 41200;
+		want.freq = 44100;
 		want.format = AUDIO_F32SYS;
 		want.channels = 2;
 		want.samples = 4096;
@@ -226,7 +222,7 @@ int main(int argc, char ** argv)
 		printf("samp = %d\n", got.samples);
 		printf("fmt  = %d\n", got.format);
 
-		audio_bitrate = got.freq;
+		audio_samplerate = got.freq;
 		audio_buffersize = got.samples;
 		audio_channels = got.channels;
 	}
