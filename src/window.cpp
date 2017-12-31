@@ -53,6 +53,8 @@ static ImTextureID GetSocketIcon(CgDataType type, bool isSource)
 		case CgDataType::Geometry: return (ImTextureID)uintptr_t(resources::icons::geometry);
 		case CgDataType::Shader: return (ImTextureID)uintptr_t(resources::icons::shader);
 		case CgDataType::Texture2D: return (ImTextureID)uintptr_t(resources::icons::image);
+		case CgDataType::Audio: return (ImTextureID)uintptr_t(resources::icons::audio);
+		case CgDataType::Event: return (ImTextureID)uintptr_t(resources::icons::event);
 		case CgDataType::UniformFloat: return (ImTextureID)uintptr_t(resources::icons::scalar);
 		case CgDataType::UniformVec2: return (ImTextureID)uintptr_t(resources::icons::vector2);
 		case CgDataType::UniformVec3: return (ImTextureID)uintptr_t(resources::icons::vector3);
@@ -424,7 +426,7 @@ void Window::RemoveSink(Sink * sink, bool free)
 
 nlohmann::json Window::Serialize() const
 {
-	return nlohmann::json();
+	return nlohmann::json::object();
 }
 
 void Window::Deserialize(nlohmann::json const & value)
@@ -487,4 +489,32 @@ Window * Window::CreateFromJSON(nlohmann::json const & window)
 	win->title = window.value("window-title", win->title);
 
 	return win;
+}
+
+#include "windows/audio/audionode.hpp"
+
+sample_t * audio_destbuffer;
+
+void Window::RenderAudio(void*  userdata, Uint8* stream, int len)
+{
+	(void)userdata;
+
+	sample_t * samples = reinterpret_cast<sample_t*>(stream);
+	len /= sizeof(sample_t);
+
+	assert(len == (audio_buffersize * audio_channels));
+
+	audio_destbuffer = samples;
+
+	memset(audio_destbuffer, 0, sizeof(sample_t) * audio_buffersize * audio_channels);
+
+	for(auto & win : ::windows)
+	{
+		auto * node = dynamic_cast<AudioNode*>(win.get());
+		if(node == nullptr)
+			continue;
+		node->RenderAudio();
+	}
+
+	audio_destbuffer = nullptr;
 }

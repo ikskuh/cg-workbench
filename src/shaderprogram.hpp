@@ -14,9 +14,9 @@ public:
 	explicit ShaderProgram(ShaderEditor * edit);
 	~ShaderProgram();
 
-	GLuint GetProgram();
+	GLuint GetProgram() const;
 
-	void BindUniforms();
+	void BindUniforms() const;
 
-	void Use();
+	void Use() const;
 };

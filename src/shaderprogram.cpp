@@ -7,7 +7,7 @@ ShaderProgram::ShaderProgram(ShaderEditor * edit) : edit(edit) { }
 
 ShaderProgram::~ShaderProgram() { }
 
-GLuint ShaderProgram::GetProgram()
+GLuint ShaderProgram::GetProgram() const
 {
 	if(this->edit)
 		return this->edit->program;
@@ -15,13 +15,13 @@ GLuint ShaderProgram::GetProgram()
 		return 0;
 }
 
-void ShaderProgram::BindUniforms()
+void ShaderProgram::BindUniforms() const
 {
 	if(this->edit)
 		this->edit->BindUniforms();
 }
 
-void ShaderProgram::Use()
+void ShaderProgram::Use() const
 {
 	glUseProgram(this->GetProgram());
 	this->BindUniforms();

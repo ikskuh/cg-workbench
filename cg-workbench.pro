@@ -23,7 +23,9 @@ LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a $$system(pkg-config --libs gtk+-
 QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
 QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
 
-DEFINES += IMGUI_DISABLE_OBSOLETE_FUNCTIONS
+DEFINES += \
+	IMGUI_DISABLE_OBSOLETE_FUNCTIONS \
+	STB_VORBIS_HEADER_ONLY
 
 SOURCES += \
 	src/main.cpp \
@@ -61,7 +63,13 @@ SOURCES += \
     src/windowregistry.cpp \
     src/shaderprogram.cpp \
     src/fileio.cpp \
-    src/windows/generic/linearnoisenode.cpp
+    src/windows/generic/linearnoisenode.cpp \
+    src/windows/audio/audionode.cpp \
+    src/audiostream.cpp \
+    src/windows/audio/audiooutput.cpp \
+    src/windows/audio/splitchannelsnode.cpp \
+    src/windows/audio/mergechannelsnode.cpp \
+    src/windows/audio/soundfile.cpp
 
 HEADERS += \
 	src/imgui_impl.h \
@@ -103,4 +111,10 @@ HEADERS += \
     src/windowregistry.hpp \
     src/shaderprogram.hpp \
     src/fileio.hpp \
-    src/windows/generic/linearnoisenode.hpp
+    src/windows/generic/linearnoisenode.hpp \
+    src/windows/audio/audionode.hpp \
+    src/audiostream.hpp \
+    src/windows/audio/audiooutput.hpp \
+    src/windows/audio/splitchannelsnode.hpp \
+    src/windows/audio/mergechannelsnode.hpp \
+    src/windows/audio/soundfile.hpp

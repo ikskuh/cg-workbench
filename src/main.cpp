@@ -15,24 +15,11 @@
 #include "window.hpp"
 #include "fileio.hpp"
 
-#include "windows/graphic/shadereditor.hpp"
-#include "windows/graphic/renderwindow.hpp"
 #include "windows/generic/luaconsole.hpp"
-#include "windows/graphic/geometrywindow.hpp"
 #include "windows/graphic/gpuerrorlog.hpp"
-#include "windows/numeric/uniformwindow.hpp"
-#include "windows/numeric/colorwindow.hpp"
-#include "windows/numeric/timerwindow.hpp"
-#include "windows/numeric/arithmeticwindow.hpp"
-#include "windows/generic/notewindow.hpp"
-#include "windows/numeric/bufferwindow.hpp"
-#include "windows/numeric/graphwindow.hpp"
-#include "windows/numeric/vectoradapter.hpp"
-#include "windows/graphic/imagesource.hpp"
-#include "windows/generic/trigger.hpp"
-#include "windows/graphic/imagebuffer.hpp"
-#include "windows/numeric/matrixtransforms.hpp"
+
 #include "resources.hpp"
+#include "audiostream.hpp"
 
 #include "windowregistry.hpp"
 
@@ -40,6 +27,10 @@
 #include <stb_perlin.h>
 
 std::string currentFileName;
+
+int audio_buffersize = 0;
+int audio_bitrate = 0;
+int audio_channels = 0;
 
 void save(std::string const & fileName);
 
@@ -150,7 +141,7 @@ float deltatime;
 int main(int argc, char ** argv)
 {
     // Setup SDL
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) != 0)
     {
         printf("Error: %s\n", SDL_GetError());
         return -1;
@@ -197,12 +188,43 @@ int main(int argc, char ** argv)
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(&GpuErrorLog::LogMessage, nullptr);
 
+	SDL_AudioDeviceID id = 0;
+	{
+		SDL_AudioSpec want,got; // the specs of our piece of music
+		SDL_zero(want);
+		want.freq = 41200;
+		want.format = AUDIO_F32SYS;
+		want.channels = 2;
+		want.samples = 4096;
+		want.callback = Window::RenderAudio;
+		want.userdata = NULL;
+
+		if ((id = SDL_OpenAudioDevice(nullptr, 0, &want, &got, 0)) <= 0 )
+		{
+		  fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+		  exit(-1);
+		}
+
+		printf("dev = %d\n", id);
+
+		printf("freq = %d\n", got.freq);
+		printf("chan = %d\n", got.channels);
+		printf("samp = %d\n", got.samples);
+		printf("fmt  = %d\n", got.format);
+
+		audio_bitrate = got.freq;
+		audio_buffersize = got.samples;
+		audio_channels = got.channels;
+	}
+
 	resources::load("/home/felix/projects/cg-workbench/");
 
 	if(argc == 2)
 	{
 		load(std::string(argv[1]));
 	}
+
+	SDL_PauseAudioDevice(id, 0);
 
     // Main loop
     bool done = false;

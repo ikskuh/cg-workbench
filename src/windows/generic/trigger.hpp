@@ -8,6 +8,7 @@ class Trigger :
 	WINDOW_PREAMBLE
 private:
 	float value;
+	bool triggered;
 protected:
 	void OnUpdate() override;
 public:

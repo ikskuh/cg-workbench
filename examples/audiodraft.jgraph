@@ -1,0 +1,68 @@
+{
+    "signals": [
+        {
+            "from": [
+                2,
+                "Output"
+            ],
+            "to": [
+                3,
+                "Source"
+            ]
+        },
+        {
+            "from": [
+                2,
+                "Output"
+            ],
+            "to": [
+                5,
+                "Stream"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "channels": 2,
+            "window-id": 2,
+            "window-pos": [
+                178.0,
+                105.0
+            ],
+            "window-size": [
+                283.0,
+                54.0
+            ],
+            "window-title": "Channel Merger",
+            "window-type": "audio-merge-channels"
+        },
+        {
+            "window-id": 3,
+            "window-pos": [
+                549.0,
+                208.0
+            ],
+            "window-size": [
+                85.0,
+                48.0
+            ],
+            "window-title": "Split Channels",
+            "window-type": "audio-split-channels"
+        },
+        {
+            "window-id": 5,
+            "window-pos": [
+                795.0,
+                73.0
+            ],
+            "window-size": [
+                88.0,
+                163.0
+            ],
+            "window-title": "Output",
+            "window-type": "audio-output"
+        }
+    ]
+}

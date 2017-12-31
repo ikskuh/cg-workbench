@@ -77,4 +77,8 @@ namespace Menu
 	{
 		WindowCategory Instance(&Menu::Instance, "Noise");
 	}
+	namespace Audio
+	{
+		WindowCategory Instance(&Menu::Instance, "Audio");
+	}
 }

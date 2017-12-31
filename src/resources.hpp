@@ -12,6 +12,8 @@ namespace resources
 		extern GLuint geometry;
 		extern GLuint shader;
 		extern GLuint image;
+		extern GLuint audio;
+		extern GLuint event;
 		extern GLuint genericSink;
 		extern GLuint genericSource;
 		extern GLuint matrix;

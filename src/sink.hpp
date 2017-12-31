@@ -28,13 +28,14 @@ public:
 	}
 
 	template<CgDataType _Type>
-	typename UniformType<_Type>::type GetObject() const
+	typename UniformType<_Type>::type const & GetObject() const
 	{
+		static typename UniformType<_Type>::type _default;
 		auto * src = this->GetSource();
 		if(src != nullptr)
 			return *static_cast<typename UniformType<_Type>::type const *>(src->GetObject());
 		else
-			return typename UniformType<_Type>::type();
+			return _default;
 	}
 
 	bool HasSource() const { return (this->GetSource() != nullptr); }

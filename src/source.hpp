@@ -15,7 +15,7 @@ public:
 	void const * GetObject() const { return this->object; }
 
 	template<CgDataType _Type>
-	typename UniformType<_Type>::type GetObject() const
+	typename UniformType<_Type>::type const & GetObject() const
 	{
 		return *static_cast<typename UniformType<_Type>::type const *>(this->object);
 	}

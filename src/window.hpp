@@ -8,6 +8,7 @@
 #include <vector>
 #include <functional>
 #include <json.hpp>
+#include <SDL.h>
 
 #include "source.hpp"
 #include "sink.hpp"
@@ -38,6 +39,22 @@ protected:
 
 	void RemoveSource(Source * source, bool free = true);
 	void RemoveSink(Sink * sink, bool free = true);
+
+	template<CgDataType _Type>
+	Sink * AddSink(std::string name)
+	{
+		Sink * s = new Sink(_Type, name);
+		this->AddSink(s);
+		return s;
+	}
+
+	template<CgDataType _Type>
+	Source * AddSource(std::string name, typename UniformType<_Type>::type const * data)
+	{
+		Source * s = new Source(_Type, name, data);
+		this->AddSource(s);
+		return s;
+	}
 protected:
 	explicit Window(std::string const & title, ImGuiWindowFlags flags = ImGuiWindowFlags_MenuBar);
 	virtual void OnUpdate() = 0;
@@ -97,6 +114,8 @@ public:
 
 	static void DestroyAll();
 
+	static void RenderAudio(void*  userdata, Uint8* stream, int len);
+
 	static Window * CreateFromJSON(nlohmann::json const & window);
 
 public:
@@ -107,5 +126,10 @@ public:
 #define WINDOW_PREAMBLE \
 	protected: \
 		virtual std::string GetTypeID() const;
+
+#define WINDOW_CUSTOM_SERIALIZE \
+	public: \
+		nlohmann::json Serialize() const override; \
+		void Deserialize(nlohmann::json const & value) override;
 
 #endif // WINDOW_HPP

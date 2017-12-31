@@ -19,6 +19,8 @@ namespace resources
 		ICON(vector3, "vec3.png");
 		ICON(vector4, "vec4.png");
 		ICON(matrix, "matrix.png");
+		ICON(audio, "audio.png");
+		ICON(event, "event.png");
 	}
 
 	namespace icons
@@ -26,6 +28,8 @@ namespace resources
 		GLuint geometry;
 		GLuint shader;
 		GLuint image;
+		GLuint audio;
+		GLuint event;
 		GLuint genericSink;
 		GLuint genericSource;
 		GLuint matrix;
