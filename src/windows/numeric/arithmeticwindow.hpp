@@ -31,28 +31,40 @@ private:
 			return;
 		this->op = idx;
 
+		int cnt = 0;
 		if(size_t(idx) < ARITHARRAYSIZ(unaryOps))
 		{
-			if(operand1)
-				this->RemoveSink(operand1);
-			operand1 = nullptr;
-			return;
+			cnt = 1;
 		}
 		idx -= ARITHARRAYSIZ(unaryOps);
 		if(size_t(idx) < ARITHARRAYSIZ(binaryOps))
 		{
-			if(!operand1)
-				this->AddSink(this->operand1 = new Sink(_Type, "1"));
-			return;
+			cnt = 2;
 		}
 		idx -= ARITHARRAYSIZ(binaryOps);
 		if(size_t(idx) < ARITHARRAYSIZ(trinaryOps))
 		{
-			if(!operand2)
-				this->AddSink(this->operand2 = new Sink(_Type, "2"));
-			return;
+			cnt = 3;
 		}
-		abort();
+
+		if(cnt < 1 && this->operand1)
+		{
+			this->RemoveSink(this->operand1);
+			this->operand1 = nullptr;
+		}
+		if(cnt < 2 && this->operand2)
+		{
+			this->RemoveSink(this->operand2);
+			this->operand2 = nullptr;
+		}
+
+		if(cnt > 1 && this->operand1 == nullptr)
+			this->AddSink(this->operand1 = new Sink(_Type, "1"));
+
+		if(cnt > 2 && this->operand2 == nullptr)
+			this->AddSink(this->operand2 = new Sink(_Type, "2"));
+
+		return;
 	}
 
 	static bool GetIndex(void * ptr, int idx, char const ** str)
@@ -158,6 +170,8 @@ std::pair<char const*, typename ArithmeticWindow<_Type>::unop_t> ArithmeticWindo
     { "Tan",    [](data_t x) { return glm::tan(x); } },
     { "To Radians", [](data_t x) { return glm::radians(x); } },
     { "To Degrees", [](data_t x) { return glm::degrees(x); } },
+    { "Abs",    [](data_t x) { return glm::abs(x); } },
+    { "Sign",   [](data_t x) { return glm::sign(x); } },
 };
 
 template<CgDataType _Type>
@@ -177,8 +191,9 @@ std::pair<char const *,typename ArithmeticWindow<_Type>::binop_t> ArithmeticWind
 template<CgDataType _Type>
 std::pair<char const *,typename ArithmeticWindow<_Type>::triop_t> ArithmeticWindow<_Type>::trinaryOps[] =
 {
-    { "Lerp / Mix",    [](data_t x, data_t y, data_t z) { return glm::mix(x, y, z); } },
-    { "Clamp / Limit", [](data_t x, data_t y, data_t z) { return glm::clamp(x, y, z); } },
+    { "Lerp / Mix",     [](data_t x, data_t y, data_t z) { return glm::mix(x, y, z); } },
+    { "Clamp / Limit",  [](data_t x, data_t y, data_t z) { return glm::clamp(x, y, z); } },
+    { "Linear (a*x+b)", [](data_t x, data_t y, data_t z) { return x * y + z; } },
 };
 
 #undef data_t

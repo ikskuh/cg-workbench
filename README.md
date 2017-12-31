@@ -20,14 +20,16 @@ This project would be much harder without those great libraries:
 		- Quad
 		- Sphere
 		- Cube
+- Event Nodes
+	- Counter Node
+	- 
 - Noise Node
 	- Output: Value, 1D Image, 2D Image, 3D Texture
 - Buffer -> Texture
 	- 1D Input/Over → 1D Texture with *n* width
 	- 2 * 1D Input/Over → 2D Texture with *n* * *m* width
 - Music Node
-	- Play/Pause/Seek
-	- Outputs: Time in song
+	- Seek
 - Timeline Node
 	- Attach values to a timeline
 	- Time as input

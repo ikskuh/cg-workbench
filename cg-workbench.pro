@@ -61,23 +61,21 @@ SOURCES += \
     src/windows/graphic/shadereditor.cpp \
     src/windows/generic/luaconsole.cpp \
     src/windows/graphic/gpuerrorlog.cpp \
+    src/windows/generic/linearnoisenode.cpp \
+    src/windows/generic/notewindow.cpp \
+    src/windows/graphic/geometrywindow.cpp \
+    src/windows/graphic/imagebuffer.cpp \
+    src/windows/graphic/imagesource.cpp \
+    src/windows/graphic/renderwindow.cpp \
+    src/windows/numeric/arithmeticwindow.cpp \
+    src/windows/numeric/bufferwindow.cpp \
+    src/windows/numeric/colorwindow.cpp \
+    src/windows/numeric/graphwindow.cpp \
+    src/windows/numeric/matrixtransforms.cpp \
+    src/windows/numeric/timerwindow.cpp \
+    src/windows/numeric/uniformwindow.cpp \
+    src/windows/numeric/vectoradapter.cpp \
 	src/main.cpp
-
-
-#    src/windows/generic/linearnoisenode.cpp \
-#    src/windows/generic/notewindow.cpp \
-#    src/windows/graphic/geometrywindow.cpp \
-#    src/windows/graphic/imagebuffer.cpp \
-#    src/windows/graphic/imagesource.cpp \
-#    src/windows/graphic/renderwindow.cpp \
-#    src/windows/numeric/arithmeticwindow.cpp \
-#    src/windows/numeric/bufferwindow.cpp \
-#    src/windows/numeric/colorwindow.cpp \
-#    src/windows/numeric/graphwindow.cpp \
-#    src/windows/numeric/matrixtransforms.cpp \
-#    src/windows/numeric/timerwindow.cpp \
-#    src/windows/numeric/uniformwindow.cpp \
-#    src/windows/numeric/vectoradapter.cpp \
 
 HEADERS += \
 	ext/gl3w/GL/gl3w.h \
@@ -115,21 +113,21 @@ HEADERS += \
     src/windows/graphic/shadereditor.hpp \
     src/windows/generic/luaconsole.hpp \
     src/windows/graphic/gpuerrorlog.hpp \
+    src/windows/generic/linearnoisenode.hpp \
+    src/windows/generic/notewindow.hpp \
+    src/windows/graphic/geometrywindow.hpp \
+    src/windows/graphic/imagebuffer.hpp \
+    src/windows/graphic/imagesource.hpp \
+    src/windows/graphic/renderwindow.hpp \
+    src/windows/numeric/arithmeticwindow.hpp \
+    src/windows/numeric/bufferwindow.hpp \
+    src/windows/numeric/colorwindow.hpp \
+    src/windows/numeric/graphwindow.hpp \
+    src/windows/numeric/matrixtransforms.hpp \
+    src/windows/numeric/timerwindow.hpp \
+    src/windows/numeric/uniformwindow.hpp \
+    src/windows/numeric/vectoradapter.hpp \
 	src/imgui_impl.h
 
 
-#    src/windows/generic/linearnoisenode.hpp \
-#    src/windows/generic/notewindow.hpp \
-#    src/windows/graphic/geometrywindow.hpp \
-#    src/windows/graphic/imagebuffer.hpp \
-#    src/windows/graphic/imagesource.hpp \
-#    src/windows/graphic/renderwindow.hpp \
-#    src/windows/numeric/arithmeticwindow.hpp \
-#    src/windows/numeric/bufferwindow.hpp \
-#    src/windows/numeric/colorwindow.hpp \
-#    src/windows/numeric/graphwindow.hpp \
-#    src/windows/numeric/matrixtransforms.hpp \
-#    src/windows/numeric/timerwindow.hpp \
-#    src/windows/numeric/uniformwindow.hpp \
-#    src/windows/numeric/vectoradapter.hpp \
 

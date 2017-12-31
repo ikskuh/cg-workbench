@@ -1,0 +1,146 @@
+{
+    "signals": [
+        {
+            "from": [
+                5,
+                "F"
+            ],
+            "to": [
+                1,
+                "0"
+            ]
+        },
+        {
+            "from": [
+                2,
+                "Noise"
+            ],
+            "to": [
+                1,
+                "1"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Value"
+            ],
+            "to": [
+                1,
+                "2"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Total"
+            ],
+            "to": [
+                5,
+                "0"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "F"
+            ],
+            "to": [
+                6,
+                "Input"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "operator": 18,
+            "type": "arithmetic-float",
+            "window-id": 1,
+            "window-pos": [
+                571.0,
+                282.0
+            ],
+            "window-size": [
+                283.0,
+                54.0
+            ],
+            "window-title": "Arithmetic",
+            "window-type": "arithmetic-float"
+        },
+        {
+            "freq": 2.0,
+            "mode": 1,
+            "window-id": 2,
+            "window-pos": [
+                56.0,
+                313.0
+            ],
+            "window-size": [
+                290.0,
+                98.0
+            ],
+            "window-title": "Linear Noise",
+            "window-type": "noise-linear"
+        },
+        {
+            "type": "uniform-float",
+            "value": 0.220000013709068,
+            "window-id": 3,
+            "window-pos": [
+                64.0,
+                431.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (float)",
+            "window-type": "uniform-float"
+        },
+        {
+            "current": 159.558059692383,
+            "speed": 1.0,
+            "window-id": 4,
+            "window-pos": [
+                12.0,
+                58.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ],
+            "window-title": "Timer",
+            "window-type": "timer"
+        },
+        {
+            "operator": 4,
+            "type": "arithmetic-float",
+            "window-id": 5,
+            "window-pos": [
+                260.0,
+                198.0
+            ],
+            "window-size": [
+                283.0,
+                54.0
+            ],
+            "window-title": "Arithmetic",
+            "window-type": "arithmetic-float"
+        },
+        {
+            "window-id": 6,
+            "window-pos": [
+                917.0,
+                370.0
+            ],
+            "window-size": [
+                334.0,
+                240.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        }
+    ]
+}
