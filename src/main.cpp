@@ -147,6 +147,14 @@ int main(int argc, char ** argv)
         return -1;
     }
 
+	{
+		int count = 0;
+		for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
+			++count;
+
+		printf("Number of current node types: %d\n", count);
+	}
+
     // Setup window
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
