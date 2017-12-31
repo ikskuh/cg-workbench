@@ -44,9 +44,9 @@ protected:
 	void RemoveSink(Sink * sink, bool free = true);
 
 	template<CgDataType _Type>
-	Sink * AddSink(std::string name)
+	Sink * AddSink(std::string name, int maxConnections = 1)
 	{
-		Sink * s = new Sink(_Type, name);
+		Sink * s = new Sink(_Type, name, maxConnections);
 		this->AddSink(s);
 		return s;
 	}

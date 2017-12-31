@@ -16,13 +16,15 @@ int currentWindowID = 0;
 std::vector<std::unique_ptr<Window>>::iterator Window::Begin() { return windows.begin(); }
 std::vector<std::unique_ptr<Window>>::iterator Window::End()   { return windows.end(); }
 
+static std::vector<std::unique_ptr<Window>> new_windows;
+
 void Window::Register(Window * window)
 {
-	auto pos = std::find_if(windows.begin(), windows.end(), [window](std::unique_ptr<Window> const & p) {
-		return (p.get() == window);
-	});
-	if(pos == windows.end())
-		windows.emplace_back(window);
+	assert(window != nullptr);
+
+	// Use the second vector to provide a safe method to duplicate windows:
+	// Don't change a vector when iterating it!
+	new_windows.emplace_back(window);
 }
 
 void Window::Unregister(Window * window)
@@ -37,6 +39,18 @@ void Window::Unregister(Window * window)
 
 void Window::UpdateAll()
 {
+	// HACK: Required for allowing window creation while iteration
+	for(auto & win : new_windows)
+	{
+		Window * window = win.release();
+		auto pos = std::find_if(windows.begin(), windows.end(), [window](std::unique_ptr<Window> const & p) {
+			return (p.get() == window);
+		});
+		if(pos == windows.end())
+			windows.emplace_back(window);
+	}
+	new_windows.clear();
+
 	for(auto const & win : windows)
 		win->Update();
 
@@ -80,8 +94,8 @@ void Window::UpdateNodes()
 	static Source * currentSource = nullptr;
 	static Sink * currentSink = nullptr;
 
-	Sink * hoveredSink = nullptr;
-	Source * hoveredSource = nullptr;
+	static Sink * hoveredSink = nullptr;
+	static Source * hoveredSource = nullptr;
 
 	int offset;
 	int margin = 4;
@@ -105,13 +119,13 @@ void Window::UpdateNodes()
 	{
 		for(auto const & sink : win->sinks)
 		{
-			if(sink->GetSource(false) != nullptr)
-			{
-				ImVec2 pos(
-					win->pos.x - size - margin,
-					win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
+			ImVec2 pos(
+				win->pos.x - size - margin,
+				win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
 
-				auto * src = sink->GetSource();
+			for(int i = 0; i < sink->GetSourceCount(); i++)
+			{
+				auto * src = sink->GetSource(false, i);
 				auto * srcwin = src->GetWindow();
 				auto srcpos = srcwin->GetPosition();
 				auto srcsize = srcwin->GetSize();
@@ -155,6 +169,9 @@ void Window::UpdateNodes()
 		}
 	}
 
+	hoveredSink = nullptr;
+	hoveredSource = nullptr;
+
 	for(auto const & win : windows)
 	{
 		for(auto const & sink : win->sinks)
@@ -173,16 +190,21 @@ void Window::UpdateNodes()
 
 			ImVec4 color(slotBaseColor);
 
-			if(sink->HasSourceConnected() && sink->GetSource(true)->GetType() == CgDataType::Event)
+			float str = 0.0;
+			for(int i = 0; i < sink->GetSourceCount(); i++)
 			{
-				float str = 0.3 - glm::clamp<float>(
-					sink->GetSource(true)->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
-					0.0,
-					0.3);
-				color.x += str;
-				color.y += str;
-				color.z += str;
+				if(sink->GetSource(false, i)->GetType() == CgDataType::Event)
+				{
+					str = std::max<float>(str, 0.3 - glm::clamp<float>(
+						sink->GetObject<CgDataType::Event>(i).GetTimeSinceLastTrigger(),
+						0.0,
+						0.3));
+				}
 			}
+
+			color.x += str;
+			color.y += str;
+			color.z += str;
 
 			if(currentSource != nullptr)
 			{
@@ -202,7 +224,7 @@ void Window::UpdateNodes()
 			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			ImGui::PushID(sink.get());
 			if(ImGui::ImageButton(GetSocketIcon(sink->GetType(), false) , ImVec2(size, size)))
-				sink->SetSource(nullptr);
+				sink->Clear();
 			ImGui::PopID();
 			ImGui::PopStyleColor();
 
@@ -287,15 +309,14 @@ void Window::UpdateNodes()
 			else if(currentSource == source.get())
 			{
 				if(currentSink != nullptr)
-				{
-					currentSink->SetSource(currentSource);
-				}
+					currentSink->AddSource(currentSource);
 				currentSource = nullptr;
 			}
 			offset += size + margin;
 		}
 	}
 	ImGui::PopStyleVar();
+
 }
 
 void Window::RenderAll()
@@ -332,7 +353,7 @@ Window::~Window()
 			for(auto const & sink : win->sinks)
 			{
 				if(sink->GetSource() == source.get())
-					sink->SetSource(nullptr);
+					sink->RemoveSource(source.get());
 			}
 		}
 	}

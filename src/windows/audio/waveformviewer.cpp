@@ -10,7 +10,6 @@ WaveformViewer::WaveformViewer() :
     takeSample(false)
 {
 	this->input = this->AddSink<CgDataType::Audio>("Source");
-
 }
 
 void WaveformViewer::OnRenderAudio()
@@ -19,12 +18,18 @@ void WaveformViewer::OnRenderAudio()
 		return;
 	AudioStream const & stream = this->input->GetObject<CgDataType::Audio>();
 	stream.CopyTo(this->data);
-	this->takeSample = false;
+
+	if(this->liveMode == false)
+		this->takeSample = false;
 }
 
 void WaveformViewer::OnUpdate()
 {
 	this->takeSample |= ImGui::Button("Snapshot!");
+	ImGui::SameLine();
+	ImGui::Checkbox("Livemove", &this->liveMode);
+	if(this->liveMode)
+		this->takeSample = true;
 
 	auto size = ImGui::GetContentRegionAvail();
 

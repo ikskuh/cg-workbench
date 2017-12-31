@@ -10,6 +10,7 @@ private:
 	Sink * input;
 	AudioStream data;
 	bool takeSample;
+	bool liveMode;
 protected:
 	void OnUpdate() override;
 	void OnRenderAudio() override;

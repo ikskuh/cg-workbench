@@ -12,7 +12,7 @@ EventDelay::EventDelay() :
 {
 	this->output = this->CreateEvent();
 
-	this->input = this->AddSink<CgDataType::Event>("Input");
+	this->input = this->AddSink<CgDataType::Event>("Input", -1);
 
 	this->AddSource<CgDataType::Event>("Output", this->output);
 }
@@ -21,7 +21,7 @@ void EventDelay::OnUpdate()
 {
 	ImGui::DragInt("Delay", &this->delay, 1.0, 0, 1000000);
 
-	if(this->input->GetObject<CgDataType::Event>())
+	if(Event::Any(this->input))
 		this->delayedEvents.emplace(SDL_GetTicks() + this->delay);
 
 	while(this->delayedEvents.size() > 0 && this->delayedEvents.front() <= SDL_GetTicks())

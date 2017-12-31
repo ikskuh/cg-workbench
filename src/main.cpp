@@ -40,6 +40,8 @@ static Window * ClassMenu(WindowCategory const * root)
 
 	for(auto const * child : root->GetChildren())
 	{
+		if(child->GetChildren().size() == 0 && child->GetClasses().size() == 0)
+			continue;
 		if(ImGui::BeginMenu(child->GetName().c_str()) == false)
 			continue;
 		auto * r = ClassMenu(child);
@@ -453,15 +455,15 @@ void save(std::string const & fileName)
 		for(int i = 0; i < win->GetSinkCount(); i++)
 		{
 			Sink * sink = win->GetSink(i);
-			if(sink->HasSourceConnected())
+			for(int j = 0; j < sink->GetSourceCount(); j++)
 			{
 				signals +=
 				{
 					{
 						"from",
 						{
-							sink->GetSource(false)->GetWindow()->GetID(),
-							sink->GetSource(false)->GetName()
+							sink->GetSource(false, j)->GetWindow()->GetID(),
+							sink->GetSource(false, j)->GetName()
 						}
 					},
 					{
@@ -572,6 +574,6 @@ void load(std::string const & fileName)
 			continue;
 
 		if(source->GetType() == sink->GetType())
-			sink->SetSource(source);
+			sink->AddSource(source);
 	}
 }

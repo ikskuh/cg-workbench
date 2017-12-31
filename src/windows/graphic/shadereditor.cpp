@@ -331,7 +331,7 @@ void ShaderEditor::Compile()
 					if(it != previous.end())
 					{
 						if((it->second != nullptr) && (it->second->GetType() == sink->GetType()))
-							sink->SetSource(it->second);
+							sink->AddSource(it->second);
 					}
 
 					Uniform u;

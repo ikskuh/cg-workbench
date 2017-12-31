@@ -6,7 +6,7 @@ REGISTER_WINDOW_CLASS(AudioOutput, Menu::Audio, "audio-output", "Output")
 AudioOutput::AudioOutput() :
     AudioNode("Output", ImGuiWindowFlags_AlwaysAutoResize)
 {
-	this->AddSink(this->stream = new Sink(CgDataType::Audio, "Stream"));
+	this->stream = this->AddSink<CgDataType::Audio>("Stream", -1);
 }
 
 void AudioOutput::OnUpdate()
@@ -35,11 +35,14 @@ extern sample_t * audio_destbuffer;
 
 void AudioOutput::OnRenderAudio()
 {
-	auto const & stream = this->stream->GetObject<CgDataType::Audio>();
-	for(int i = 0; i < audio_buffersize; i++)
+	for(int si = 0; si < this->stream->GetSourceCount(); si++)
 	{
-		for(int j = 0; j < std::min(stream.GetChannels(), audio_channels); j++)
-			audio_destbuffer[audio_channels * i + j] += this->volumes[j] * stream.Sample(i, j);
+		auto const & stream = this->stream->GetObject<CgDataType::Audio>(si);
+		for(int i = 0; i < audio_buffersize; i++)
+		{
+			for(int j = 0; j < std::min(stream.GetChannels(), audio_channels); j++)
+				audio_destbuffer[audio_channels * i + j] += this->volumes[j] * stream.Sample(i, j);
+		}
 	}
 }
 

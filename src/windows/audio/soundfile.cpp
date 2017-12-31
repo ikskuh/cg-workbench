@@ -12,10 +12,10 @@ SoundFile::SoundFile() :
     vorbis(nullptr),
     playing(false), donePlaying(false)
 {
-	this->start = this->AddSink<CgDataType::Event>("Start");
-	this->pause = this->AddSink<CgDataType::Event>("Pause");
-	this->stop = this->AddSink<CgDataType::Event>("Stop");
-	this->restart = this->AddSink<CgDataType::Event>("Restart");
+	this->start = this->AddSink<CgDataType::Event>("Start", -1);
+	this->pause = this->AddSink<CgDataType::Event>("Pause", -1);
+	this->stop = this->AddSink<CgDataType::Event>("Stop", -1);
+	this->restart = this->AddSink<CgDataType::Event>("Restart", -1);
 
 	this->finished = this->CreateEvent();
 
@@ -61,19 +61,19 @@ void SoundFile::OnUpdate()
 	}
 
 	bool rewind = false;
-	if(this->restart->GetObject<CgDataType::Event>())
+	if(Event::Any(this->restart))
 	{
 		rewind = true;
 		this->playing = true;
 	}
-	if(this->start->GetObject<CgDataType::Event>())
+	if(Event::Any(this->start))
 		this->playing = true;
-	if(this->stop->GetObject<CgDataType::Event>())
+	if(Event::Any(this->stop))
 	{
 		this->playing = false;
 		rewind = true;
 	}
-	if(this->pause->GetObject<CgDataType::Event>())
+	if(Event::Any(this->pause))
 		this->playing = false;
 
 	if(rewind && this->vorbis != nullptr)

@@ -10,17 +10,26 @@ class Sink :
 	public Slot
 {
 private:
-	Source const * source;
+	std::vector<Source const *> sources;
+	int limit;
 public:
-	Sink(CgDataType type, std::string const & name);
+	Sink(CgDataType type, std::string const & name, int maxConnections = 1);
 	virtual ~Sink();
 
-	void SetSource(Source const * source);
+	void Clear();
 
-	Source const * GetSource(bool withDefault = true) const
+	//! Adds a source to the sink.
+	//! @remarks Special Case: when the limit is 1, it allows replacement of the sources
+	bool AddSource(Source const * source);
+
+	void RemoveSource(Source const * source);
+
+	int GetSourceCount() const { return int(this->sources.size()); }
+
+	Source const * GetSource(bool withDefault = true, int index = 0) const
 	{
-		if(this->source != nullptr)
-			return this->source;
+		if(index < int(this->sources.size()))
+			return this->sources[index];
 		else if(withDefault)
 			return Source::GetDefault(this->GetType());
 		else
@@ -28,17 +37,17 @@ public:
 	}
 
 	template<CgDataType _Type>
-	typename UniformType<_Type>::type const & GetObject() const
+	typename UniformType<_Type>::type const & GetObject(int index = 0) const
 	{
 		static typename UniformType<_Type>::type _default;
-		auto * src = this->GetSource();
+		auto * src = this->GetSource(true, index);
 		if(src != nullptr)
 			return *static_cast<typename UniformType<_Type>::type const *>(src->GetObject());
 		else
 			return _default;
 	}
 
-	bool HasSource() const { return (this->GetSource() != nullptr); }
+	bool HasSource(int index = 0) const { return (this->GetSource(index) != nullptr); }
 
-	bool HasSourceConnected() const { return (this->source != nullptr); }
+	bool HasSourceConnected() const { return (this->sources.size() > 0); }
 };

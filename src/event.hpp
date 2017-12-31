@@ -4,6 +4,8 @@
 
 typedef uint32_t timestamp_t;
 
+class Sink;
+
 class Event
 {
 	friend class Window; // will reset the event
@@ -12,6 +14,7 @@ private:
 public:
 	static void NewFrame();
 
+	static bool Any(Sink * sink);
 private:
 	timestamp_t current;
 	bool triggered;

@@ -1,0 +1,67 @@
+{
+    "signals": [
+        {
+            "from": [
+                1,
+                "Event"
+            ],
+            "to": [
+                3,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                2,
+                "Event"
+            ],
+            "to": [
+                3,
+                "Input"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "window-id": 1,
+            "window-pos": [
+                359.0,
+                225.0
+            ],
+            "window-size": [
+                72.0,
+                54.0
+            ],
+            "window-title": "Trigger",
+            "window-type": "trigger"
+        },
+        {
+            "window-id": 2,
+            "window-pos": [
+                327.0,
+                353.0
+            ],
+            "window-size": [
+                72.0,
+                54.0
+            ],
+            "window-title": "Trigger",
+            "window-type": "trigger"
+        },
+        {
+            "window-id": 3,
+            "window-pos": [
+                557.0,
+                308.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Event Delay",
+            "window-type": "event-delay"
+        }
+    ]
+}

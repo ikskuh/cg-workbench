@@ -1,6 +1,8 @@
 #include "event.hpp"
 #include <SDL.h>
 
+#include "sink.hpp"
+
 timestamp_t Event::system_time;
 
 Event::Event() :
@@ -22,12 +24,27 @@ void Event::Reset()
 	this->counter = 0;
 }
 
+float Event::GetTimeSinceLastTrigger() const
+{
+	return (system_time	- this->current) / 1000.0;
+}
+
+
+
 void Event::NewFrame()
 {
 	system_time = SDL_GetTicks();
 }
 
-float Event::GetTimeSinceLastTrigger() const
+bool Event::Any(Sink * sink)
 {
-	return (system_time	- this->current) / 1000.0;
+	if(sink == nullptr)
+		return false;
+	assert(sink->GetType() == CgDataType::Event);
+	for(int i = 0; i < sink->GetSourceCount(); i++)
+	{
+		if(sink->GetObject<CgDataType::Event>(i))
+			return true;
+	}
+	return false;
 }
