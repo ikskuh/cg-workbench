@@ -1,5 +1,4 @@
 #include "imagesource.hpp"
-#include <unistd.h>
 #include "imageloader.hpp"
 
 #include <windowregistry.hpp>

@@ -2,11 +2,6 @@ TEMPLATE = app
 CONFIG += c++11
 CONFIG -= app_bundle
 CONFIG -= qt
-CONFIG += link_pkgconfig
-
-PKGCONFIG += lua gl sdl2 SDL2_image
-
-LIBS += -lm -ldl
 
 INCLUDEPATH += \
 	$$PWD/src \
@@ -18,11 +13,51 @@ INCLUDEPATH += \
 	$$PWD/ext/tinyobjloader \
 	$$PWD/ext/tinydir
 
-LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a $$system(pkg-config --libs gtk+-3.0)
+windows: {
 
-# -Wconversion
-QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
-QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
+    # Make C++ on windows actually acceptable
+    DEFINES += \
+        NOMINMAX \
+        WIN32_LEAN_AND_MEAN
+
+    # TODO: Fix code for working with win32 wide chars.
+    DEFINES -= UNICODE _UNICODE
+
+    # Add local libraries here...
+    INCLUDEPATH += \
+        $$PWD/lib/SDL2-2.0.7/include \
+        $$PWD/lib/glm \
+        $$PWD/lib/lua-5.3.4/include
+
+    LIBS += \
+        $$PWD/lib/SDL2-2.0.7/lib/x64/SDL2.lib \
+        $$PWD/lib/SDL2-2.0.7/lib/x64/SDL2main.lib \
+        $$PWD/lib/lua-5.3.4/lua53.lib \
+        -lOpenGL32 \
+        -lole32 \
+        -lShell32 \
+        -lShlwapi
+
+    debug {
+        LIBS += $$PWD/lib/nfd/nfd_d.lib
+    } else {
+        LIBS += $$PWD/lib/nfd/nfd.lib
+    }
+}
+
+!windows: {
+    CONFIG += link_pkgconfig
+
+    PKGCONFIG += lua gl sdl2 SDL2_image gtk+-3.0
+
+    LIBS += -lm -ldl
+
+    LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a
+
+    QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
+    QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
+}
+
 
 DEFINES += \
 	IMGUI_DISABLE_OBSOLETE_FUNCTIONS \
@@ -127,7 +162,7 @@ HEADERS += \
     src/windows/numeric/timerwindow.hpp \
     src/windows/numeric/uniformwindow.hpp \
     src/windows/numeric/vectoradapter.hpp \
-	src/imgui_impl.h
-
+	src/imgui_impl.h \
+    src/meshes/quad.h
 
 

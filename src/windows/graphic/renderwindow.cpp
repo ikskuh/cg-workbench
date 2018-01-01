@@ -1,6 +1,5 @@
 #include "renderwindow.hpp"
 #include <fstream>
-#include <unistd.h>
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(RenderWindow, Menu, "renderer", "Renderer")

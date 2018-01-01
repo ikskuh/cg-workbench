@@ -1,3 +1,4 @@
 *.pro.user
 imgui.ini
 examples/*.ppm
+lib/*

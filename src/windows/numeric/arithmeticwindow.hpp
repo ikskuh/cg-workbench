@@ -15,9 +15,9 @@ public:
 	typedef data_t (*binop_t)(data_t, data_t);
 	typedef data_t (*triop_t)(data_t, data_t, data_t);
 private:
-	static std::pair<char const*,unop_t> unaryOps[];
-	static std::pair<char const *,binop_t> binaryOps[];
-	static std::pair<char const *,triop_t> trinaryOps[];
+    static std::pair<char const*,unop_t> unaryOps[11];
+    static std::pair<char const *,binop_t> binaryOps[9];
+    static std::pair<char const *,triop_t> trinaryOps[3];
 private:
 	data_t value;
 	Sink * operand0;

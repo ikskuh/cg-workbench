@@ -35,7 +35,7 @@ public:
 
 	int GetChannels() const { return this->channels; }
 
-	int GetLength() const { return this->samples.size() / this->channels; }
+    int GetLength() const { return int(this->samples.size()) / this->channels; }
 
 	void CopyTo(AudioStream & target) const;
 

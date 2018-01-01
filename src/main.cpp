@@ -6,7 +6,6 @@
 #include <GL/gl3w.h>    // This example is using gl3w to access OpenGL functions (because it is small). You may use glew/glad/glLoadGen/etc. whatever already works for you.
 #include <SDL.h>
 #include "imgui_impl.h"
-#include <unistd.h>
 #include <json.hpp>
 #include <fstream>
 
@@ -27,6 +26,8 @@
 #include <stb_perlin.h>
 
 std::string currentFileName;
+
+static std::string installPath;
 
 void save(std::string const & fileName);
 
@@ -75,7 +76,7 @@ static Window * templateMenu(std::string root)
 	tinydir_dir dir;
 	Window * result = nullptr;
 
-	tinydir_open_sorted(&dir, root.c_str());
+    tinydir_open_sorted(&dir, root.c_str());
 
 	for (size_t i = 0; i < dir.n_files; i++)
 	{
@@ -122,7 +123,7 @@ static Window * createMenu()
 
 	if(ImGui::BeginMenu("Templates"))
 	{
-		auto * res = templateMenu("/home/felix/projects/cg-workbench/templates");
+        auto * res = templateMenu(::installPath + "/templates");
 		if(res)
 			result = res;
 		ImGui::EndMenu();
@@ -138,8 +139,47 @@ float deltatime;
 
 ImFont * labelFont;
 
+#ifdef WIN32
+#include "Shlwapi.h"
+#endif
+
+static std::string GetInstallPath()
+{
+#ifdef WIN32
+    TCHAR path[MAX_PATH];
+    assert(GetModuleFileName(NULL, path, sizeof(path)) > 0);
+
+    assert(PathRemoveFileSpec(path) == TRUE);
+
+    return std::string(path);
+#else
+    adhasljdjas
+#endif
+}
+
+static bool IsExtensionSupported(const char *name)
+{
+  GLint n=0;
+  glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+  for (GLint i=0; i<n; i++)
+  {
+    const char* extension =
+     (const char*)glGetStringi(GL_EXTENSIONS, i);
+    if (!strcmp(name, extension))
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
 int main(int argc, char ** argv)
 {
+    ::installPath = GetInstallPath();
+
+    printf("System install path: %s\n", ::installPath.c_str());
+
+
     // Setup SDL
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) != 0)
     {
@@ -176,6 +216,47 @@ int main(int argc, char ** argv)
     SDL_GLContext glcontext = SDL_GL_CreateContext(window);
     gl3wInit();
 
+    printf("OpenGL Version:      %s\n", glGetString(GL_VERSION));
+    printf("OpenGL Vendor:       %s\n", glGetString(GL_VENDOR));
+    printf("OpenGL Renderer:     %s\n", glGetString(GL_RENDERER));
+    printf("OpenGL GLSL Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    // Extensions
+    bool listExtensions = false;
+    if(listExtensions)
+    {
+        GLint n=0;
+        glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+
+        for (GLint i=0; i<n; i++)
+        {
+          const char* extension =
+            (const char*)glGetStringi(GL_EXTENSIONS, i);
+          printf("Ext %d: %s\n", i, extension);
+        }
+    }
+
+    char const * requiredExtensions[] =
+    {
+        "GL_ARB_debug_output",
+        "GL_ARB_direct_state_access",
+        NULL,
+    };
+
+    bool success = true;
+    for(auto * ptr = requiredExtensions; *ptr; ptr++)
+    {
+        if(IsExtensionSupported(*ptr) == true)
+            continue;
+        fprintf(stderr, "Extension %s is not supported!\n", *ptr);
+        success = false;
+    }
+    if(!success)
+        exit(EXIT_FAILURE);
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(&GpuErrorLog::LogMessage, nullptr);
+
     // Setup ImGui binding
     ImGui_ImplSdlGL3_Init(window);
 
@@ -204,9 +285,6 @@ int main(int argc, char ** argv)
     bool show_test_window = false;
 	bool show_style_editor = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-	glEnable(GL_DEBUG_OUTPUT);
-	glDebugMessageCallback(&GpuErrorLog::LogMessage, nullptr);
 
 	SDL_AudioDeviceID id = 0;
 	{
@@ -237,7 +315,7 @@ int main(int argc, char ** argv)
 		audio_channels = got.channels;
 	}
 
-	resources::load("/home/felix/projects/cg-workbench/");
+    resources::load(::installPath);
 
 	if(argc == 2)
 	{
@@ -411,7 +489,7 @@ int main(int argc, char ** argv)
 
 		currentTime = SDL_GetTicks();
 
-		deltatime = (currentTime - lastTime) / 1000.0;
+        deltatime = (currentTime - lastTime) / 1000;
 
 		lastTime = currentTime;
     }

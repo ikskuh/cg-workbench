@@ -131,7 +131,10 @@ void LuaConsole::Execute(const char *str)
 
 void LuaConsole::Print(char const * str, bool err)
 {
-	this->log.emplace_back((logentry){err,str});
+    logentry log;
+    log.isError = err;
+    log.message = str;
+    this->log.emplace_back(log);
 }
 
 int LuaConsole::LuaPrint(lua_State * lua)

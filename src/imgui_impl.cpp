@@ -113,10 +113,10 @@ void ImGui_ImplSdlGL3_RenderDrawLists(ImDrawData* draw_data)
             {
                 glBindTexture(GL_TEXTURE_2D, (GLuint)(intptr_t)pcmd->TextureId);
                 glScissor(
-					(int)pcmd->ClipRect.x - screen_pan.x,
-					(int)(fb_height - pcmd->ClipRect.w + screen_pan.y),
-					(int)(pcmd->ClipRect.z - pcmd->ClipRect.x),
-					(int)(pcmd->ClipRect.w - pcmd->ClipRect.y));
+                    (GLint)pcmd->ClipRect.x - screen_pan.x,
+                    (GLint)(fb_height - pcmd->ClipRect.w + screen_pan.y),
+                    (GLint)(pcmd->ClipRect.z - pcmd->ClipRect.x),
+                    (GLint)(pcmd->ClipRect.w - pcmd->ClipRect.y));
                 glDrawElements(GL_TRIANGLES, (GLsizei)pcmd->ElemCount, sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, idx_buffer_offset);
             }
             idx_buffer_offset += pcmd->ElemCount;

@@ -77,9 +77,9 @@ public:
 
 	ImVec2 GetSize() const { return this->size; }
 
-	int GetSinkCount() const { return this->sinks.size(); }
+    int GetSinkCount() const { return int(this->sinks.size()); }
 
-	int GetSourceCount() const { return this->sources.size(); }
+    int GetSourceCount() const { return int(this->sources.size()); }
 
 	Source * GetSource(int idx) { return this->sources[idx].get(); }
 

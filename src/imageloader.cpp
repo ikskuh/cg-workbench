@@ -2,7 +2,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
 #include <algorithm>
+#include <cmath>
 
 GLuint load_texture(std::string const & fileName, GLenum wrap, bool withMipMaps)
 {
@@ -16,7 +18,7 @@ GLuint load_texture(std::string const & fileName, GLenum wrap, bool withMipMaps)
 
 	int levels = 1;
 	if(withMipMaps)
-		levels = ceil(log(std::max(w,h)) / log(2));
+        levels = std::ceil(std::log2(std::max(w,h)));
 
 	glTextureStorage2D(
 		img,

@@ -28,39 +28,8 @@ static Source * GetGeometryDefault()
 
 	glCreateBuffers(1, &vertexBuffer);
 
-#define A 0
-#define B 1
 	Vertex vertices[] = {
-	    Vertex {
-			position: { -1.0f, -1.0f, 0.0f },
-			normal: { 0,0,1 },
-			uv: {0,A}
-		},
-		Vertex {
-			position: {1.0f, -1.0f, 0.0f},
-			normal: {0,0,1},
-			uv: {1,A}
-		},
-		Vertex {
-			position: {-1.0f,  1.0f, 0.0f},
-			normal: {0,0,1},
-			uv: {0,B}
-		},
-		Vertex {
-			position: {1.0f,  1.0f, 0.0f},
-			normal: {0,0,1},
-			uv: {1,B}
-		},
-		Vertex {
-			position: {1.0f, -1.0f, 0.0f},
-			normal: {0,0,1},
-			uv: {1,A}
-		},
-		Vertex {
-			position: {-1.0f,  1.0f, 0.0f},
-			normal: {0,0,1},
-			uv: {0,B}
-		},
+        #include "meshes/quad.h"
 	};
 	glNamedBufferData(
 		vertexBuffer,
