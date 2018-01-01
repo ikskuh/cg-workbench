@@ -177,6 +177,20 @@ static bool IsExtensionSupported(const char *name)
   return false;
 }
 
+static SDL_Window * window;
+
+static void updateFileName(std::string fileName)
+{
+    std::string title = "CG Workbench";
+    if(!fileName.empty())
+        title += " - " + fileName;
+
+    ::currentFileName = fileName;
+    SDL_SetWindowTitle(window, title.c_str());
+
+    // TODO: Set working directory to root of current source file.
+}
+
 int main(int argc, char ** argv)
 {
     ::installPath = GetInstallPath();
@@ -211,7 +225,7 @@ int main(int argc, char ** argv)
 	SDL_DisplayMode current;
     SDL_GetCurrentDisplayMode(0, &current);
 
-	SDL_Window *window = SDL_CreateWindow(
+    window = SDL_CreateWindow(
 		"CG Workbench *FLOAT*",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		1280, 720,
@@ -323,6 +337,7 @@ int main(int argc, char ** argv)
 
 	if(argc == 2)
 	{
+        updateFileName(argv[1]);
 		load(std::string(argv[1]));
 	}
 
@@ -400,21 +415,24 @@ int main(int argc, char ** argv)
 						{
 							Window::DestroyAll();
 							currentWindowID = 0; // reset window id counter
-							currentFileName = "";
+                            updateFileName("");
 						}
 
 						if(ImGui::MenuItem("Open...", "CTRL+O"))
 						{
 							auto path = FileIO::OpenDialog("jgraph");
 							if(!path.empty())
-								load(currentFileName = path);
+                            {
+                                load(path);
+                                updateFileName(path);
+                            }
 						}
 						ImGui::Separator();
 
 						bool requiresSaveAs = false;
 						if(ImGui::MenuItem("Save", "CTRL+S"))
 						{
-							if(currentFileName.length() == 0)
+                            if(currentFileName.empty())
 								requiresSaveAs = true;
 							else
 								save(currentFileName);
@@ -423,7 +441,10 @@ int main(int argc, char ** argv)
 						{
 							auto path = FileIO::SaveDialog("jgraph");
 							if(!path.empty())
-								save(currentFileName = path);
+                            {
+                                save(path);
+                                updateFileName(currentFileName);
+                            }
 						}
 						ImGui::Separator();
 						if(ImGui::MenuItem("Exit", "ALT+F4"))
