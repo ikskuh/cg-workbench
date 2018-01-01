@@ -141,6 +141,8 @@ ImFont * labelFont;
 
 #ifdef WIN32
 #include "Shlwapi.h"
+#else
+#include <unistd.h>
 #endif
 
 static std::string GetInstallPath()
@@ -153,7 +155,9 @@ static std::string GetInstallPath()
 
     return std::string(path);
 #else
-    return "."; // TODO: Fix this with readlink /proc/self/exe
+	char path[PATH_MAX];
+	assert(readlink("/proc/self/exe", path, sizeof(path)) > 0);
+	return std::string(dirname(path));
 #endif
 }
 
