@@ -22,7 +22,7 @@ BPMNode::BPMNode() :
 void BPMNode::OnUpdate()
 {
 	int ticks = SDL_GetTicks();
-	if(ticks > this->timer)
+    if((ticks > this->timer) && (this->frequency > 0))
 	{
 		if(this->ticking)
 			this->tick->Trigger();

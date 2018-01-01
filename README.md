@@ -64,6 +64,9 @@ This project would be much harder without those great libraries:
 - Event Nodes
 	- Counter Node
 	- Signal Node (generate a kind of pulse)
+	- Threshold / Edge Detection -> Event
+- Audio Nodes
+	- Signal Mixer Node
 - Noise Node
 	- Output: Value, 1D Image, 2D Image, 3D Texture
 - Buffer -> Texture
