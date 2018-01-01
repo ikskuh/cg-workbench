@@ -3,6 +3,46 @@ The CG Workbench is a small GLSL coding environment which allows to rapidly prot
 
 ![](https://puu.sh/yOGv5/6c440d280e.png)
 
+## Build Instructions
+
+CG Workbench uses qmake as a build system, but doesn't require Qt.
+
+Instead of executing qmake manually, QtCreator can be used to build the project.
+
+### Linux
+Install the following libraries / packages:
+- `sdl2`
+- `glm`
+- `qt-5` or `qmake`
+- `lua` / `lua-5.3`
+- `gtk-3.0`
+
+Create a folder `build/`, enter it and run qmake with the `cg-workbench.pro` file specified
+as an argument. Then run `make`.
+
+### Windows
+
+Create a folder `lib` with the following contents and the corresponding libraries included.
+
+```
+cg-workbench/lib
+├───glm
+│   ├───glm
+│   │   ├───detail
+│   │   ├───gtc
+│   │   ├───gtx
+│   │   └───simd
+├───lua-5.3.4
+│   └───include
+├───nfd
+└───SDL2-2.0.7
+    ├───include
+    └───lib
+        └───x64
+```
+
+Then use QtCreator to build the project.
+
 ## External Libraries
 This project would be much harder without those great libraries:
 - [SDL2](https://www.libsdl.org)

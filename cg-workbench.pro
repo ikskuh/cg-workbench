@@ -48,7 +48,7 @@ windows: {
 !windows: {
     CONFIG += link_pkgconfig
 
-    PKGCONFIG += lua gl sdl2 SDL2_image gtk+-3.0
+    PKGCONFIG += lua gl sdl2 gtk+-3.0
 
     LIBS += -lm -ldl
 

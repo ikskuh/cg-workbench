@@ -153,7 +153,7 @@ static std::string GetInstallPath()
 
     return std::string(path);
 #else
-    adhasljdjas
+    return "."; // TODO: Fix this with readlink /proc/self/exe
 #endif
 }
 
