@@ -58,7 +58,6 @@ This project would be much harder without those great libraries:
 ## Ideas / Missing Nodes
 - Geometry Node
 	- Primitives
-		- Quad
 		- Sphere
 		- Cube
 - Event Nodes
@@ -67,13 +66,14 @@ This project would be much harder without those great libraries:
 	- Threshold / Edge Detection -> Event
 - Audio Nodes
 	- Signal Mixer Node
+	- Envelope Generator Node
 - Noise Node
 	- Output: Value, 1D Image, 2D Image, 3D Texture
 - Buffer -> Texture
 	- 1D Input/Over → 1D Texture with *n* width
 	- 2 * 1D Input/Over → 2D Texture with *n* * *m* width
-- Music Node
-	- Seek
+- Sound Node
+	- Seek (?)
 - Timeline Node
 	- Attach values to a timeline
 	- Time as input

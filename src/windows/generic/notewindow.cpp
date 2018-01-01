@@ -14,7 +14,7 @@ void NoteWindow::OnUpdate()
 	ImGui::InputTextMultiline(
 		"##text",
 		this->buffer, NoteWindow::MaxLength,
-		ImVec2(-1.0f, ImGui::GetTextLineHeight() * 14),
+		ImGui::GetContentRegionAvail(),
 		ImGuiInputTextFlags_AllowTabInput);
 }
 
