@@ -139,28 +139,6 @@ float deltatime;
 
 ImFont * labelFont;
 
-#ifdef WIN32
-#include "Shlwapi.h"
-#else
-#include <unistd.h>
-#endif
-
-static std::string GetInstallPath()
-{
-#ifdef WIN32
-    TCHAR path[MAX_PATH];
-    assert(GetModuleFileName(NULL, path, sizeof(path)) > 0);
-
-    assert(PathRemoveFileSpec(path) == TRUE);
-
-    return std::string(path);
-#else
-	char path[PATH_MAX];
-	assert(readlink("/proc/self/exe", path, sizeof(path)) > 0);
-	return std::string(dirname(path));
-#endif
-}
-
 static bool IsExtensionSupported(const char *name)
 {
   GLint n=0;
@@ -188,12 +166,13 @@ static void updateFileName(std::string fileName)
     ::currentFileName = fileName;
     SDL_SetWindowTitle(window, title.c_str());
 
-    // TODO: Set working directory to root of current source file.
+	if(!fileName.empty())
+		FileIO::SetCurrentDirectory(FileIO::RemoveLastPathComponent(fileName));
 }
 
 int main(int argc, char ** argv)
 {
-    ::installPath = GetInstallPath();
+	::installPath = FileIO::GetExecutableDirectory();
 
     printf("System install path: %s\n", ::installPath.c_str());
 
