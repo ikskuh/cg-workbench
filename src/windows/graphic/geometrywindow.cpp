@@ -174,15 +174,15 @@ void GeometryWindow::LoadObj(std::string const & fileName)
 		{
 			Vertex vtx;
 
-			vtx.position[0] = attrib.vertices[3 * idx.vertex_index + 0];
-			vtx.position[1] = attrib.vertices[3 * idx.vertex_index + 1];
-			vtx.position[2] = attrib.vertices[3 * idx.vertex_index + 2];
+            vtx.position[0] = attrib.vertices[3 * idx.vertex_index + 0];
+            vtx.position[1] = attrib.vertices[3 * idx.vertex_index + 1];
+            vtx.position[2] = attrib.vertices[3 * idx.vertex_index + 2];
 
 			if(idx.normal_index >= 0)
 			{
-				vtx.normal[0] = attrib.normals[3 * idx.normal_index + 0];
-				vtx.normal[1] = attrib.normals[3 * idx.normal_index + 1];
-				vtx.normal[2] = attrib.normals[3 * idx.normal_index + 2];
+                vtx.normal[0] = attrib.normals[3 * idx.normal_index + 0];
+                vtx.normal[1] = attrib.normals[3 * idx.normal_index + 1];
+                vtx.normal[2] = attrib.normals[3 * idx.normal_index + 2];
 			}
 			else
 			{
@@ -191,8 +191,8 @@ void GeometryWindow::LoadObj(std::string const & fileName)
 
 			if(idx.texcoord_index >= 0)
 			{
-				vtx.uv[0] = attrib.normals[2 * idx.texcoord_index + 0];
-				vtx.uv[1] = attrib.normals[2 * idx.texcoord_index + 1];
+                vtx.uv[0] = attrib.texcoords[2 * idx.texcoord_index + 0];
+                vtx.uv[1] = attrib.texcoords[2 * idx.texcoord_index + 1];
 			}
 			else
 			{

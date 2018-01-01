@@ -1,0 +1,338 @@
+{
+    "signals": [
+        {
+            "from": [
+                1,
+                "Shape"
+            ],
+            "to": [
+                2,
+                "Geometry"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Shader"
+            ],
+            "to": [
+                2,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Result"
+            ],
+            "to": [
+                3,
+                "transform"
+            ]
+        },
+        {
+            "from": [
+                12,
+                "Texture"
+            ],
+            "to": [
+                3,
+                "palette"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Result"
+            ],
+            "to": [
+                7,
+                "Src"
+            ]
+        },
+        {
+            "from": [
+                9,
+                "Value"
+            ],
+            "to": [
+                7,
+                "Eye"
+            ]
+        },
+        {
+            "from": [
+                10,
+                "Value"
+            ],
+            "to": [
+                7,
+                "Center"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "Result"
+            ],
+            "to": [
+                8,
+                "Src"
+            ]
+        },
+        {
+            "from": [
+                11,
+                "Total"
+            ],
+            "to": [
+                8,
+                "Angle"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "file": "C:\\Users\\Felix\\Desktop\\build-cg-workbench-Desktop_Qt_5_10_0_MSVC2017_64bit-Debug\\BaseRapairshop.obj",
+            "window-id": 1,
+            "window-pos": [
+                772.0,
+                75.0
+            ],
+            "window-size": [
+                185.0,
+                97.0
+            ],
+            "window-title": "Geometry",
+            "window-type": "geometry"
+        },
+        {
+            "depthtest": true,
+            "scale": 9,
+            "size": [
+                512.0,
+                512.0
+            ],
+            "tex": [
+                {
+                    "clear": true,
+                    "color": [
+                        0.0886621251702309,
+                        0.0785690248012543,
+                        0.364640891551971,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 2,
+            "window-pos": [
+                1271.0,
+                68.0
+            ],
+            "window-size": [
+                528.0,
+                566.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": true
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n\tgl_Position.y = -gl_Position.y;\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D palette;\n\nvoid main() {\n\tcolor = texture(\n\t\tpalette,\n\t\tvec2(uv.x, 1 - uv.y)\n\t\t);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 3,
+            "window-pos": [
+                859.0,
+                239.0
+            ],
+            "window-size": [
+                337.0,
+                347.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "window-id": 4,
+            "window-pos": [
+                118.0,
+                99.0
+            ],
+            "window-size": [
+                141.0,
+                48.0
+            ],
+            "window-title": "Matrix Perspective",
+            "window-type": "matrix-perspective"
+        },
+        {
+            "window-id": 7,
+            "window-pos": [
+                446.0,
+                239.0
+            ],
+            "window-size": [
+                106.0,
+                48.0
+            ],
+            "window-title": "Matrix LookAt",
+            "window-type": "matrix-lookat"
+        },
+        {
+            "window-id": 8,
+            "window-pos": [
+                614.0,
+                322.0
+            ],
+            "window-size": [
+                106.0,
+                48.0
+            ],
+            "window-title": "Matrix Rotate",
+            "window-type": "matrix-rotate"
+        },
+        {
+            "type": "uniform-vec3",
+            "value": [
+                -25.0,
+                13.3300008773804,
+                0.0
+            ],
+            "window-id": 9,
+            "window-pos": [
+                18.0,
+                309.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (vec3)",
+            "window-type": "uniform-vec3"
+        },
+        {
+            "type": "uniform-vec3",
+            "value": [
+                0.0,
+                2.10000014305115,
+                0.0
+            ],
+            "window-id": 10,
+            "window-pos": [
+                52.0,
+                432.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (vec3)",
+            "window-type": "uniform-vec3"
+        },
+        {
+            "current": 1859.48669433594,
+            "speed": 1.0,
+            "window-id": 11,
+            "window-pos": [
+                106.0,
+                542.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ],
+            "window-title": "Timer",
+            "window-type": "timer"
+        },
+        {
+            "file": "C:\\Users\\Felix\\Desktop\\destoroya2d\\artexport\\palette.png",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
+            "window-id": 12,
+            "window-pos": [
+                473.0,
+                524.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "window-title": "Image",
+            "window-type": "image"
+        }
+    ]
+}
