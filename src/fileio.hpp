@@ -4,11 +4,11 @@
 
 namespace FileIO
 {
-	std::string GetExecutableDirectory();
+    std::string GetExecutableDirectory();
 
-	std::string GetCurrentDirectory();
+    std::string __cdecl GetWorkingDirectory();
 
-	void SetCurrentDirectory(std::string const & text);
+    void SetWorkingDirectory(std::string const & text);
 
 	std::string RemoveLastPathComponent(std::string const & text);
 

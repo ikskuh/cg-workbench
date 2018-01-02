@@ -15,22 +15,22 @@
 
 namespace FileIO
 {
-    static char const * GetCurrentDir()
+    std::string GetWorkingDirectory()
     {
 #ifdef WIN32
         static char cwd[MAX_PATH];
-        GetCurrentDirectoryA(sizeof(cwd), cwd);
-        return cwd;
+        ::GetCurrentDirectoryA(sizeof(cwd), cwd);
+        return std::string(cwd);
 #else
         static char cwd[PATH_MAX];
-        return getcwd(cwd, sizeof(cwd));
+        return std::string(getcwd(cwd, sizeof(cwd)));
 #endif
     }
 
-	void SetCurrentDirectory(std::string const & text)
+    void SetWorkingDirectory(std::string const & text)
 	{
 #ifdef WIN32
-		IMPLEMENT IT
+        ::SetCurrentDirectory(text.c_str());
 #else
 		chdir(text.c_str());
 #endif
@@ -55,7 +55,7 @@ namespace FileIO
 	std::string OpenDialog(char const * filter)
 	{
 		nfdchar_t *outPath = NULL;
-        nfdresult_t result = NFD_OpenDialog(filter, GetCurrentDir(), &outPath );
+        nfdresult_t result = NFD_OpenDialog(filter, FileIO::GetWorkingDirectory().c_str(), &outPath );
 		if ( result == NFD_OKAY )
 		{
  			std::string path(outPath);
@@ -74,7 +74,7 @@ namespace FileIO
 	std::string SaveDialog(char const * filter)
 	{
 		nfdchar_t *outPath = NULL;
-        nfdresult_t result = NFD_SaveDialog(filter, GetCurrentDir(), &outPath );
+        nfdresult_t result = NFD_SaveDialog(filter, FileIO::GetWorkingDirectory().c_str(), &outPath );
 		if ( result == NFD_OKAY )
 		{
  			std::string path(outPath);

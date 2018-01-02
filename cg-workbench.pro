@@ -13,6 +13,10 @@ INCLUDEPATH += \
 	$$PWD/ext/tinyobjloader \
 	$$PWD/ext/tinydir
 
+debug: {
+    DEFINES += DEBUG_BUILD
+}
+
 windows: {
 
     # Make C++ on windows actually acceptable

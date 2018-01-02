@@ -167,12 +167,16 @@ static void updateFileName(std::string fileName)
     SDL_SetWindowTitle(window, title.c_str());
 
 	if(!fileName.empty())
-		FileIO::SetCurrentDirectory(FileIO::RemoveLastPathComponent(fileName));
+        FileIO::SetWorkingDirectory(FileIO::RemoveLastPathComponent(fileName));
 }
 
 int main(int argc, char ** argv)
 {
+#ifdef DEBUG_BUILD
+    ::installPath = FileIO::GetWorkingDirectory();
+#else
 	::installPath = FileIO::GetExecutableDirectory();
+#endif
 
     printf("System install path: %s\n", ::installPath.c_str());
 
