@@ -24,6 +24,8 @@ public:
 	GeometryWindow(GeometryWindow &&) = delete;
 	~GeometryWindow();
 
+	void LoadFile();
+
 	nlohmann::json Serialize() const override;
 
 	void Deserialize(const nlohmann::json &value);

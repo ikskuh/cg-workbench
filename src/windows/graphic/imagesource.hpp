@@ -21,6 +21,8 @@ public:
 	ImageSource();
 	~ImageSource();
 
+	void LoadFile();
+
 	nlohmann::json Serialize() const override;
 
 	void Deserialize(const nlohmann::json &value) override;
