@@ -6,7 +6,7 @@ namespace FileIO
 {
     std::string GetExecutableDirectory();
 
-    std::string __cdecl GetWorkingDirectory();
+    std::string GetWorkingDirectory();
 
     void SetWorkingDirectory(std::string const & text);
 
@@ -15,4 +15,4 @@ namespace FileIO
 	std::string OpenDialog(char const * filter);
 
 	std::string SaveDialog(char const * filter);
-};
+}
