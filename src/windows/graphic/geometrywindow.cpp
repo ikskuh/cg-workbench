@@ -95,11 +95,7 @@ void GeometryWindow::OnUpdate()
 				ImGui::EndMenu();
 			}
 			if(ImGui::MenuItem("Load OBJ..."))
-			{
-				auto path = FileIO::OpenDialog("obj");
-				if(!path.empty())
-					this->LoadObj(path);
-			}
+				this->LoadFile();
 			ImGui::EndMenu();
 		}
 
@@ -212,4 +208,11 @@ void GeometryWindow::LoadQuad()
         #include "meshes/quad.h"
 	};
 	this->Reload();
+}
+
+void GeometryWindow::LoadFile()
+{
+	auto path = FileIO::OpenDialog("obj");
+	if(!path.empty())
+		this->LoadObj(path);
 }

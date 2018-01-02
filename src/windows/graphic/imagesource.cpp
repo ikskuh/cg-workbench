@@ -27,14 +27,7 @@ void ImageSource::OnUpdate()
 		if(ImGui::BeginMenu("Image"))
 		{
 			if(ImGui::MenuItem("Load..."))
-			{
-				auto path =FileIO::OpenDialog("png,jpeg,jpg,bmp");
-				GLuint i = load_texture(path);
-				if(i != 0) {
-					this->SetTexture(i);
-					this->currentFile = path;
-				}
-			}
+				this->LoadFile();
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
@@ -96,5 +89,16 @@ void ImageSource::Deserialize(const nlohmann::json &value)
 	}
 	catch(nlohmann::detail::out_of_range const & ex) {
 
+	}
+}
+
+
+void ImageSource::LoadFile()
+{
+	auto path =FileIO::OpenDialog("png,jpeg,jpg,bmp");
+	GLuint i = load_texture(path);
+	if(i != 0) {
+		this->SetTexture(i);
+		this->currentFile = path;
 	}
 }

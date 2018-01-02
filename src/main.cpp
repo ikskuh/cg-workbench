@@ -17,6 +17,9 @@
 #include "windows/generic/luaconsole.hpp"
 #include "windows/graphic/gpuerrorlog.hpp"
 
+#include "windows/graphic/geometrywindow.hpp"
+#include "windows/graphic/imagesource.hpp"
+
 #include "resources.hpp"
 #include "audiostream.hpp"
 
@@ -114,6 +117,22 @@ static Window * createMenu()
 
 	ImGui::Separator();
 
+	if(ImGui::MenuItem("Load Image..."))
+	{
+		auto * src = new ImageSource();
+		Window::Register(result = src);
+		src->LoadFile();
+	}
+
+	if(ImGui::MenuItem("Load Geometry..."))
+	{
+		auto * src = new GeometryWindow();
+		Window::Register(result = src);
+		src->LoadFile();
+	}
+
+	ImGui::Separator();
+
 	if(ImGui::MenuItem("Import Node..."))
 	{
 		auto path = FileIO::OpenDialog("jnode");
@@ -175,7 +194,6 @@ int main(int argc, char ** argv)
 	::installPath = FileIO::GetExecutableDirectory();
 
     printf("System install path: %s\n", ::installPath.c_str());
-
 
     // Setup SDL
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) != 0)
