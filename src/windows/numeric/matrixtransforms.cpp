@@ -2,7 +2,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(MatrixMult, Menu::Transforms, "matrix-mult", "Look At");
+REGISTER_WINDOW_CLASS(MatrixMult, Menu::Transforms, "matrix-mult", "Matrix Multiplication");
 REGISTER_WINDOW_CLASS(MatrixTranslate, Menu::Transforms, "matrix-translate", "Translate");
 REGISTER_WINDOW_CLASS(MatrixRotate, Menu::Transforms, "matrix-rotate", "Rotate");
 REGISTER_WINDOW_CLASS(MatrixScale, Menu::Transforms, "matrix-scale", "Scale");

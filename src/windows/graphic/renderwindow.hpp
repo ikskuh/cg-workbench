@@ -26,6 +26,7 @@ private:
 	Sink * geom;
 	Sink * shader;
 	Sink * transform;
+    Sink * drawcalls;
 
 	float mousePressed;
 	glm::vec2 mousePos, mousePosNormalized;
@@ -45,6 +46,8 @@ private:
 	void ClearEdit(int idx);
 
 	void Resize(int w, int h);
+
+    void Render(RenderPass const & pass);
 protected:
 	void OnRender() override;
 	void OnUpdate() override;

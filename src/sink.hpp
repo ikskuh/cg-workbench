@@ -9,6 +9,8 @@ class Source;
 class Sink :
 	public Slot
 {
+public:
+    static const int UnlimitedConnections = -1;
 private:
 	std::vector<Source const *> sources;
 	int limit;

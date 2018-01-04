@@ -2,7 +2,7 @@
 #include <fstream>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(RenderWindow, Menu, "renderer", "Renderer")
+REGISTER_WINDOW_CLASS(RenderWindow, Menu::Graphic, "renderer", "Renderer")
 
 #include "fileio.hpp"
 
@@ -90,6 +90,7 @@ RenderWindow::RenderWindow() :
 
 	this->geom = this->AddSink<CgDataType::Geometry>("Geometry");
 	this->shader = this->AddSink<CgDataType::Shader>("Shader");
+    this->transform = this->AddSink<CgDataType::UniformMat4>("Transform");
 
 	this->AddSource(new Source(CgDataType::Texture2D, "Image 0", &this->tex[0]));
 	this->AddSource(new Source(CgDataType::Texture2D, "Image 1", &this->tex[1]));
@@ -100,6 +101,8 @@ RenderWindow::RenderWindow() :
 	this->AddSource(new Source(CgDataType::UniformFloat, "Mouse Pressed", &this->mousePressed));
 	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos", &this->mousePos.x));
 	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos (Normalized)", &this->mousePosNormalized.x));
+
+    this->drawcalls = this->AddSink<CgDataType::RenderPass>("Drawcalls", Sink::UnlimitedConnections);
 }
 
 RenderWindow::~RenderWindow()
@@ -108,6 +111,21 @@ RenderWindow::~RenderWindow()
 	for(int i = 0; i < 4; i++)
 		if(this->tex[0] != 0) glDeleteTextures(1, &this->tex[0]);
 	glDeleteRenderbuffers(1, &this->depthbuf);
+}
+
+
+
+void RenderWindow::Render(RenderPass const & pass)
+{
+    if(pass.shader == nullptr || pass.geometry == nullptr)
+        return;
+
+    pass.shader->Use();
+
+    pass.shader->SetTransform(pass.transform);
+
+    glBindVertexArray(pass.geometry->VertexArray);
+    glDrawArrays(GL_TRIANGLES, 0, pass.geometry->VertexCount);
 }
 
 void RenderWindow::OnRender()
@@ -139,31 +157,36 @@ void RenderWindow::OnRender()
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	if(this->shader->HasSource() && this->geom->HasSource())
-	{
-		auto const & geom = this->geom->GetObject<CgDataType::Geometry>();
+    GLenum DrawBuffers[4] = {
+        GL_COLOR_ATTACHMENT0,
+        GL_COLOR_ATTACHMENT1,
+        GL_COLOR_ATTACHMENT2,
+        GL_COLOR_ATTACHMENT3,
+    };
+    glDrawBuffers(4, DrawBuffers); // "1" is the size of DrawBuffers
 
-		this->shader->GetObject<CgDataType::Shader>().Use();
+    if(this->wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		glBindVertexArray(geom.VertexArray);
+    // TODO: Implement weighted rendering!
+    for(int i = 0; i < this->drawcalls->GetSourceCount(); i++)
+    {
+        RenderPass const & pass = this->drawcalls->GetObject<CgDataType::RenderPass>(i);
+        this->Render(pass);
+    }
 
-		GLenum DrawBuffers[4] = {
-			GL_COLOR_ATTACHMENT0,
-			GL_COLOR_ATTACHMENT1,
-			GL_COLOR_ATTACHMENT2,
-			GL_COLOR_ATTACHMENT3,
-		};
-		glDrawBuffers(4, DrawBuffers); // "1" is the size of DrawBuffers
-
-		if(this->wireframe)
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		else
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		glDrawArrays(GL_TRIANGLES, 0, geom.VertexCount);
-
-		glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+    if(this->shader->HasSource() && this->geom->HasSource())
+    {
+        RenderPass pass;
+        pass.geometry = &this->geom->GetObject<CgDataType::Geometry>();
+        pass.shader = &this->shader->GetObject<CgDataType::Shader>();
+        pass.transform = this->transform->GetObject<CgDataType::UniformMat4>();
+        this->Render(pass);
 	}
+
+    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }

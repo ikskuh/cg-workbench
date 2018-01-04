@@ -56,10 +56,19 @@ This project would be much harder without those great libraries:
 - [github.com/cxong/tinydir](https://github.com/cxong/tinydir)
 
 ## Ideas / Missing Nodes
-- Geometry Node
-	- Primitives
-		- Sphere
-		- Cube
+- Graphic Nodes
+	- Geometry Node
+		- Primitives
+			- Sphere
+			- Cube
+	- Multi-Geometry-Rendering
+		- Render Pass Node
+			- Shader
+			- Geometry
+			- Transform?!
+			- Priority (explicit render order)
+		- Extend Renderer Node
+			- "Passes" Sink
 - Event Nodes
 	- Counter Node
 	- Signal Node (generate a kind of pulse)

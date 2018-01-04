@@ -3,7 +3,7 @@
 #include <tiny_obj_loader.h>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(GeometryWindow, Menu, "geometry", "Geometry")
+REGISTER_WINDOW_CLASS(GeometryWindow, Menu::Graphic, "geometry", "Geometry")
 
 #include "fileio.hpp"
 

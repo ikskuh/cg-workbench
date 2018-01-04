@@ -13,6 +13,7 @@ namespace resources
 		extern GLuint shader;
 		extern GLuint image;
 		extern GLuint audio;
+        extern GLuint render_pass;
 		extern GLuint event_source;
 		extern GLuint event_listener;
 		extern GLuint genericSink;

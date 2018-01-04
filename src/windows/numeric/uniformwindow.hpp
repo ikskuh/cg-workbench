@@ -14,7 +14,8 @@ protected:
 	virtual void OnUpdate() override;
 public:
 	UniformWindow() :
-	    Window(GetTitle(), ImGuiWindowFlags_AlwaysAutoResize)
+        Window(GetTitle(), ImGuiWindowFlags_AlwaysAutoResize),
+        value()
 	{
 		this->AddSource(new Source(_Type, "Value", &this->value));
 	}

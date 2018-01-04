@@ -2,12 +2,14 @@
 #include <stdexcept>
 #include <algorithm>
 
+static_assert(Sink::UnlimitedConnections < 0, "Sink::UnlimitedConnections must be negative!");
+
 Sink::Sink(CgDataType type, std::string const & name, int maxConnections) :
 	Slot(type, name),
     sources(),
 	limit(maxConnections)
 {
-	assert(this->limit == -1 || this->limit >= 1);
+    assert(this->limit == Sink::UnlimitedConnections || this->limit >= 1);
 }
 
 Sink::~Sink()

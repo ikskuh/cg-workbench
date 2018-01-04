@@ -6,6 +6,7 @@
 #include "geometry.hpp"
 #include "shaderprogram.hpp"
 #include "audiostream.hpp"
+#include "renderpass.hpp"
 #include "event.hpp"
 
 enum class CgDataType
@@ -16,6 +17,7 @@ enum class CgDataType
 	Geometry,
 	Audio,
 	Event, //! can be TRIGGERED!!!
+    RenderPass,
 	UniformFloat,
 	UniformVec2,
 	UniformVec3,
@@ -47,6 +49,7 @@ MAPTYPE(Shader, ShaderProgram, (void)value);
 MAPTYPE(Geometry, Geometry, ImGui::Text("%d vertices", value.VertexCount));
 MAPTYPE(Audio, AudioStream, ImGui::Text("%d channels", value.GetChannels()));
 MAPTYPE(Event, Event, ImGui::Text("Triggered %d times", value.GetCounter()) );
+MAPTYPE(RenderPass, RenderPass, (void)value;);
 
 #undef MAPTYPE
 
@@ -59,6 +62,7 @@ static inline char const * DisplayName(CgDataType type)
 		case CgDataType::Shader: return "shader";
 		case CgDataType::Audio: return "audio";
 		case CgDataType::Event: return "event";
+        case CgDataType::RenderPass: return "pass";
 		case CgDataType::UniformFloat: return "float";
 		case CgDataType::UniformVec2: return "vec2";
 		case CgDataType::UniformVec3: return "vec3";
@@ -83,6 +87,7 @@ static inline void DisplayDataValue(CgDataType type, void const * value)
 		X(CgDataType::Shader);
 		X(CgDataType::Audio);
 		X(CgDataType::Event);
+        X(CgDataType::RenderPass);
 		X(CgDataType::UniformFloat);
 		X(CgDataType::UniformVec2);
 		X(CgDataType::UniformVec3);

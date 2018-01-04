@@ -2,7 +2,7 @@
 #include "imageloader.hpp"
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(ImageSource, Menu, "image", "Image")
+REGISTER_WINDOW_CLASS(ImageSource, Menu::Graphic, "image", "Image")
 
 #include "fileio.hpp"
 

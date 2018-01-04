@@ -68,6 +68,7 @@ static ImTextureID GetSocketIcon(CgDataType type, bool isSource)
 		case CgDataType::Shader: return (ImTextureID)uintptr_t(resources::icons::shader);
 		case CgDataType::Texture2D: return (ImTextureID)uintptr_t(resources::icons::image);
 		case CgDataType::Audio: return (ImTextureID)uintptr_t(resources::icons::audio);
+        case CgDataType::RenderPass: return (ImTextureID)uintptr_t(resources::icons::render_pass);
 		case CgDataType::Event:
 			if(isSource)
 				return (ImTextureID)uintptr_t(resources::icons::event_source);

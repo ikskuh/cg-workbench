@@ -3,6 +3,11 @@
 #include "cgdatatype.hpp"
 #include <string>
 
+// Required for "compatibility" with function names.
+#ifdef WIN32
+#include <Windows.h>
+#endif
+
 class Window;
 
 class Slot

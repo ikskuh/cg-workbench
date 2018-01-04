@@ -85,4 +85,8 @@ namespace Menu
 	{
 		WindowCategory Instance(&Menu::Instance, "Event");
 	}
+    namespace Graphic
+    {
+        WindowCategory Instance(&Menu::Instance, "Graphic");
+    }
 }

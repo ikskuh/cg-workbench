@@ -41,6 +41,7 @@ public:
 struct Uniform
 {
 	std::string name;
+    GLenum type;
 	Sink * sink;
 	int location;
 };

@@ -2,7 +2,7 @@
 #include <cstdio>
 
 #include <windowregistry.hpp>
-REGISTER_WINDOW_CLASS(ShaderEditor, Menu, "shader", "Shader")
+REGISTER_WINDOW_CLASS(ShaderEditor, Menu::Graphic, "shader", "Shader")
 
 char const * defaultVertexShader = R"glsl(#version 330
 layout(location = 0) in vec3 vPosition;
@@ -338,6 +338,7 @@ void ShaderEditor::Compile()
 					u.sink = sink;
 					u.location = i;
 					u.name = sink->GetName();
+                    u.type = type;
 
 					uniforms.emplace_back(u);
 

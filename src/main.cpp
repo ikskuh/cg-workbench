@@ -444,7 +444,7 @@ int main(int argc, char ** argv)
 							if(!path.empty())
                             {
                                 save(path);
-                                updateFileName(currentFileName);
+                                updateFileName(path);
                             }
 						}
 						ImGui::Separator();

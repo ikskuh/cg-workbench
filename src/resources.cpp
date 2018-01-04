@@ -22,6 +22,7 @@ namespace resources
 		ICON(audio, "audio.png");
 		ICON(event_source, "event_source.png");
 		ICON(event_listener, "event_listener.png");
+        ICON(render_pass, "render_pass.png");
 	}
 
 	namespace icons
@@ -30,7 +31,8 @@ namespace resources
 		GLuint shader;
 		GLuint image;
 		GLuint audio;
-		GLuint event_source;
+        GLuint render_pass;
+        GLuint event_source;
 		GLuint event_listener;
 		GLuint genericSink;
 		GLuint genericSource;

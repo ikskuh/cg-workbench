@@ -114,7 +114,9 @@ SOURCES += \
     src/windows/numeric/timerwindow.cpp \
     src/windows/numeric/uniformwindow.cpp \
     src/windows/numeric/vectoradapter.cpp \
-	src/main.cpp
+	src/main.cpp \
+    src/windows/graphic/renderpassnode.cpp \
+    src/renderpass.cpp
 
 HEADERS += \
 	ext/gl3w/GL/gl3w.h \
@@ -167,6 +169,8 @@ HEADERS += \
     src/windows/numeric/uniformwindow.hpp \
     src/windows/numeric/vectoradapter.hpp \
 	src/imgui_impl.h \
-    src/meshes/quad.h
+    src/meshes/quad.h \
+    src/windows/graphic/renderpassnode.hpp \
+    src/renderpass.hpp
 
 
