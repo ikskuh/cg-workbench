@@ -116,7 +116,8 @@ SOURCES += \
     src/windows/numeric/vectoradapter.cpp \
 	src/main.cpp \
     src/windows/graphic/renderpassnode.cpp \
-    src/renderpass.cpp
+    src/renderpass.cpp \
+    src/utils.cpp
 
 HEADERS += \
 	ext/gl3w/GL/gl3w.h \
@@ -171,6 +172,11 @@ HEADERS += \
 	src/imgui_impl.h \
     src/meshes/quad.h \
     src/windows/graphic/renderpassnode.hpp \
-    src/renderpass.hpp
+    src/renderpass.hpp \
+    src/utils.hpp
+
+DISTFILES += \
+    README.md \
+    LICENSE
 
 

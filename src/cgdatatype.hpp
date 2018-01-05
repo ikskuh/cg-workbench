@@ -8,6 +8,7 @@
 #include "audiostream.hpp"
 #include "renderpass.hpp"
 #include "event.hpp"
+#include "utils.hpp"
 
 enum class CgDataType
 {
@@ -29,11 +30,11 @@ enum class CgDataType
 template<CgDataType _Type>
 struct UniformType;
 
-#define MAPTYPE(_CgType, _DataType, _DisplayImpl) \
+#define MAPTYPE(_CgType, _DataType, ...) \
 	template<> struct UniformType<CgDataType::_CgType> { \
 		typedef _DataType type; \
 		static void Display(_DataType const & value) { \
-			_DisplayImpl;\
+            __VA_ARGS__;\
 		} \
 	}
 
@@ -44,7 +45,16 @@ MAPTYPE(UniformVec4, glm::vec4, ImGui::Text("vec4(%f,%f,%f,%f)", value.x, value.
 MAPTYPE(UniformMat3, glm::mat3, (void)value; ImGui::Text("mat3(...)"));
 MAPTYPE(UniformMat4, glm::mat4, (void)value; ImGui::Text("%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f", value[0].x, value[0].y, value[0].z, value[0].w, value[1].x, value[1].y, value[1].z, value[1].w, value[2].x, value[2].y, value[2].z, value[2].w, value[3].x, value[3].y, value[3].z, value[3].w));
 
-MAPTYPE(Texture2D, GLuint, ImGui::Image((ImTextureID)uintptr_t(value), ImVec2(128, 128)));
+MAPTYPE(Texture2D, GLuint,
+    int w,h;
+    GLenum fmt;
+    glGetTextureLevelParameteriv(value, 0, GL_TEXTURE_WIDTH, &w);
+    glGetTextureLevelParameteriv(value, 0, GL_TEXTURE_HEIGHT, &h);
+    glGetTextureLevelParameteriv(value, 0, GL_TEXTURE_HEIGHT, reinterpret_cast<GLint*>(&fmt));
+    ImGui::Text("Resolution: %d*%d", w, h);
+    ImGui::Text("Format:     %s", utils::GetTextureFormatName(fmt));
+    ImGui::Image((ImTextureID)uintptr_t(value), ImVec2(128, 128 * float(h) / float(w)), ImVec2(0,1), ImVec2(1,0))
+    );
 MAPTYPE(Shader, ShaderProgram, (void)value);
 MAPTYPE(Geometry, Geometry, ImGui::Text("%d vertices", value.VertexCount));
 MAPTYPE(Audio, AudioStream, ImGui::Text("%d channels", value.GetChannels()));

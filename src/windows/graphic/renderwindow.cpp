@@ -88,6 +88,8 @@ RenderWindow::RenderWindow() :
 	if(status != GL_FRAMEBUFFER_COMPLETE)
 		throw "foo";
 
+    this->drawcalls = this->AddSink<CgDataType::RenderPass>("Drawcalls", Sink::UnlimitedConnections);
+
 	this->geom = this->AddSink<CgDataType::Geometry>("Geometry");
 	this->shader = this->AddSink<CgDataType::Shader>("Shader");
     this->transform = this->AddSink<CgDataType::UniformMat4>("Transform");
@@ -100,9 +102,7 @@ RenderWindow::RenderWindow() :
 	this->AddSource(new Source(CgDataType::UniformVec2, "Image Size", &this->texSize.x));
 	this->AddSource(new Source(CgDataType::UniformFloat, "Mouse Pressed", &this->mousePressed));
 	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos", &this->mousePos.x));
-	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos (Normalized)", &this->mousePosNormalized.x));
-
-    this->drawcalls = this->AddSink<CgDataType::RenderPass>("Drawcalls", Sink::UnlimitedConnections);
+    this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos (Normalized)", &this->mousePosNormalized.x));
 }
 
 RenderWindow::~RenderWindow()
@@ -334,8 +334,8 @@ void RenderWindow::OnUpdate()
 	ImGui::ImageButton(
 		ImTextureID(uintptr_t(this->tex[this->shownTexture])),
 	    vpsize,
-		ImVec2(0.0f, 0.0f),
-		ImVec2(1.0f, 1.0f),
+        ImVec2(0.0f, 1.0f),
+        ImVec2(1.0f, 0.0f),
 		0);
 	if(ImGui::IsItemHovered())
 	{

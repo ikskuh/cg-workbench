@@ -62,13 +62,8 @@ This project would be much harder without those great libraries:
 			- Sphere
 			- Cube
 	- Multi-Geometry-Rendering
-		- Render Pass Node
-			- Shader
-			- Geometry
-			- Transform?!
-			- Priority (explicit render order)
-		- Extend Renderer Node
-			- "Passes" Sink
+                - Render Pass Node
+                        - Priority (explicit render order)
 - Event Nodes
 	- Counter Node
 	- Signal Node (generate a kind of pulse)

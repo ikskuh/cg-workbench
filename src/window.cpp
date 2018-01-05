@@ -224,7 +224,7 @@ void Window::UpdateNodes()
 			}
 			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			ImGui::PushID(sink.get());
-			if(ImGui::ImageButton(GetSocketIcon(sink->GetType(), false) , ImVec2(size, size)))
+            if(ImGui::ImageButton(GetSocketIcon(sink->GetType(), false) , ImVec2(size, size), ImVec2(0,1), ImVec2(1,0)))
 				sink->Clear();
 			ImGui::PopID();
 			ImGui::PopStyleColor();
@@ -274,7 +274,7 @@ void Window::UpdateNodes()
 
 			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			ImGui::PushID(source.get());
-			ImGui::ImageButton(GetSocketIcon(source->GetType(), true), ImVec2(size, size));
+            ImGui::ImageButton(GetSocketIcon(source->GetType(), true), ImVec2(size, size), ImVec2(0,1), ImVec2(1,0));
 			ImGui::PopID();
 			ImGui::PopStyleColor();
 

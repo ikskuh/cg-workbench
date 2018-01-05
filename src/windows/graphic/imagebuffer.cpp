@@ -33,29 +33,16 @@ void ImageBuffer::OnRender()
 		if(src != 0)
 		{
 			int w, h;
-			GLenum type;
+            GLenum format;
 			glGetTextureLevelParameteriv(src, 0, GL_TEXTURE_WIDTH, &w);
 			glGetTextureLevelParameteriv(src, 0, GL_TEXTURE_HEIGHT, &h);
-			glGetTextureLevelParameteriv(src, 0, GL_TEXTURE_RED_TYPE, reinterpret_cast<GLint*>(&type));
-
-			int idx = 0;
-			switch(type)
-			{
-				case GL_UNSIGNED_NORMALIZED: idx = 0; break;
-				case GL_FLOAT:               idx = 1; break;
-				case GL_INT:                 idx = 2; break;
-				case GL_UNSIGNED_INT:        idx = 3; break;
-				default:                     idx = 0; break;
-			}
-			static GLenum formats[] = {
-			    GL_RGBA8, GL_RGBA32F, GL_RGBA8I, GL_RGBA8UI
-			};
+            glGetTextureLevelParameteriv(src, 0, GL_TEXTURE_INTERNAL_FORMAT, reinterpret_cast<GLint*>(&format));
 
 			glCreateTextures(GL_TEXTURE_2D, 1, &this->img);
 			glTextureStorage2D(
 				this->img,
 				1,
-				formats[idx],
+                format,
 				w, h);
 
 			glNamedFramebufferTexture(

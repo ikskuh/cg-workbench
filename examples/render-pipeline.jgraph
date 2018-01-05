@@ -72,7 +72,7 @@
         },
         {
             "from": [
-                7,
+                16,
                 "Result"
             ],
             "to": [
@@ -98,6 +98,16 @@
             "to": [
                 5,
                 "Eye"
+            ]
+        },
+        {
+            "from": [
+                15,
+                "Value"
+            ],
+            "to": [
+                5,
+                "Center"
             ]
         },
         {
@@ -139,6 +149,36 @@
                 7,
                 "Offset"
             ]
+        },
+        {
+            "from": [
+                14,
+                "Texture"
+            ],
+            "to": [
+                8,
+                "palette"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "Result"
+            ],
+            "to": [
+                16,
+                "Src"
+            ]
+        },
+        {
+            "from": [
+                17,
+                "Value"
+            ],
+            "to": [
+                16,
+                "Angle"
+            ]
         }
     ],
     "type": "cg-workbench-file",
@@ -146,7 +186,7 @@
     "windows": [
         {
             "depthtest": true,
-            "scale": 8,
+            "scale": 9,
             "size": [
                 512.0,
                 512.0
@@ -156,8 +196,8 @@
                     "clear": true,
                     "color": [
                         0.0,
-                        0.0,
-                        0.0,
+                        0.488735914230347,
+                        1.0,
                         1.0
                     ],
                     "format": 32856,
@@ -223,12 +263,12 @@
             ],
             "window-id": 1,
             "window-pos": [
-                1421.0,
-                160.0
+                1334.0,
+                94.0
             ],
             "window-size": [
-                272.0,
-                310.0
+                528.0,
+                566.0
             ],
             "window-title": "Render Window",
             "window-type": "renderer",
@@ -238,8 +278,8 @@
             "priority": 0,
             "window-id": 2,
             "window-pos": [
-                1113.0,
-                97.0
+                1034.0,
+                186.0
             ],
             "window-size": [
                 95.0,
@@ -252,8 +292,8 @@
             "priority": 0,
             "window-id": 3,
             "window-pos": [
-                1131.0,
-                467.0
+                1136.0,
+                344.0
             ],
             "window-size": [
                 95.0,
@@ -304,8 +344,8 @@
         {
             "window-id": 7,
             "window-pos": [
-                848.0,
-                442.0
+                804.0,
+                478.0
             ],
             "window-size": [
                 127.0,
@@ -321,18 +361,18 @@
                     "type": 35633
                 },
                 {
-                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nvoid main() {\n\tcolor = vec4(uv,0,1);\n}\n",
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D palette;\n\nvoid main() {\n\tvec3 ldir = normalize(vec3(0.3, -1.0, 0.4));\n\n\tfloat l = clamp(-dot(ldir,normal), 0, 1);\n\n\tcolor = texture(palette, uv) * vec4(l,l,l,1);\n}\n",
                     "type": 35632
                 }
             ],
             "window-id": 8,
             "window-pos": [
-                161.0,
-                471.0
+                565.0,
+                636.0
             ],
             "window-size": [
-                238.0,
-                172.0
+                390.0,
+                291.0
             ],
             "window-title": "Shader Editor",
             "window-type": "shader"
@@ -352,11 +392,11 @@
             "window-type": "geometry"
         },
         {
-            "file": "C:\\Users\\Felix\\Desktop\\destoroya2d\\artexport\\flora\\FloraCactee01.obj",
+            "file": "C:\\Users\\Felix\\Desktop\\destoroya2d\\artexport\\vehicles\\tanks\\medium\\VehicleTankMediumBody.obj",
             "window-id": 10,
             "window-pos": [
-                837.0,
-                337.0
+                764.0,
+                340.0
             ],
             "window-size": [
                 155.0,
@@ -368,14 +408,14 @@
         {
             "type": "uniform-vec3",
             "value": [
-                0.590000033378601,
-                0.910000026226044,
-                -3.47000026702881
+                -0.740000009536743,
+                3.70000028610229,
+                -3.29000020027161
             ],
             "window-id": 11,
             "window-pos": [
-                462.0,
-                552.0
+                420.0,
+                494.0
             ],
             "window-size": [
                 262.0,
@@ -387,9 +427,9 @@
         {
             "type": "uniform-vec3",
             "value": [
-                -1.28000009059906,
-                -2.03000020980835,
-                10.6500005722046
+                -1.19000005722046,
+                -2.85000014305115,
+                10.7000007629395
             ],
             "window-id": 12,
             "window-pos": [
@@ -406,14 +446,14 @@
         {
             "type": "uniform-vec3",
             "value": [
-                0.0,
-                0.0,
-                -4.30000019073486
+                -0.990000069141388,
+                4.73000001907349,
+                -4.40000009536743
             ],
             "window-id": 13,
             "window-pos": [
-                127.0,
-                348.0
+                38.0,
+                281.0
             ],
             "window-size": [
                 262.0,
@@ -421,6 +461,74 @@
             ],
             "window-title": "Value (vec3)",
             "window-type": "uniform-vec3"
+        },
+        {
+            "file": "C:\\Users\\Felix\\Desktop\\destoroya2d\\artexport\\palette.png",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
+            "window-id": 14,
+            "window-pos": [
+                83.0,
+                611.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "window-title": "Image",
+            "window-type": "image"
+        },
+        {
+            "type": "uniform-vec3",
+            "value": [
+                1.10000002384186,
+                -0.0800000056624413,
+                3.63000011444092
+            ],
+            "window-id": 15,
+            "window-pos": [
+                90.0,
+                415.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (vec3)",
+            "window-type": "uniform-vec3"
+        },
+        {
+            "window-id": 16,
+            "window-pos": [
+                1041.0,
+                519.0
+            ],
+            "window-size": [
+                106.0,
+                48.0
+            ],
+            "window-title": "Matrix Rotate",
+            "window-type": "matrix-rotate"
+        },
+        {
+            "type": "uniform-float",
+            "value": -0.490000009536743,
+            "window-id": 17,
+            "window-pos": [
+                686.0,
+                556.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (float)",
+            "window-type": "uniform-float"
         }
     ]
 }

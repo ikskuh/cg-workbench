@@ -5,13 +5,29 @@
 
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 GLuint load_texture(std::string const & fileName, GLenum wrap, bool withMipMaps)
 {
 	int w, h, chan;
-	auto * ptr = stbi_load(fileName.c_str(), &w, &h, &chan, 4);
+    stbi_uc * ptr = stbi_load(fileName.c_str(), &w, &h, &chan, 4);
 	if(!ptr)
 		return 0;
+
+    // (╯°□°）╯︵ ┻━┻
+    {
+        size_t stride = w * 4;
+        std::vector<stbi_uc> scanline(stride);
+        for(int y = 0; y < h/2; y++) // rounding error is good:
+        {
+            stbi_uc * top = ptr + y * stride;
+            stbi_uc * bot = ptr + (h - y - 1) * stride;
+
+            memcpy(scanline.data(), top, stride);
+            memcpy(top, bot, stride);
+            memcpy(bot, scanline.data(), stride);
+        }
+    }
 
 	GLuint img;
 	glCreateTextures(GL_TEXTURE_2D, 1, &img);

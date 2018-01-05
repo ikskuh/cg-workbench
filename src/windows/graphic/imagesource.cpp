@@ -39,9 +39,11 @@ void ImageSource::OnUpdate()
 		glGetTextureLevelParameteriv(this->img, 0, GL_TEXTURE_WIDTH, &w);
 		glGetTextureLevelParameteriv(this->img, 0, GL_TEXTURE_HEIGHT, &h);
 
-		ImGui::Image(
+        ImGui::Image(
 			ImTextureID(uintptr_t(this->img)),
-			ImVec2(256, 256 * h / w));
+            ImVec2(256, 256 * h / w),
+            ImVec2(0,1),
+            ImVec2(1,0));
 
 		this->imgSettings.Show();
 	}
