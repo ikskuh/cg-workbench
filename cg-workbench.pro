@@ -118,7 +118,8 @@ SOURCES += \
     src/windows/graphic/renderpassnode.cpp \
     src/renderpass.cpp \
     src/utils.cpp \
-    src/windows/event/eventcounter.cpp
+    src/windows/event/eventcounter.cpp \
+    src/windows/event/edgedetector.cpp
 
 HEADERS += \
 	ext/gl3w/GL/gl3w.h \
@@ -175,7 +176,8 @@ HEADERS += \
     src/windows/graphic/renderpassnode.hpp \
     src/renderpass.hpp \
     src/utils.hpp \
-    src/windows/event/eventcounter.hpp
+    src/windows/event/eventcounter.hpp \
+    src/windows/event/edgedetector.hpp
 
 DISTFILES += \
     README.md \

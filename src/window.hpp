@@ -37,6 +37,8 @@ private:
 protected:
 	Event * CreateEvent();
 
+	Event * AddEventSource(std::string name);
+
 	void AddSource(Source * source);
 	void AddSink(Sink * sink);
 

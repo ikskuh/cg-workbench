@@ -66,7 +66,6 @@ This project would be much harder without those great libraries:
                         - Priority (explicit render order)
 - Event Nodes
 	- Signal Node (generate a kind of pulse)
-	- Threshold / Edge Detection -> Event
 - Audio Nodes
 	- Signal Mixer Node
 	- Envelope Generator Node

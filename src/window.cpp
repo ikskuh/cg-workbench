@@ -477,6 +477,13 @@ void Window::Close()
 	this->isOpen = false;
 }
 
+Event * Window::AddEventSource(std::string name)
+{
+	Event * ev = this->CreateEvent();
+	this->AddSource<CgDataType::Event>(name, ev);
+	return ev;
+}
+
 void Window::AddSource(Source * source)
 {
 	if(source == nullptr)
