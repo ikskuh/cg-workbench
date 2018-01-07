@@ -335,7 +335,7 @@ Window::Window(std::string const & title, ImGuiWindowFlags flags) :
     id(++currentWindowID),
 	isOpen(true),
     title(title),
-    flags(flags),
+    flags(flags | ImGuiWindowFlags_NoCollapse),
     wantsResize(false)
 {
 	strcpy(this->titleEditBuffer, this->title.c_str());

@@ -5,8 +5,8 @@ REGISTER_WINDOW_CLASS(RenderPassNode, Menu::Graphic, "graphic-render-pass", "Ren
 
 RenderPassNode::RenderPassNode() :
     Window("Render Pass", 0),
-    pass(),
-    priority(0)
+    priority(0),
+	pass()
 {
     this->geom = this->AddSink<CgDataType::Geometry>("Geometry");
     this->shader = this->AddSink<CgDataType::Shader>("Shader");

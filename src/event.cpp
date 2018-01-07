@@ -48,3 +48,17 @@ bool Event::Any(Sink * sink)
 	}
 	return false;
 }
+
+int Event::Count(Sink * sink)
+{
+	if(sink == nullptr)
+		return false;
+	assert(sink->GetType() == CgDataType::Event);
+	int cnt = 0;
+	for(int i = 0; i < sink->GetSourceCount(); i++)
+	{
+		if(sink->GetObject<CgDataType::Event>(i))
+			++cnt;
+	}
+	return cnt;
+}

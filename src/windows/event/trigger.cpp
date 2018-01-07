@@ -7,8 +7,8 @@ Trigger::Trigger() :
     Window("Trigger", ImGuiWindowFlags_AlwaysAutoResize)
 {
 	this->triggered = this->CreateEvent();
-	this->AddSource<CgDataType::UniformFloat>("Value", &this->value);
 	this->AddSource<CgDataType::Event>("Event", this->triggered);
+	this->AddSource<CgDataType::UniformFloat>("Value", &this->value);
 }
 
 void Trigger::OnUpdate()

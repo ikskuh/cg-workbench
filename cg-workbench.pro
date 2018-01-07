@@ -117,7 +117,8 @@ SOURCES += \
 	src/main.cpp \
     src/windows/graphic/renderpassnode.cpp \
     src/renderpass.cpp \
-    src/utils.cpp
+    src/utils.cpp \
+    src/windows/event/eventcounter.cpp
 
 HEADERS += \
 	ext/gl3w/GL/gl3w.h \
@@ -173,7 +174,8 @@ HEADERS += \
     src/meshes/quad.h \
     src/windows/graphic/renderpassnode.hpp \
     src/renderpass.hpp \
-    src/utils.hpp
+    src/utils.hpp \
+    src/windows/event/eventcounter.hpp
 
 DISTFILES += \
     README.md \

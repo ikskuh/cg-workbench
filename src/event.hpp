@@ -15,6 +15,7 @@ public:
 	static void NewFrame();
 
 	static bool Any(Sink * sink);
+	static int Count(Sink * sink);
 private:
 	timestamp_t current;
 	bool triggered;

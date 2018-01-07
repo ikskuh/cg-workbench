@@ -65,7 +65,6 @@ This project would be much harder without those great libraries:
                 - Render Pass Node
                         - Priority (explicit render order)
 - Event Nodes
-	- Counter Node
 	- Signal Node (generate a kind of pulse)
 	- Threshold / Edge Detection -> Event
 - Audio Nodes
