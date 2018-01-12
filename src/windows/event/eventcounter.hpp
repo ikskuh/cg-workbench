@@ -8,6 +8,7 @@ class EventCounter : public Window
 private:
 	Sink * up;
 	Sink * down;
+	Sink * reset;
 	float counter;
 protected:
 	void OnRender() override;

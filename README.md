@@ -62,20 +62,28 @@ This project would be much harder without those great libraries:
 			- Sphere
 			- Cube
 	- Multi-Geometry-Rendering
-                - Render Pass Node
-                        - Priority (explicit render order)
-- Event Nodes
-	- Signal Node (generate a kind of pulse)
+		- Render Pass Node
+			- Priority (explicit render order)
+		- Add configurable blend mode
 - Audio Nodes
 	- Signal Mixer Node
 	- Envelope Generator Node
-- Noise Node
-	- Output: Value, 1D Image, 2D Image, 3D Texture
 - Buffer -> Texture
 	- 1D Input/Over → 1D Texture with *n* width
 	- 2 * 1D Input/Over → 2D Texture with *n* * *m* width
+- Input Node
+	- Keyboard
+	- Mouse
+	- Joystick
+- Lua Node
+	- SetUp
+	- Update
+	- Shutdown
 - Sound Node
 	- Seek (?)
 - Timeline Node
 	- Attach values to a timeline
 	- Time as input
+- LUT-Node
+	- Maps input→output by indexing a table
+- 

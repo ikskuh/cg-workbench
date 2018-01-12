@@ -346,7 +346,6 @@ int main(int argc, char ** argv)
 
     // Main loop
     bool done = false;
-	ImVec2 spawn;
 	Uint32 currentTime, lastTime;
 	currentTime = SDL_GetTicks();
 	lastTime = currentTime;
@@ -471,19 +470,43 @@ int main(int argc, char ** argv)
 					}
 			        ImGui::EndMenuBar();
 			    }
+
+				static char search[256] = "";
 				if(ImGui::BeginPopupContextWindow(nullptr, 1))
 				{
-					Window * win = createMenu();
-					if(win != nullptr)
+					if(!ImGui::IsMouseClicked(0) && !ImGui::IsAnyItemActive())
+						ImGui::SetKeyboardFocusHere(0);
+					bool accepted = ImGui::InputText("", search, sizeof(search), ImGuiInputTextFlags_EnterReturnsTrue);
+					if(strlen(search) > 0)
 					{
-						win->wantsResize = true;
-						win->pos = spawn;
+						for(auto * c = WindowClass::First(); c != nullptr; c = c->Next())
+						{
+							if(strcasestr(c->GetName().c_str(), search) == nullptr)
+								continue;
+							if(ImGui::MenuItem(c->GetName().c_str()) || accepted)
+							{
+								auto * win = c->CreateInstance();
+								win->wantsResize = true;
+								win->pos = ImGui::GetWindowPos();
+								Window::Register(win);
+								accepted = true;
+							}
+						}
+					}
+					else
+					{
+						Window * win = createMenu();
+						if(win != nullptr)
+						{
+							win->wantsResize = true;
+							win->pos = ImGui::GetWindowPos();
+						}
 					}
 					ImGui::EndPopup();
 				}
 				else
 				{
-					spawn = ImGui::GetIO().MousePos;
+					strcpy(search, "");
 				}
 				Window::UpdateNodes();
 			}

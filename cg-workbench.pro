@@ -120,7 +120,8 @@ SOURCES += \
     src/utils.cpp \
     src/windows/event/eventcounter.cpp \
     src/windows/event/edgedetector.cpp \
-    src/windows/event/pulsenode.cpp
+    src/windows/event/pulsenode.cpp \
+    src/windows/graphic/noisetexture.cpp
 
 HEADERS += \
 	ext/gl3w/GL/gl3w.h \
@@ -179,7 +180,8 @@ HEADERS += \
     src/utils.hpp \
     src/windows/event/eventcounter.hpp \
     src/windows/event/edgedetector.hpp \
-    src/windows/event/pulsenode.hpp
+    src/windows/event/pulsenode.hpp \
+    src/windows/graphic/noisetexture.hpp
 
 DISTFILES += \
     README.md \
