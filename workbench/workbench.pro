@@ -3,15 +3,10 @@ CONFIG += c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
+include($$PWD/../ext/externals.pri)
+
 INCLUDEPATH += \
-	$$PWD/src \
-	$$PWD/ext/gl3w \
-	$$PWD/ext/stb \
-	$$PWD/ext/imgui \
-	$$PWD/ext/json \
-	$$PWD/ext/nativefiledialog/src/include \
-	$$PWD/ext/tinyobjloader \
-	$$PWD/ext/tinydir
+	$$PWD/src
 
 debug: {
     DEFINES += DEBUG_BUILD
@@ -56,10 +51,12 @@ windows: {
 
     LIBS += -lm -ldl
 
-    LIBS += $$PWD/ext/nativefiledialog/src/libnfd.a
+    LIBS += $$PWD/../ext/nativefiledialog/src/libnfd.a
 
     QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
     QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
+
+	QMAKE_LFLAGS += --export-dynamic
 }
 
 
@@ -68,12 +65,12 @@ DEFINES += \
 	STB_VORBIS_HEADER_ONLY
 
 SOURCES += \
-	ext/gl3w/gl3w.c \
-	ext/imgui/imgui.cpp \
-	ext/imgui/imgui_demo.cpp \
-	ext/imgui/imgui_draw.cpp \
+	$$PWD/../ext/gl3w/gl3w.c \
+	$$PWD/../ext/imgui/imgui.cpp \
+	$$PWD/../ext/imgui/imgui_demo.cpp \
+	$$PWD/../ext/imgui/imgui_draw.cpp \
+	$$PWD/../ext/tinyobjloader/tiny_obj_loader.cpp \
 	src/imgui_impl.cpp \
-	ext/tinyobjloader/tiny_obj_loader.cpp \
 	src/audiostream.cpp \
 	src/event.cpp \
 	src/fileio.cpp \
@@ -87,13 +84,6 @@ SOURCES += \
 	src/textureeditor.cpp \
 	src/window.cpp \
 	src/windowregistry.cpp \
-	src/windows/audio/audionode.cpp \
-	src/windows/audio/audiooutput.cpp \
-	src/windows/audio/mergechannelsnode.cpp \
-	src/windows/audio/soundfile.cpp \
-	src/windows/audio/splitchannelsnode.cpp \
-	src/windows/audio/synthnode.cpp \
-	src/windows/audio/waveformviewer.cpp \
 	src/windows/event/bpmnode.cpp \
 	src/windows/event/eventdelay.cpp \
 	src/windows/event/trigger.cpp \
@@ -121,17 +111,18 @@ SOURCES += \
     src/windows/event/eventcounter.cpp \
     src/windows/event/edgedetector.cpp \
     src/windows/event/pulsenode.cpp \
-    src/windows/graphic/noisetexture.cpp
+    src/windows/graphic/noisetexture.cpp \
+    src/audionode.cpp
 
 HEADERS += \
-	ext/gl3w/GL/gl3w.h \
-	ext/imgui/imgui.h \
-	ext/imgui/imgui_internal.h \
-	ext/json/json.hpp \
-	ext/nativefiledialog/src/include/nfd.h \
-	ext/tinydir/tinydir.h \
-	ext/imgui/imconfig.h \
-	ext/tinyobjloader/tiny_obj_loader.h \
+	$$PWD/../ext/gl3w/GL/gl3w.h \
+	$$PWD/../ext/imgui/imgui.h \
+	$$PWD/../ext/imgui/imgui_internal.h \
+	$$PWD/../ext/json/json.hpp \
+	$$PWD/../ext/nativefiledialog/src/include/nfd.h \
+	$$PWD/../ext/tinydir/tinydir.h \
+	$$PWD/../ext/imgui/imconfig.h \
+	$$PWD/../ext/tinyobjloader/tiny_obj_loader.h \
 	src/audiostream.hpp \
 	src/cgdatatype.hpp \
 	src/event.hpp \
@@ -146,13 +137,6 @@ HEADERS += \
 	src/textureeditor.hpp \
 	src/window.hpp \
 	src/windowregistry.hpp \
-	src/windows/audio/audionode.hpp \
-	src/windows/audio/audiooutput.hpp \
-	src/windows/audio/mergechannelsnode.hpp \
-	src/windows/audio/soundfile.hpp \
-	src/windows/audio/splitchannelsnode.hpp \
-	src/windows/audio/synthnode.hpp \
-	src/windows/audio/waveformviewer.hpp \
 	src/windows/event/bpmnode.hpp \
 	src/windows/event/eventdelay.hpp \
 	src/windows/event/trigger.hpp \
@@ -181,7 +165,8 @@ HEADERS += \
     src/windows/event/eventcounter.hpp \
     src/windows/event/edgedetector.hpp \
     src/windows/event/pulsenode.hpp \
-    src/windows/graphic/noisetexture.hpp
+    src/windows/graphic/noisetexture.hpp \
+    src/audionode.hpp
 
 DISTFILES += \
     README.md \

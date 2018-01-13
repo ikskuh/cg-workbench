@@ -1,7 +1,7 @@
 #pragma once
 
-#include "window.hpp"
-#include "audiostream.hpp"
+#include <window.hpp>
+#include <audiostream.hpp>
 
 #include <functional>
 

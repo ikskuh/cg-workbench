@@ -615,7 +615,7 @@ Window * Window::CreateFromJSON(nlohmann::json const & window)
 	return win;
 }
 
-#include "windows/audio/audionode.hpp"
+#include "audionode.hpp"
 
 sample_t * audio_destbuffer;
 

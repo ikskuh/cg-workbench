@@ -28,6 +28,7 @@
 #define STB_PERLIN_IMPLEMENTATION
 #include <stb_perlin.h>
 
+
 std::string currentFileName;
 
 static std::string installPath;
@@ -189,6 +190,8 @@ static void updateFileName(std::string fileName)
         FileIO::SetWorkingDirectory(FileIO::RemoveLastPathComponent(fileName));
 }
 
+static void load_plugins();
+
 int main(int argc, char ** argv)
 {
 #ifdef DEBUG_BUILD
@@ -335,6 +338,8 @@ int main(int argc, char ** argv)
 	}
 
     resources::load(::installPath);
+
+	load_plugins();
 
 	if(argc == 2)
 	{
@@ -711,4 +716,61 @@ void load(std::string const & fileName)
 		if(source->GetType() == sink->GetType())
 			sink->AddSource(source);
 	}
+}
+
+
+
+#ifdef WIN32
+#define LIBRARY_EXT ".dll"
+#else
+#include <dlfcn.h>
+#define LIBRARY_EXT ".so"
+#endif
+
+static void load_plugins()
+{
+	std::string pluginRoot = "/tmp/build-cg-workbench-Desktop-Debug/plugins";
+
+	tinydir_dir dir;
+    tinydir_open_sorted(&dir, pluginRoot.c_str());
+
+	for (size_t i = 0; i < dir.n_files; i++)
+	{
+		tinydir_file file;
+		tinydir_readfile_n(&dir, &file, i);
+
+		if(file.is_reg == 0)
+			continue;
+
+		if(strcmp(file.name, ".") == 0 || strcmp(file.name, "..") == 0)
+			continue;
+
+		char const * pos = strrchr(file.path, '.');
+		if(pos == nullptr)
+			continue;
+
+		if(strcmp(pos, LIBRARY_EXT) != 0)
+			continue;
+
+#ifdef WIN32
+#error "Plugins not supported right now."
+#else
+		void * plugin = dlopen(file.path, RTLD_NOW | RTLD_GLOBAL | RTLD_NODELETE);
+		if(plugin == nullptr)
+		{
+			printf("Failed to load plugin %s: %s\n", file.name, dlerror());
+			continue;
+		}
+
+		printf("Loaded plugin %s\n", file.name);
+
+		// void *dlsym(void *handle, const char *symbol)
+
+		// Lol, because RTLD_NODELETE
+		dlclose(plugin);
+
+#endif
+	}
+
+	tinydir_close(&dir);
 }
