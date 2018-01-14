@@ -3,7 +3,8 @@
 RenderPass::RenderPass() :
     geometry(nullptr),
     shader(nullptr),
-    transform()
+    transform(),
+    priority(0)
 {
 
 }

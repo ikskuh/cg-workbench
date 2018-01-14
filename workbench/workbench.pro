@@ -56,7 +56,7 @@ windows: {
     QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
     QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
 
-	QMAKE_LFLAGS += --export-dynamic
+	QMAKE_LFLAGS += -export-dynamic
 }
 
 

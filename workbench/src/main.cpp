@@ -262,6 +262,7 @@ int main(int argc, char ** argv)
     {
         "GL_ARB_debug_output",
         "GL_ARB_direct_state_access",
+	    "GL_ARB_draw_buffers_blend",
         NULL,
     };
 
@@ -488,13 +489,14 @@ int main(int argc, char ** argv)
 						{
 							if(strcasestr(c->GetName().c_str(), search) == nullptr)
 								continue;
+
 							if(ImGui::MenuItem(c->GetName().c_str()) || accepted)
 							{
 								auto * win = c->CreateInstance();
 								win->wantsResize = true;
 								win->pos = ImGui::GetWindowPos();
 								Window::Register(win);
-								accepted = true;
+								accepted = false;
 							}
 						}
 					}

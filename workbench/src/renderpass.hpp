@@ -10,5 +10,6 @@ struct RenderPass
     Geometry const * geometry;
     ShaderProgram const * shader;
     glm::mat4 transform;
+	int priority;
 };
 

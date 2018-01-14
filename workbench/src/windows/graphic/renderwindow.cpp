@@ -165,17 +165,44 @@ void RenderWindow::OnRender()
     };
     glDrawBuffers(4, DrawBuffers); // "1" is the size of DrawBuffers
 
+	glEnable(GL_BLEND);
+	for(int i = 0; i < 4; i++)
+	{
+		RenderWindow::blend const & blend = this->blendstates[i];
+		if(blend.enable)
+		{
+			glEnablei(GL_BLEND, i);
+			glBlendEquationSeparatei(i,
+				blend.equation_rgb,
+				blend.equation_alpha);
+			glBlendFuncSeparatei(i,
+				blend.func_src_rgb,
+				blend.func_dst_rgb,
+				blend.func_src_alpha,
+				blend.func_dst_alpha);
+		}
+		else
+		{
+			glDisablei(GL_BLEND, i);
+		}
+	}
+
     if(this->wireframe)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // TODO: Implement weighted rendering!
+	std::vector<RenderPass const *> passes;
     for(int i = 0; i < this->drawcalls->GetSourceCount(); i++)
-    {
-        RenderPass const & pass = this->drawcalls->GetObject<CgDataType::RenderPass>(i);
-        this->Render(pass);
-    }
+		passes.emplace_back(&this->drawcalls->GetObject<CgDataType::RenderPass>(i));
+
+	std::sort(passes.begin(), passes.end(), [](RenderPass const * lhs, RenderPass const * rhs)
+	{
+		return lhs->priority >= rhs->priority;
+	});
+
+	for(RenderPass const * pass : passes)
+		this->Render(*pass);
 
     if(this->shader->HasSource() && this->geom->HasSource())
     {
@@ -268,6 +295,9 @@ void RenderWindow::OnUpdate()
 					this->ClearEdit(i);
 					this->FmtEdit(i);
 					this->rtSettings[i].Show();
+
+					this->BlendEditor(&this->blendstates[i]);
+
 					ImGui::EndMenu();
 				}
 				ImGui::PopID();
@@ -349,15 +379,119 @@ void RenderWindow::OnUpdate()
 	}
 }
 
+static const ImGuiColorEditFlags colorEditFlags =
+        ImGuiColorEditFlags_AlphaPreviewHalf
+	  | ImGuiColorEditFlags_AlphaBar
+	  | ImGuiColorEditFlags_Float
+	  | ImGuiColorEditFlags_HDR;
+
 void RenderWindow::ClearEdit(int idx)
 {
 	ImGui::Checkbox("Clear", &this->doClearColor[idx]);
-	ImGui::ColorEdit4("Color", &this->clearColor[idx].x,
-		ImGuiColorEditFlags_AlphaPreviewHalf
-	  | ImGuiColorEditFlags_AlphaBar
-	  | ImGuiColorEditFlags_Float
-	  | ImGuiColorEditFlags_HDR
-	  );
+	ImGui::ColorEdit4("Color", &this->clearColor[idx].x, colorEditFlags);
+}
+
+template<typename T, size_t L>
+static int indexOf(std::array<T,L> const & arr, T const & value)
+{
+	for(int i = 0; i < arr.size(); i++)
+	{
+		if(arr[i] == value)
+			return i;
+	}
+	return -1;
+}
+
+static void equedit(char const * title, GLenum & equ)
+{
+	static std::array<GLenum,5> map_val = {
+	    GL_FUNC_ADD,
+	    GL_FUNC_SUBTRACT,
+	    GL_FUNC_REVERSE_SUBTRACT,
+	    GL_MIN,
+	    GL_MAX
+	};
+	static std::array<char const *,5> map_txt = {
+		"Add",
+	    "Subtract",
+	    "Reverse Subtract",
+	    "Min",
+	    "Max",
+	};
+	int idx = indexOf(map_val, equ);
+	if(idx < 0)
+		idx = 0;
+	if(ImGui::Combo(title, &idx, map_txt.data(), map_txt.size()))
+		equ = map_val[idx];
+}
+
+static void funcedit(char const * title, GLenum & func)
+{
+	static std::array<GLenum, 19> map_val = {
+	    GL_ZERO,
+		GL_ONE,
+		GL_SRC_COLOR,
+		GL_ONE_MINUS_SRC_COLOR,
+		GL_DST_COLOR,
+		GL_ONE_MINUS_DST_COLOR,
+		GL_SRC_ALPHA,
+		GL_ONE_MINUS_SRC_ALPHA,
+		GL_DST_ALPHA,
+		GL_ONE_MINUS_DST_ALPHA,
+		GL_CONSTANT_COLOR,
+		GL_ONE_MINUS_CONSTANT_COLOR,
+		GL_CONSTANT_ALPHA,
+		GL_ONE_MINUS_CONSTANT_ALPHA,
+		GL_SRC_ALPHA_SATURATE,
+		GL_SRC1_COLOR,
+		GL_ONE_MINUS_SRC_COLOR,
+		GL_SRC1_ALPHA,
+		GL_ONE_MINUS_SRC_ALPHA
+	};
+	static std::array<char const *, 19> map_txt = {
+	    "Zero",
+		"One",
+		"Source Color",
+		"1 - Source Color",
+		"Destination Color",
+		"1 - Destination Color",
+		"Source Alpha",
+		"1 - Source Alpha",
+		"Destination Alpha",
+		"1 - Destination Alpha",
+		"Constant Color",
+		"1 - Constant Color",
+		"Constant Alpha",
+		"1 - Constant Alpha",
+		"Source Alpha (Saturate)",
+		"Source 1 Color",
+		"1 - Source 1 Color",
+		"Source 1 Alpha",
+		"1 - Source 1 Alpha"
+	};
+	int idx = indexOf(map_val, func);
+	if(idx < 0)
+		idx = 0;
+	if(ImGui::Combo(title, &idx, map_txt.data(), map_txt.size()))
+		func = map_val[idx];
+}
+
+void RenderWindow::BlendEditor(RenderWindow::blend * blend)
+{
+	ImGui::Separator();
+	ImGui::Checkbox("Blend Enabled", &blend->enable);
+	if(!blend->enable)
+		return;
+
+	equedit("RGB Func", blend->equation_rgb);
+	equedit("Alpha Func", blend->equation_alpha);
+
+	funcedit("Source RGB", blend->func_src_rgb);
+	funcedit("Source Alpha", blend->func_src_alpha);
+	funcedit("Destination RGB", blend->func_dst_rgb);
+	funcedit("Destination Alpha", blend->func_dst_alpha);
+
+	ImGui::ColorEdit4("Constant Color", &blend->constant.x, colorEditFlags);
 }
 
 nlohmann::json RenderWindow::Serialize() const
@@ -367,11 +501,21 @@ nlohmann::json RenderWindow::Serialize() const
 	json array;
 	for(int i = 0; i < 4; i++)
 	{
+		blend const & blend = this->blendstates[i];
 		array[i] = {
 			{ "format", GetFormat(this->tex[i]) },
 		    { "settings", this->rtSettings[i].Serialize() },
 		    { "color", { this->clearColor[i].x, this->clearColor[i].y, this->clearColor[i].z, this->clearColor[i].w } },
 		    { "clear", this->doClearColor[i] },
+
+		    { "blend", blend.enable },
+		    { "blend-color", { blend.constant.x, blend.constant.y, blend.constant.z, blend.constant.w } },
+		    { "blend-alpha", blend.equation_alpha },
+		    { "blend-rgb", blend.equation_rgb },
+		    { "blend-dst-alpha", blend.func_dst_alpha },
+		    { "blend-dst-rgb", blend.func_dst_rgb },
+		    { "blend-src-alpha", blend.func_src_alpha },
+		    { "blend-src-rgb", blend.func_src_rgb },
 		};
 	}
 
@@ -396,6 +540,8 @@ void RenderWindow::Deserialize(const nlohmann::json &value)
 
 	auto loadtex = [this](int idx, nlohmann::json const & val)
 	{
+		blend & blend = this->blendstates[idx];
+
 		try {
 			this->rtSettings[idx].Deserialize(val["settings"]);
 		} catch(nlohmann::detail::exception const & ex) { }
@@ -407,6 +553,23 @@ void RenderWindow::Deserialize(const nlohmann::json &value)
 		this->clearColor[idx].w = val["color"][3];
 
 		this->doClearColor[idx] = val["clear"];
+
+		blend.enable = val.value("blend", false);
+		if(blend.enable)
+		{
+			blend.constant.x = val["blend-color"][0];
+			blend.constant.y = val["blend-color"][1];
+			blend.constant.z = val["blend-color"][2];
+			blend.constant.w = val["blend-color"][3];
+
+			blend.equation_alpha = val.value("blend-alpha", GL_FUNC_ADD);
+			blend.equation_rgb   = val.value("blend-rgb", GL_FUNC_ADD);
+
+			blend.func_dst_alpha = val.value("blend-dst-alpha", GL_SRC_ALPHA);
+			blend.func_dst_rgb   = val.value("blend-dst-rgb", GL_SRC_ALPHA);
+			blend.func_src_alpha = val.value("blend-src-alpha", GL_ONE_MINUS_SRC_ALPHA);
+			blend.func_src_rgb   = val.value("blend-src-rgb", GL_ONE_MINUS_SRC_ALPHA);
+		}
 	};
 
 	for(int i = 0; i < 4; i++)
@@ -495,4 +658,20 @@ void RenderWindow::Regen(int idx, GLenum format)
 		GL_COLOR_ATTACHMENT0 + idx,
 	    this->tex[idx],
 		0);
+}
+
+
+
+
+RenderWindow::blend::blend() :
+	enable(false),
+    equation_rgb(GL_FUNC_ADD),
+    equation_alpha(GL_FUNC_ADD),
+    func_src_rgb(GL_SRC_ALPHA),
+	func_src_alpha(GL_SRC_ALPHA),
+	func_dst_rgb(GL_ONE_MINUS_SRC_ALPHA),
+	func_dst_alpha(GL_ONE_MINUS_SRC_ALPHA),
+	constant(0,0,0,1)
+{
+
 }

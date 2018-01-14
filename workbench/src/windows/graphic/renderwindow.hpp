@@ -23,6 +23,23 @@ private:
 	float clearDepth;
 	ImVec4 clearColor[4];
 
+	struct blend
+	{
+		blend();
+
+		bool enable;
+		GLenum equation_rgb;
+		GLenum equation_alpha;
+
+		GLenum func_src_rgb;
+		GLenum func_src_alpha;
+
+		GLenum func_dst_rgb;
+		GLenum func_dst_alpha;
+
+		ImVec4 constant;
+	} blendstates[4];
+
 	Sink * geom;
 	Sink * shader;
 	Sink * transform;
@@ -48,6 +65,8 @@ private:
 	void Resize(int w, int h);
 
     void Render(RenderPass const & pass);
+
+	void BlendEditor(blend * b);
 protected:
 	void OnRender() override;
 	void OnUpdate() override;

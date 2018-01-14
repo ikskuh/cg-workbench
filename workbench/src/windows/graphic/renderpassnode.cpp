@@ -5,7 +5,6 @@ REGISTER_WINDOW_CLASS(RenderPassNode, Menu::Graphic, "graphic-render-pass", "Ren
 
 RenderPassNode::RenderPassNode() :
     Window("Render Pass", 0),
-    priority(0),
 	pass()
 {
     this->geom = this->AddSink<CgDataType::Geometry>("Geometry");
@@ -24,17 +23,17 @@ void RenderPassNode::OnRender()
 
 void RenderPassNode::OnUpdate()
 {
-    ImGui::DragInt("Priority", &this->priority, 0.1);
+    ImGui::DragInt("Priority", &this->pass.priority, 0.1);
 }
 
 WINDOW_SERIALIZE_IMPL(RenderPassNode)
 {
     return {
-        { "priority", this->priority }
+        { "priority", this->pass.priority }
     };
 }
 
 WINDOW_DESERIALIZE_IMPL(RenderPassNode)
 {
-    this->priority = data.value("priority", 0);
+    this->pass.priority = data.value("priority", 0);
 }
