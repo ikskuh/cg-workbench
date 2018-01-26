@@ -90,6 +90,8 @@ RenderWindow::RenderWindow() :
 	this->AddSource(new Source(CgDataType::UniformFloat, "Mouse Pressed", &this->mousePressed));
 	this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos", &this->mousePos.x));
     this->AddSource(new Source(CgDataType::UniformVec2, "Mouse Pos (Normalized)", &this->mousePosNormalized.x));
+
+	this->clicked = this->AddEventSource("Clicked");
 }
 
 RenderWindow::~RenderWindow()
@@ -348,12 +350,15 @@ void RenderWindow::OnUpdate()
 	auto pos = ImGui::GetCursorPos();
 	auto vpsize = ImVec2(size, (size / w) * h);
 
-	ImGui::ImageButton(
+	if(ImGui::ImageButton(
 		ImTextureID(uintptr_t(this->tex[this->shownTexture])),
 	    vpsize,
         ImVec2(0.0f, 1.0f),
         ImVec2(1.0f, 0.0f),
-		0);
+		0))
+	{
+		this->clicked->Trigger();
+	}
 	if(ImGui::IsItemHovered())
 	{
 		this->mousePressed = ImGui::IsMouseDown(0);

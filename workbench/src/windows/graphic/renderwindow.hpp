@@ -45,6 +45,8 @@ private:
 	Sink * transform;
     Sink * drawcalls;
 
+	Event * clicked;
+
 	float mousePressed;
 	glm::vec2 mousePos, mousePosNormalized;
 

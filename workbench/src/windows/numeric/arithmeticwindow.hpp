@@ -15,7 +15,7 @@ public:
 	typedef data_t (*binop_t)(data_t, data_t);
 	typedef data_t (*triop_t)(data_t, data_t, data_t);
 private:
-    static std::pair<char const*,unop_t> unaryOps[11];
+    static std::pair<char const*,unop_t> unaryOps[13];
     static std::pair<char const *,binop_t> binaryOps[9];
     static std::pair<char const *,triop_t> trinaryOps[3];
 private:
@@ -172,6 +172,8 @@ std::pair<char const*, typename ArithmeticWindow<_Type>::unop_t> ArithmeticWindo
     { "To Degrees", [](data_t x) { return glm::degrees(x); } },
     { "Abs",    [](data_t x) { return glm::abs(x); } },
     { "Sign",   [](data_t x) { return glm::sign(x); } },
+    { "Floor",   [](data_t x) { return glm::floor(x); } },
+    { "Ceil",   [](data_t x) { return glm::ceil(x); } },
 };
 
 template<CgDataType _Type>

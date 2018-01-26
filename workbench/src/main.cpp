@@ -358,6 +358,7 @@ int main(int argc, char ** argv)
     while (!done)
     {
         SDL_Event event;
+
         while (SDL_PollEvent(&event))
         {
 			if(event.type == SDL_MOUSEMOTION && (
@@ -377,7 +378,14 @@ int main(int argc, char ** argv)
 				continue;
 			}
 
+			if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LCTRL])
+			{
+				ImGui::OpenPopup("Window.Popup.NodeCreation");
+				continue;
+			}
+
             ImGui_ImplSdlGL3_ProcessEvent(&event);
+
             if (event.type == SDL_QUIT)
                 done = true;
         }
@@ -389,6 +397,7 @@ int main(int argc, char ** argv)
 		// the current time stamp whereas
 		// UpdateAll will set new events
 		Event::NewFrame();
+
         ImGui_ImplSdlGL3_NewFrame(window);
 
 		Window::UpdateAll();
@@ -478,7 +487,7 @@ int main(int argc, char ** argv)
 			    }
 
 				static char search[256] = "";
-				if(ImGui::BeginPopupContextWindow(nullptr, 1))
+				if(ImGui::BeginPopupContextWindow("Window.Popup.NodeCreation", 1))
 				{
 					if(!ImGui::IsMouseClicked(0) && !ImGui::IsAnyItemActive())
 						ImGui::SetKeyboardFocusHere(0);

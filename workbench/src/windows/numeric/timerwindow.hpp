@@ -13,6 +13,7 @@ private:
 	float delta;
 	float speed;
 	Uint32 stamp;
+	Sink * reset;
 protected:
 	void OnRender() override;
 	void OnUpdate() override;

@@ -12,6 +12,7 @@ TimerWindow::TimerWindow() :
     speed(1.0),
     stamp(SDL_GetTicks())
 {
+	this->reset = this->AddSink<CgDataType::Event>("Reset", Sink::UnlimitedConnections);
 	this->AddSource(new Source(CgDataType::UniformFloat, "Total", &this->total));
 	this->AddSource(new Source(CgDataType::UniformFloat, "Delta", &this->delta));
 }
@@ -27,6 +28,9 @@ void TimerWindow::OnRender()
 
 	this->delta = 0.001f * (current - this->stamp);
 	this->total += this->speed * this->delta;
+
+	if(Event::Any(this->reset))
+		this->total = 0;
 
 	this->stamp = current;
 }

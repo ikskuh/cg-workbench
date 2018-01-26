@@ -9,13 +9,21 @@ EdgeDetector::EdgeDetector() :
 {
 	this->value = this->AddSink<CgDataType::UniformFloat>("Value");
 
-	this->transition = this->AddEventSource("Any Edge");
+	this->transition   = this->AddEventSource("Any Edge");
 	this->positiveEdge = this->AddEventSource("Rising Edge");
 	this->negativeEdge = this->AddEventSource("Falling Edge");
 }
 
 void EdgeDetector::OnRender()
 {
+}
+
+void EdgeDetector::OnUpdate()
+{
+	ImGui::DragFloat("Threshold", &this->threshold, 0.1f);
+
+	// HACK: Events must be triggered in update routine
+
 	bool a = (this->value->GetObject<CgDataType::UniformFloat>() > this->threshold);
 	if(a != this->above)
 	{
@@ -26,9 +34,4 @@ void EdgeDetector::OnRender()
 		this->transition->Trigger();
 	}
 	this->above = a;
-}
-
-void EdgeDetector::OnUpdate()
-{
-	ImGui::DragFloat("Threshold", &this->threshold, 0.1f);
 }
