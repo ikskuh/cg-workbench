@@ -26,21 +26,8 @@ static int gentex(ImVec2 size, GLenum format)
 static GLenum GetFormat(GLuint tex)
 {
 	GLenum type;
-	glGetTextureLevelParameteriv(tex, 0, GL_TEXTURE_RED_TYPE, reinterpret_cast<GLint*>(&type));
-
-	int idx = 0;
-	switch(type)
-	{
-		case GL_UNSIGNED_NORMALIZED: idx = 0; break;
-		case GL_FLOAT:               idx = 1; break;
-		case GL_INT:                 idx = 2; break;
-		case GL_UNSIGNED_INT:        idx = 3; break;
-		default:                     idx = 0; break;
-	}
-	static GLenum formats[] = {
-	    GL_RGBA8, GL_RGBA32F, GL_RGBA8I, GL_RGBA8UI
-	};
-	return formats[idx];
+	glGetTextureLevelParameteriv(tex, 0, GL_TEXTURE_INTERNAL_FORMAT, reinterpret_cast<GLint*>(&type));
+	return type;
 }
 
 static const ImVec4 Black(0.0f, 0.0f, 0.0f, 1.0f);
@@ -394,10 +381,10 @@ void RenderWindow::ClearEdit(int idx)
 template<typename T, size_t L>
 static int indexOf(std::array<T,L> const & arr, T const & value)
 {
-	for(int i = 0; i < arr.size(); i++)
+	for(size_t i = 0; i < arr.size(); i++)
 	{
 		if(arr[i] == value)
-			return i;
+			return int(i);
 	}
 	return -1;
 }

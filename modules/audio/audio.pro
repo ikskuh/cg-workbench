@@ -13,9 +13,6 @@ SOURCES += \
     synthnode.cpp \
     waveformviewer.cpp
 
-SUBDIRS += \
-    audio.pro
-
 HEADERS += \
     audiooutput.hpp \
     mergechannelsnode.hpp \

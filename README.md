@@ -54,6 +54,7 @@ This project would be much harder without those great libraries:
 - [github.com/nothings/stb](https://github.com/nothings/stb)
 - [github.com/syoyo/tinyobjloader](https://github.com/syoyo/tinyobjloader)
 - [github.com/cxong/tinydir](https://github.com/cxong/tinydir)
+- [github.com/severin-lemaignan/webcam-v4l2](https://github.com/severin-lemaignan/webcam-v4l2)
 
 ## Ideas / Missing Nodes
 - Graphic Nodes
@@ -61,9 +62,6 @@ This project would be much harder without those great libraries:
 		- Primitives
 			- Sphere
 			- Cube
-- Audio Nodes
-	- Signal Mixer Node
-	- Envelope Generator Node
 - Buffer -> Texture
 	- 1D Input/Over → 1D Texture with *n* width
 	- 2 * 1D Input/Over → 2D Texture with *n* * *m* width
@@ -82,4 +80,6 @@ This project would be much harder without those great libraries:
 	- Time as input
 - LUT-Node
 	- Maps input→output by indexing a table
-- 
+- Audio Nodes
+	- Signal Mixer Node
+	- Envelope Generator Node

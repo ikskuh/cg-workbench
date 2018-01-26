@@ -1,0 +1,1016 @@
+{
+    "signals": [
+        {
+            "from": [
+                17,
+                "F"
+            ],
+            "to": [
+                1,
+                "col"
+            ]
+        },
+        {
+            "from": [
+                6,
+                "F"
+            ],
+            "to": [
+                1,
+                "row"
+            ]
+        },
+        {
+            "from": [
+                13,
+                "Image 0"
+            ],
+            "to": [
+                1,
+                "coords"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Mouse Pos (Normalized)"
+            ],
+            "to": [
+                1,
+                "mouse"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Image Size"
+            ],
+            "to": [
+                1,
+                "screenSize"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Shader"
+            ],
+            "to": [
+                4,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                5,
+                "Total"
+            ],
+            "to": [
+                6,
+                "0"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "Y"
+            ],
+            "to": [
+                6,
+                "1"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Image Size"
+            ],
+            "to": [
+                7,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                9,
+                "Shader"
+            ],
+            "to": [
+                8,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                18,
+                "Result"
+            ],
+            "to": [
+                8,
+                "Transform"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Image 0"
+            ],
+            "to": [
+                9,
+                "screen"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Image 1"
+            ],
+            "to": [
+                9,
+                "debug"
+            ]
+        },
+        {
+            "from": [
+                13,
+                "Image 0"
+            ],
+            "to": [
+                9,
+                "coords"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Image Size"
+            ],
+            "to": [
+                9,
+                "screenSize"
+            ]
+        },
+        {
+            "from": [
+                10,
+                "Result"
+            ],
+            "to": [
+                11,
+                "Src"
+            ]
+        },
+        {
+            "from": [
+                12,
+                "Value"
+            ],
+            "to": [
+                11,
+                "Eye"
+            ]
+        },
+        {
+            "from": [
+                14,
+                "Shader"
+            ],
+            "to": [
+                13,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Image 0"
+            ],
+            "to": [
+                14,
+                "camera"
+            ]
+        },
+        {
+            "from": [
+                15,
+                "Output"
+            ],
+            "to": [
+                14,
+                "storage"
+            ]
+        },
+        {
+            "from": [
+                17,
+                "F"
+            ],
+            "to": [
+                14,
+                "xpos"
+            ]
+        },
+        {
+            "from": [
+                6,
+                "F"
+            ],
+            "to": [
+                14,
+                "ypos"
+            ]
+        },
+        {
+            "from": [
+                16,
+                "Value"
+            ],
+            "to": [
+                14,
+                "rst"
+            ]
+        },
+        {
+            "from": [
+                13,
+                "Image 0"
+            ],
+            "to": [
+                15,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                5,
+                "Total"
+            ],
+            "to": [
+                17,
+                "0"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "X"
+            ],
+            "to": [
+                17,
+                "1"
+            ]
+        },
+        {
+            "from": [
+                11,
+                "Result"
+            ],
+            "to": [
+                18,
+                "Src"
+            ]
+        },
+        {
+            "from": [
+                20,
+                "Vec3"
+            ],
+            "to": [
+                18,
+                "Scale"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "X"
+            ],
+            "to": [
+                19,
+                "0"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "Y"
+            ],
+            "to": [
+                19,
+                "1"
+            ]
+        },
+        {
+            "from": [
+                19,
+                "F"
+            ],
+            "to": [
+                20,
+                "X"
+            ]
+        },
+        {
+            "from": [
+                21,
+                "Value"
+            ],
+            "to": [
+                20,
+                "Y"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nlayout(location = 0) out vec4 color;\nlayout(location = 1) out vec4 debug;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform float col;\nuniform float row;\n\nuniform sampler2D coords;\nuniform vec2 mouse;\n\nuniform vec2 screenSize;\n\nvoid main() {\n\t\n\tcolor = vec4(0,0,0,1);\n\tif(abs(gl_FragCoord.x - int(col)) < 1)\n\t\tcolor.r = 1.0;\n\tif(abs(gl_FragCoord.y - int(row)) < 1)\n\t\tcolor.g = 1.0;\n\n\tdebug = color;\n\n\tvec4 data = texture(coords, vec2(mouse.x, 1.0 - mouse.y));\n\tvec2 xy = data.xy;\n\txy /= screenSize;\n\n\tif(data.w > 0.5 && abs(length(uv - xy) - 0.02) < 0.003)\n\t\tdebug.rgb = vec3(1);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 1,
+            "window-pos": [
+                500.0,
+                58.0
+            ],
+            "window-size": [
+                384.0,
+                425.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": false,
+            "scale": 8,
+            "size": [
+                1280.0,
+                720.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 4,
+            "window-pos": [
+                997.0,
+                115.0
+            ],
+            "window-size": [
+                272.0,
+                198.0
+            ],
+            "window-title": "Screen",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "current": 168384.078125,
+            "speed": 120.0,
+            "window-id": 5,
+            "window-pos": [
+                13.0,
+                38.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ],
+            "window-title": "Timer",
+            "window-type": "timer"
+        },
+        {
+            "operator": 15,
+            "type": "arithmetic-float",
+            "window-id": 6,
+            "window-pos": [
+                98.0,
+                389.0
+            ],
+            "window-size": [
+                283.0,
+                54.0
+            ],
+            "window-title": "Y-Coord",
+            "window-type": "arithmetic-float"
+        },
+        {
+            "components": 2,
+            "window-id": 7,
+            "window-pos": [
+                44.0,
+                154.0
+            ],
+            "window-size": [
+                65.0,
+                97.0
+            ],
+            "window-title": "Vector Splitter",
+            "window-type": "vector-splitter"
+        },
+        {
+            "depthtest": true,
+            "scale": 9,
+            "size": [
+                320.0,
+                240.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 8,
+            "window-pos": [
+                1195.0,
+                455.0
+            ],
+            "window-size": [
+                528.0,
+                438.0
+            ],
+            "window-title": "Camera",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nlayout(location = 0) out vec4 color;\nlayout(location = 1) out vec4 dbgout;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D screen;\n\nuniform sampler2D debug;\nuniform sampler2D coords;\n\nuniform vec2 screenSize;\n\nvoid main() {\n\tcolor = texture(screen, uv);\n\t\n\tdbgout = texture(debug, uv);\n\n\tif(abs(fract(uv.x + 0.5) - 0.5) < 0.005)\n\t\tdbgout = vec4(1,0,0,1);\n\tif(abs(fract(uv.y + 0.5) - 0.5) < 0.005)\n\t\tdbgout = vec4(1,0,0,1);\n\n\tdbgout.b = texture(coords, gl_FragCoord.xy / vec2(screenSize)).w;\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 9,
+            "window-pos": [
+                726.0,
+                616.0
+            ],
+            "window-size": [
+                381.0,
+                403.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "window-id": 10,
+            "window-pos": [
+                91.0,
+                488.0
+            ],
+            "window-size": [
+                141.0,
+                48.0
+            ],
+            "window-title": "Matrix Perspective",
+            "window-type": "matrix-perspective"
+        },
+        {
+            "window-id": 11,
+            "window-pos": [
+                287.0,
+                596.0
+            ],
+            "window-size": [
+                106.0,
+                48.0
+            ],
+            "window-title": "Matrix LookAt",
+            "window-type": "matrix-lookat"
+        },
+        {
+            "type": "uniform-vec3",
+            "value": [
+                -1.60000002384186,
+                0.980000019073486,
+                2.65000009536743
+            ],
+            "window-id": 12,
+            "window-pos": [
+                29.0,
+                757.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (vec3)",
+            "window-type": "uniform-vec3"
+        },
+        {
+            "depthtest": true,
+            "scale": 9,
+            "size": [
+                320.0,
+                240.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "format": 34836,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 13,
+            "window-pos": [
+                1808.0,
+                847.0
+            ],
+            "window-size": [
+                528.0,
+                438.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D camera;\nuniform sampler2D storage;\nuniform float xpos;\nuniform float ypos;\nuniform float rst;\n\nvoid main() {\n\tcolor = texture(storage,uv);\n\n\tvec3 cam = texture(camera, uv).rgb;\t\n\tif(cam.r > 0.9)\n\t\tcolor.xw = vec2(xpos,1);\n\n\tif(cam.g > 0.9)\n\t\tcolor.yw = vec2(ypos,1);\n\n\tcolor *= vec4(1.0 - rst);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 14,
+            "window-pos": [
+                1837.0,
+                102.0
+            ],
+            "window-size": [
+                433.0,
+                452.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
+            "window-id": 15,
+            "window-pos": [
+                2043.0,
+                592.0
+            ],
+            "window-size": [
+                297.0,
+                163.0
+            ],
+            "window-title": "Image Buffer",
+            "window-type": "image-buffer"
+        },
+        {
+            "window-id": 16,
+            "window-pos": [
+                1479.0,
+                192.0
+            ],
+            "window-size": [
+                114.0,
+                54.0
+            ],
+            "window-title": "Reset Storage",
+            "window-type": "trigger"
+        },
+        {
+            "operator": 15,
+            "type": "arithmetic-float",
+            "window-id": 17,
+            "window-pos": [
+                99.0,
+                285.0
+            ],
+            "window-size": [
+                283.0,
+                54.0
+            ],
+            "window-title": "X-Coord",
+            "window-type": "arithmetic-float"
+        },
+        {
+            "window-id": 18,
+            "window-pos": [
+                510.0,
+                619.0
+            ],
+            "window-size": [
+                99.0,
+                48.0
+            ],
+            "window-title": "Matrix Scale",
+            "window-type": "matrix-scale"
+        },
+        {
+            "operator": 14,
+            "type": "arithmetic-float",
+            "window-id": 19,
+            "window-pos": [
+                42.0,
+                849.0
+            ],
+            "window-size": [
+                283.0,
+                54.0
+            ],
+            "window-title": "Arithmetic",
+            "window-type": "arithmetic-float"
+        },
+        {
+            "window-id": 20,
+            "window-pos": [
+                457.0,
+                695.0
+            ],
+            "window-size": [
+                92.0,
+                82.0
+            ],
+            "window-title": "Vector Merger",
+            "window-type": "vector-merger"
+        },
+        {
+            "type": "uniform-float",
+            "value": 1.0,
+            "window-id": 21,
+            "window-pos": [
+                141.0,
+                933.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (float)",
+            "window-type": "uniform-float"
+        }
+    ]
+}

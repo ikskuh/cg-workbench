@@ -6,4 +6,5 @@ INCLUDEPATH += \
 	$$PWD/json \
 	$$PWD/nativefiledialog/src/include \
 	$$PWD/tinyobjloader \
-	$$PWD/tinydir
+	$$PWD/tinydir \
+	$$PWD/webcam-v4l2
