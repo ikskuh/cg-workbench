@@ -16,6 +16,7 @@ EdgeDetector::EdgeDetector() :
 
 void EdgeDetector::OnRender()
 {
+
 }
 
 void EdgeDetector::OnUpdate()
