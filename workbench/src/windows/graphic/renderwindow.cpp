@@ -367,6 +367,9 @@ void RenderWindow::OnUpdate()
 		this->mousePos -= (glm::vec2)ImGui::GetWindowPos();
 		this->mousePos -= (glm::vec2)pos;
 
+		this->mousePos.y *= -1;
+		this->mousePos.y += vpsize.y;
+
 		this->mousePosNormalized = this->mousePos / glm::vec2(vpsize.x, vpsize.y);
 	}
 }

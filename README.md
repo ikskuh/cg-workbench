@@ -62,6 +62,9 @@ This project would be much harder without those great libraries:
 		- Primitives
 			- Sphere
 			- Cube
+- "Pop-Out" für RenderNode in eigenes Fenster
+- Player-Modus (lädt jgraph-File und hat ein Haupt-Renderer)
+- Event-Delay Visualisierung
 - Buffer -> Texture
 	- 1D Input/Over → 1D Texture with *n* width
 	- 2 * 1D Input/Over → 2D Texture with *n* * *m* width
@@ -78,6 +81,7 @@ This project would be much harder without those great libraries:
 - Timeline Node
 	- Attach values to a timeline
 	- Time as input
+- Synth-Kram mit T$
 - LUT-Node
 	- Maps input→output by indexing a table
 - Audio Nodes

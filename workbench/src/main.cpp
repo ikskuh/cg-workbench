@@ -359,6 +359,7 @@ int main(int argc, char ** argv)
     {
         SDL_Event event;
 
+		bool openCreateMenu = false;
         while (SDL_PollEvent(&event))
         {
 			if(event.type == SDL_MOUSEMOTION && (
@@ -380,7 +381,7 @@ int main(int argc, char ** argv)
 
 			if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LCTRL])
 			{
-				ImGui::OpenPopup("Window.Popup.NodeCreation");
+				openCreateMenu = true;
 				continue;
 			}
 
@@ -485,6 +486,9 @@ int main(int argc, char ** argv)
 					}
 			        ImGui::EndMenuBar();
 			    }
+
+				if(openCreateMenu)
+					ImGui::OpenPopup("Window.Popup.NodeCreation");
 
 				static char search[256] = "";
 				if(ImGui::BeginPopupContextWindow("Window.Popup.NodeCreation", 1))
