@@ -1,0 +1,236 @@
+{
+    "signals": [
+        {
+            "from": [
+                2,
+                "Shader"
+            ],
+            "to": [
+                1,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Total"
+            ],
+            "to": [
+                2,
+                "u_time"
+            ]
+        },
+        {
+            "from": [
+                5,
+                "Value"
+            ],
+            "to": [
+                2,
+                "u_k"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                512.0,
+                512.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 1,
+            "window-pos": [
+                1014.0,
+                77.0
+            ],
+            "window-size": [
+                302.0,
+                310.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 v_coords;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tv_coords = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nprecision mediump float;\n#define PI 3.1415926535897932384626433832795\n \nuniform float u_time;\nuniform vec2 u_k;\nin vec2 v_coords;\n\nout vec4 color;\n \nvoid main() {\n    float v = 0.0;\n    vec2 c = v_coords * u_k - u_k/2.0;\n    v += sin((c.x+u_time));\n    v += sin((c.y+u_time)/2.0);\n    v += sin((c.x+c.y+u_time)/2.0);\n    c += u_k/2.0 * vec2(sin(u_time/3.0), cos(u_time/2.0));\n    v += sin(sqrt(c.x*c.x+c.y*c.y+1.0)+u_time);\n    v = v/2.0;\n    vec3 col = vec3(1, sin(PI*v), cos(PI*v));\n    color = vec4(col*.5 + .5, 1);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 2,
+            "window-pos": [
+                406.0,
+                34.0
+            ],
+            "window-size": [
+                459.0,
+                394.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "current": 84.1488189697266,
+            "speed": 1.0,
+            "window-id": 3,
+            "window-pos": [
+                0.0,
+                27.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ],
+            "window-title": "Timer",
+            "window-type": "timer"
+        },
+        {
+            "type": "uniform-vec2",
+            "value": [
+                30.0,
+                30.0
+            ],
+            "window-id": 5,
+            "window-pos": [
+                4.0,
+                128.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (vec2)",
+            "window-type": "uniform-vec2"
+        }
+    ]
+}

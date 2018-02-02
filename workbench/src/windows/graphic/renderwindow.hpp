@@ -69,6 +69,11 @@ private:
     void Render(RenderPass const & pass);
 
 	void BlendEditor(blend * b);
+
+	SDL_Window * extwin;
+
+	void PaintGL();
+
 protected:
 	void OnRender() override;
 	void OnUpdate() override;

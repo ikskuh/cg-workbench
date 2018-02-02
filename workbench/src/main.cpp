@@ -175,7 +175,8 @@ static bool IsExtensionSupported(const char *name)
   return false;
 }
 
-static SDL_Window * window;
+SDL_Window * mainwindow;
+SDL_GLContext glcontext;
 
 static void updateFileName(std::string fileName)
 {
@@ -184,7 +185,7 @@ static void updateFileName(std::string fileName)
         title += " - " + fileName;
 
     ::currentFileName = fileName;
-    SDL_SetWindowTitle(window, title.c_str());
+    SDL_SetWindowTitle(mainwindow, title.c_str());
 
 	if(!fileName.empty())
         FileIO::SetWorkingDirectory(FileIO::RemoveLastPathComponent(fileName));
@@ -229,13 +230,13 @@ int main(int argc, char ** argv)
 	SDL_DisplayMode current;
     SDL_GetCurrentDisplayMode(0, &current);
 
-    window = SDL_CreateWindow(
+    mainwindow = SDL_CreateWindow(
 		"CG Workbench *FLOAT*",
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		1280, 720,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
-    SDL_GLContext glcontext = SDL_GL_CreateContext(window);
+    glcontext = SDL_GL_CreateContext(mainwindow);
     gl3wInit();
 
     printf("OpenGL Version:      %s\n", glGetString(GL_VERSION));
@@ -281,7 +282,7 @@ int main(int argc, char ** argv)
     glDebugMessageCallback(&GpuErrorLog::LogMessage, nullptr);
 
     // Setup ImGui binding
-    ImGui_ImplSdlGL3_Init(window);
+    ImGui_ImplSdlGL3_Init(mainwindow);
 
     // Load Fonts
     // (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
@@ -399,13 +400,13 @@ int main(int argc, char ** argv)
 		// UpdateAll will set new events
 		Event::NewFrame();
 
-        ImGui_ImplSdlGL3_NewFrame(window);
+        ImGui_ImplSdlGL3_NewFrame(mainwindow);
 
 		Window::UpdateAll();
 
 		{
 			int w,h;
-			SDL_GetWindowSize(window, &w, &h);
+			SDL_GetWindowSize(mainwindow, &w, &h);
 
 			ImGui::SetNextWindowPos(screen_pan, ImGuiCond_Always);
 			ImGui::SetNextWindowSize(ImVec2(w, h), ImGuiCond_Always);
@@ -554,7 +555,7 @@ int main(int argc, char ** argv)
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui::Render();
-        SDL_GL_SwapWindow(window);
+        SDL_GL_SwapWindow(mainwindow);
 
 		currentTime = SDL_GetTicks();
 
@@ -568,7 +569,7 @@ int main(int argc, char ** argv)
     // Cleanup
     ImGui_ImplSdlGL3_Shutdown();
     SDL_GL_DeleteContext(glcontext);
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(mainwindow);
     SDL_Quit();
 
     return 0;

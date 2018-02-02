@@ -6,6 +6,9 @@ REGISTER_WINDOW_CLASS(RenderWindow, Menu::Graphic, "renderer", "Renderer")
 
 #include "fileio.hpp"
 
+extern SDL_GLContext glcontext;
+extern SDL_Window * mainwindow;
+
 static int gentex(ImVec2 size, GLenum format)
 {
 	GLuint tex = 0;
@@ -40,7 +43,8 @@ RenderWindow::RenderWindow() :
 	clearDepth(1.0f),
     clearColor(),
     mousePressed(0.0f), mousePos(256,256),
-    shownTexture(0)
+    shownTexture(0),
+    extwin(nullptr)
 {
 	this->editsize[0] = this->texSize.x;
 	this->editsize[1] = this->texSize.y;
@@ -119,6 +123,9 @@ void RenderWindow::Render(RenderPass const & pass)
 
 void RenderWindow::OnRender()
 {
+	if(this->extwin)
+		return;
+
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->fb);
 
 	glViewport(0, 0, this->texSize.x, this->texSize.y);
@@ -152,8 +159,17 @@ void RenderWindow::OnRender()
         GL_COLOR_ATTACHMENT2,
         GL_COLOR_ATTACHMENT3,
     };
-    glDrawBuffers(4, DrawBuffers); // "1" is the size of DrawBuffers
+    glDrawBuffers(4, DrawBuffers);
 
+	this->PaintGL();
+
+    glDrawBuffers(1, DrawBuffers);
+
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void RenderWindow::PaintGL()
+{
 	glEnable(GL_BLEND);
 	for(int i = 0; i < 4; i++)
 	{
@@ -201,10 +217,6 @@ void RenderWindow::OnRender()
         pass.transform = this->transform->GetObject<CgDataType::UniformMat4>();
         this->Render(pass);
 	}
-
-    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 }
 
 void RenderWindow::SizeConstraint(ImGuiSizeConstraintCallbackData * data)
@@ -230,6 +242,24 @@ void RenderWindow::OnUpdate()
 {
 	if(ImGui::BeginMenuBar())
 	{
+		if(ImGui::BeginMenu("Window"))
+		{
+			if(!this->extwin && ImGui::MenuItem("Open Window"))
+			{
+				this->extwin = SDL_CreateWindow(
+					"CG Workbench (Renderer)",
+					SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+					1280, 720,
+					SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+			}
+			if(this->extwin && ImGui::MenuItem("Close Window"))
+			{
+				SDL_DestroyWindow(this->extwin);
+				this->extwin = nullptr;
+			}
+			ImGui::EndMenu();
+		}
+
 		if(ImGui::BeginMenu("Renderer"))
 		{
 			if(ImGui::BeginMenu("Viewport"))
@@ -342,35 +372,58 @@ void RenderWindow::OnUpdate()
 		ImGui::EndMenuBar();
 	}
 
-	int w = this->texSize.x;
-	int h = this->texSize.y;
-
-	float size = (1 << this->scale);
-
-	auto pos = ImGui::GetCursorPos();
-	auto vpsize = ImVec2(size, (size / w) * h);
-
-	if(ImGui::ImageButton(
-		ImTextureID(uintptr_t(this->tex[this->shownTexture])),
-	    vpsize,
-        ImVec2(0.0f, 1.0f),
-        ImVec2(1.0f, 0.0f),
-		0))
+	if(this->extwin)
 	{
-		this->clicked->Trigger();
+		SDL_GL_MakeCurrent(this->extwin, ::glcontext);
+
+		int w, h;
+		SDL_GetWindowSize(this->extwin, &w, &h);
+
+		glClearColor(0,0,0,0);
+		glClearDepth(1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glViewport(0, 0, w, h);
+
+		this->PaintGL();
+
+		SDL_GL_SwapWindow(this->extwin);
+		SDL_GL_MakeCurrent(::mainwindow, ::glcontext);
+
+		ImGui::Text("Rendering into external window!");
 	}
-	if(ImGui::IsItemHovered())
+	else
 	{
-		this->mousePressed = ImGui::IsMouseDown(0);
+		int w = this->texSize.x;
+		int h = this->texSize.y;
 
-		this->mousePos = ImGui::GetMousePos();
-		this->mousePos -= (glm::vec2)ImGui::GetWindowPos();
-		this->mousePos -= (glm::vec2)pos;
+		float size = (1 << this->scale);
 
-		this->mousePos.y *= -1;
-		this->mousePos.y += vpsize.y;
+		auto pos = ImGui::GetCursorPos();
+		auto vpsize = ImVec2(size, (size / w) * h);
 
-		this->mousePosNormalized = this->mousePos / glm::vec2(vpsize.x, vpsize.y);
+		if(ImGui::ImageButton(
+			ImTextureID(uintptr_t(this->tex[this->shownTexture])),
+			vpsize,
+			ImVec2(0.0f, 1.0f),
+			ImVec2(1.0f, 0.0f),
+			0))
+		{
+			this->clicked->Trigger();
+		}
+		if(ImGui::IsItemHovered())
+		{
+			this->mousePressed = ImGui::IsMouseDown(0);
+
+			this->mousePos = ImGui::GetMousePos();
+			this->mousePos -= (glm::vec2)ImGui::GetWindowPos();
+			this->mousePos -= (glm::vec2)pos;
+
+			this->mousePos.y *= -1;
+			this->mousePos.y += vpsize.y;
+
+			this->mousePosNormalized = this->mousePos / glm::vec2(vpsize.x, vpsize.y);
+		}
 	}
 }
 
