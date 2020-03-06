@@ -79,9 +79,9 @@ public:
 
 	ImVec2 GetSize() const { return this->size; }
 
-    int GetSinkCount() const { return int(this->sinks.size()); }
+	int GetSinkCount() const { return int(this->sinks.size()); }
 
-    int GetSourceCount() const { return int(this->sources.size()); }
+	int GetSourceCount() const { return int(this->sources.size()); }
 
 	Source * GetSource(int idx) { return this->sources[idx].get(); }
 
@@ -130,7 +130,7 @@ public:
 
 #define WINDOW_PREAMBLE \
 	protected: \
-		virtual std::string GetTypeID() const;
+		virtual std::string GetTypeID() const override;
 
 #define WINDOW_CUSTOM_SERIALIZE \
 	public: \

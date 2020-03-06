@@ -1,0 +1,100 @@
+{
+    "signals": [
+        {
+            "from": [
+                2,
+                "Stream"
+            ],
+            "to": [
+                1,
+                "Source"
+            ]
+        },
+        {
+            "from": [
+                2,
+                "Stream"
+            ],
+            "to": [
+                6,
+                "Stream"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "window-id": 1,
+            "window-pos": [
+                683.0,
+                77.0
+            ],
+            "window-size": [
+                428.0,
+                192.0
+            ],
+            "window-title": "Waveform Viewer",
+            "window-type": "audio-waveform-viewer"
+        },
+        {
+            "dutycycle": 0.5,
+            "freq": 440.0,
+            "waveform": 1,
+            "window-id": 3,
+            "window-pos": [
+                48.0,
+                75.0
+            ],
+            "window-size": [
+                128.0,
+                165.0
+            ],
+            "window-title": "Synthesizer",
+            "window-type": "audio-synth"
+        },
+        {
+            "window-id": 4,
+            "window-pos": [
+                149.0,
+                363.0
+            ],
+            "window-size": [
+                72.0,
+                54.0
+            ],
+            "window-title": "Trigger",
+            "window-type": "trigger"
+        },
+        {
+            "window-id": 5,
+            "window-pos": [
+                112.0,
+                290.0
+            ],
+            "window-size": [
+                72.0,
+                54.0
+            ],
+            "window-title": "Trigger",
+            "window-type": "trigger"
+        },
+        {
+            "muted": false,
+            "volumes": [
+                1.0
+            ],
+            "window-id": 6,
+            "window-pos": [
+                574.0,
+                252.0
+            ],
+            "window-size": [
+                48.0,
+                163.0
+            ],
+            "window-title": "Output",
+            "window-type": "audio-output"
+        }
+    ]
+}

@@ -18,7 +18,7 @@ enum class CgDataType
 	Geometry,
 	Audio,
 	Event, //! can be TRIGGERED!!!
-    RenderPass,
+	RenderPass,
 	UniformFloat,
 	UniformVec2,
 	UniformVec3,

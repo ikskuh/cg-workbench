@@ -1,9 +1,11 @@
 TEMPLATE = app
-CONFIG += c++11
+CONFIG += c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 
 include($$PWD/../ext/externals.pri)
+
+DEFINES += GLM_ENABLE_EXPERIMENTAL
 
 INCLUDEPATH += \
 	$$PWD/src
@@ -56,7 +58,7 @@ windows: {
     QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
     QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
 
-	QMAKE_LFLAGS += -export-dynamic
+	QMAKE_LFLAGS += -Wl,-export-dynamic
 }
 
 
@@ -70,6 +72,7 @@ SOURCES += \
 	$$PWD/../ext/imgui/imgui_demo.cpp \
 	$$PWD/../ext/imgui/imgui_draw.cpp \
 	$$PWD/../ext/tinyobjloader/tiny_obj_loader.cpp \
+  ../ext/imgui/imgui_widgets.cpp \
 	src/imgui_impl.cpp \
 	src/audiostream.cpp \
 	src/event.cpp \
@@ -86,6 +89,7 @@ SOURCES += \
 	src/windowregistry.cpp \
 	src/windows/event/bpmnode.cpp \
 	src/windows/event/eventdelay.cpp \
+  src/windows/event/trackernode.cpp \
 	src/windows/event/trigger.cpp \
     src/windows/graphic/shadereditor.cpp \
     src/windows/generic/luaconsole.cpp \
@@ -123,6 +127,9 @@ HEADERS += \
 	$$PWD/../ext/tinydir/tinydir.h \
 	$$PWD/../ext/imgui/imconfig.h \
 	$$PWD/../ext/tinyobjloader/tiny_obj_loader.h \
+  ../ext/imgui/imstb_rectpack.h \
+  ../ext/imgui/imstb_textedit.h \
+  ../ext/imgui/imstb_truetype.h \
 	src/audiostream.hpp \
 	src/cgdatatype.hpp \
 	src/event.hpp \
@@ -139,6 +146,7 @@ HEADERS += \
 	src/windowregistry.hpp \
 	src/windows/event/bpmnode.hpp \
 	src/windows/event/eventdelay.hpp \
+  src/windows/event/trackernode.hpp \
 	src/windows/event/trigger.hpp \
     src/windows/graphic/shadereditor.hpp \
     src/windows/generic/luaconsole.hpp \

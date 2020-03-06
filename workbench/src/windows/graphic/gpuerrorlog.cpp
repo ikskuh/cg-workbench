@@ -89,7 +89,7 @@ void GpuErrorLog::OnUpdate()
 			glDisable(GL_DEBUG_OUTPUT);
 	}
 
-    ImGui::BeginChild("ScrollingRegion", ImVec2(0,-ImGui::GetItemsLineHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
+    ImGui::BeginChild("ScrollingRegion", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
     // Display every line as a separate entry so we can change their color or add custom widgets. If you only want raw text you can use ImGui::TextUnformatted(log.begin(), log.end());
     // NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping to only process visible items.
@@ -134,7 +134,7 @@ void GpuErrorLog::OnUpdate()
         ImGui::LogFinish();
 
     if (scrollToEnd)
-		ImGui::SetScrollHere();
+		ImGui::SetScrollHereY();
 
     ImGui::PopStyleVar();
     ImGui::EndChild();

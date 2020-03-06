@@ -11,6 +11,7 @@ include($$PWD/../module.pri)
 
 SOURCES += \
     audiooutput.cpp \
+    envelopenode.cpp \
     mergechannelsnode.cpp \
     soundfile.cpp \
     splitchannelsnode.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     audiooutput.hpp \
+    envelopenode.hpp \
     mergechannelsnode.hpp \
     soundfile.hpp \
     splitchannelsnode.hpp \

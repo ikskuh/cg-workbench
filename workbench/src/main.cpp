@@ -1,6 +1,3 @@
-// ImGui - standalone example application for SDL2 + OpenGL
-// If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
-
 #include <imgui.h>
 #include <stdio.h>
 #include <GL/gl3w.h>    // This example is using gl3w to access OpenGL functions (because it is small). You may use glew/glad/glLoadGen/etc. whatever already works for you.
@@ -29,7 +26,7 @@
 #include <stb_perlin.h>
 
 
-std::string currentFileName;
+static std::string currentFileName;
 
 static std::string installPath;
 
@@ -163,10 +160,9 @@ static bool IsExtensionSupported(const char *name)
 {
   GLint n=0;
   glGetIntegerv(GL_NUM_EXTENSIONS, &n);
-  for (GLint i=0; i<n; i++)
+  for (GLuint i=0; i< static_cast<GLuint>(n); i++)
   {
-    const char* extension =
-     (const char*)glGetStringi(GL_EXTENSIONS, i);
+    const char* extension = reinterpret_cast<char const *>(glGetStringi(GL_EXTENSIONS, i));
     if (!strcmp(name, extension))
     {
       return true;
@@ -251,10 +247,9 @@ int main(int argc, char ** argv)
         GLint n=0;
         glGetIntegerv(GL_NUM_EXTENSIONS, &n);
 
-        for (GLint i=0; i<n; i++)
+        for (GLuint i=0; i<static_cast<GLuint>(n); i++)
         {
-          const char* extension =
-            (const char*)glGetStringi(GL_EXTENSIONS, i);
+          const char* extension = reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i));
           printf("Ext %d: %s\n", i, extension);
         }
     }
@@ -264,7 +259,7 @@ int main(int argc, char ** argv)
         "GL_ARB_debug_output",
         "GL_ARB_direct_state_access",
 	    "GL_ARB_draw_buffers_blend",
-        NULL,
+        nullptr,
     };
 
     bool success = true;
@@ -280,6 +275,9 @@ int main(int argc, char ** argv)
 
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(&GpuErrorLog::LogMessage, nullptr);
+
+
+    ImGui::SetCurrentContext(ImGui::CreateContext());
 
     // Setup ImGui binding
     ImGui_ImplSdlGL3_Init(mainwindow);
@@ -319,7 +317,7 @@ int main(int argc, char ** argv)
 		want.channels = 2;
 		want.samples = 4096;
 		want.callback = Window::RenderAudio;
-		want.userdata = NULL;
+		want.userdata = nullptr;
 
 		if ((id = SDL_OpenAudioDevice(nullptr, 0, &want, &got, 0)) <= 0 )
 		{
@@ -356,6 +354,21 @@ int main(int argc, char ** argv)
 	Uint32 currentTime, lastTime;
 	currentTime = SDL_GetTicks();
 	lastTime = currentTime;
+
+    enum class HotkeyAction {
+        Save,
+        SaveAs,
+        Open,
+        New,
+        Exit,
+    };
+
+    std::optional<HotkeyAction> hotkeyAction;
+
+    auto const isHotkeyHit = [&hotkeyAction](HotkeyAction action) {
+        return (hotkeyAction.has_value() and (*hotkeyAction == action));
+    };
+
     while (!done)
     {
         SDL_Event event;
@@ -380,7 +393,42 @@ int main(int argc, char ** argv)
 				continue;
 			}
 
-			if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE && SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LCTRL])
+            auto const ctrl =  SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LCTRL] or SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RCTRL];
+            auto const shift =  SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LSHIFT] or SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RSHIFT];
+            auto const alt =  SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LALT] or SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RALT];
+
+
+            // CTRL+SHIFT+S
+            if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s && ctrl && shift)
+            {
+                hotkeyAction = HotkeyAction::SaveAs;
+                continue;
+            }
+            // CTLR+S
+            else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s && ctrl)
+            {
+                hotkeyAction = HotkeyAction::Save;
+                continue;
+            }
+            // CTLR+O
+            else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_o && ctrl)
+            {
+                hotkeyAction = HotkeyAction::Open;
+                continue;
+            }
+            // CTLR+N
+            else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_n && ctrl)
+            {
+                hotkeyAction = HotkeyAction::New;
+                continue;
+            }
+            // Alt+F4
+            else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F4 && alt)
+            {
+                hotkeyAction = HotkeyAction::Exit;
+                continue;
+            }
+			else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE && ctrl)
 			{
 				openCreateMenu = true;
 				continue;
@@ -391,6 +439,9 @@ int main(int argc, char ** argv)
             if (event.type == SDL_QUIT)
                 done = true;
         }
+
+        if(hotkeyAction)
+            fprintf(stderr, "hotkey = %d\n", *hotkeyAction);
 
 		Window::RenderAll();
 
@@ -428,45 +479,32 @@ int main(int argc, char ** argv)
 			    {
 			        if (ImGui::BeginMenu("File"))
 			        {
-						if(ImGui::MenuItem("New", "CTRL+N"))
+						if(ImGui::MenuItem("New", "CTRL+N") or isHotkeyHit(HotkeyAction::New))
 						{
-							Window::DestroyAll();
-							currentWindowID = 0; // reset window id counter
-                            updateFileName("");
+                            hotkeyAction = HotkeyAction::New;
 						}
 
-						if(ImGui::MenuItem("Open...", "CTRL+O"))
+						if(ImGui::MenuItem("Open...", "CTRL+O") or isHotkeyHit(HotkeyAction::Open))
 						{
-							auto path = FileIO::OpenDialog("jgraph");
-							if(!path.empty())
-                            {
-                                load(path);
-                                updateFileName(path);
-                            }
+                            hotkeyAction = HotkeyAction::Open;
 						}
 						ImGui::Separator();
 
-						bool requiresSaveAs = false;
-						if(ImGui::MenuItem("Save", "CTRL+S"))
+						if(ImGui::MenuItem("Save", "CTRL+S") or isHotkeyHit(HotkeyAction::Save))
 						{
                             if(currentFileName.empty())
-								requiresSaveAs = true;
+								hotkeyAction = HotkeyAction::SaveAs;
 							else
-								save(currentFileName);
+								hotkeyAction = HotkeyAction::Save;
 						}
-						if(ImGui::MenuItem("Save As...", "CTRL+SHIFT+S") || requiresSaveAs)
+						if(ImGui::MenuItem("Save As...", "CTRL+SHIFT+S"))
 						{
-							auto path = FileIO::SaveDialog("jgraph");
-							if(!path.empty())
-                            {
-                                save(path);
-                                updateFileName(path);
-                            }
+                            hotkeyAction = HotkeyAction::SaveAs;
 						}
 						ImGui::Separator();
 						if(ImGui::MenuItem("Exit", "ALT+F4"))
 						{
-							done = true;
+							hotkeyAction = HotkeyAction::Exit;
 						}
 			            ImGui::EndMenu();
 			        }
@@ -536,11 +574,50 @@ int main(int argc, char ** argv)
 			ImGui::PopStyleVar();
 		}
 
+        if(hotkeyAction) {
+            switch(*hotkeyAction)
+            {
+            case HotkeyAction::New:
+                Window::DestroyAll();
+                currentWindowID = 0; // reset window id counter
+                updateFileName("");
+                break;
+
+            case HotkeyAction::Open: {
+                auto path = FileIO::OpenDialog("jgraph");
+                if(!path.empty())
+                {
+                    load(path);
+                    updateFileName(path);
+                }
+                break;
+            }
+
+            case HotkeyAction::Save:
+                save(currentFileName);
+                break;
+
+            case HotkeyAction::SaveAs: {
+                auto path = FileIO::SaveDialog("jgraph");
+                if(!path.empty())
+                {
+                    save(path);
+                    updateFileName(path);
+                }
+                break;
+           }
+
+           case HotkeyAction::Exit:
+               done = true;
+              break;
+           }
+           hotkeyAction.reset();
+        }
 
         // 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
         if (show_test_window)
         {
-			ImGui::ShowTestWindow(&show_test_window);
+            ImGui::ShowDemoWindow(&show_test_window);
         }
 
 		if(show_style_editor)
@@ -555,6 +632,9 @@ int main(int argc, char ** argv)
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui::Render();
+
+        ImGui_ImplSdlGL3_RenderDrawLists(ImGui::GetDrawData());
+
         SDL_GL_SwapWindow(mainwindow);
 
 		currentTime = SDL_GetTicks();

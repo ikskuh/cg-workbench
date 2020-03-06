@@ -301,7 +301,7 @@ void Window::UpdateNodes()
 				currentSource = source.get();
 				draw->PushClipRectFullScreen();
 				draw->AddLine(
-					ImGui::CalcItemRectClosestPoint(io.MousePos, true, -2.0f),
+					ImGui::GetWindowPos(), // ImGui::CalcItemRectClosestPoint(io.MousePos, true, -2.0f),
 					io.MousePos,
 					ImColor(0.7f,0.7f,0.7f,1.0f),
 					4.0f);

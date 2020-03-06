@@ -219,7 +219,7 @@ void RenderWindow::PaintGL()
 	}
 }
 
-void RenderWindow::SizeConstraint(ImGuiSizeConstraintCallbackData * data)
+void RenderWindow::SizeConstraint(ImGuiSizeCallbackData * data)
 {
 	RenderWindow * window = static_cast<RenderWindow*>(data->UserData);
 

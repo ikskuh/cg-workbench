@@ -36,7 +36,7 @@ PulseMicrophone::~PulseMicrophone()
 void PulseMicrophone::OnRenderAudio()
 {
 	pa_simple_read(
-					this->pulse,
+		this->pulse,
 		this->stream.GetData(),
 		this->stream.GetLength() * this->stream.GetChannels() * sizeof(sample_t),
 		nullptr);

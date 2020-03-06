@@ -22,11 +22,11 @@ public:
 	GeometryWindow();
 	GeometryWindow(GeometryWindow const &) = delete;
 	GeometryWindow(GeometryWindow &&) = delete;
-	~GeometryWindow();
+	~GeometryWindow() override;
 
 	void LoadFile();
 
 	nlohmann::json Serialize() const override;
 
-	void Deserialize(const nlohmann::json &value);
+	void Deserialize(const nlohmann::json &value) override;
 };

@@ -49,7 +49,7 @@ void LuaConsole::OnUpdate()
 		ImGui::EndMenuBar();
 	}
 
-    ImGui::BeginChild("ScrollingRegion", ImVec2(0,-ImGui::GetItemsLineHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
+    ImGui::BeginChild("ScrollingRegion", ImVec2(0,0), false, ImGuiWindowFlags_HorizontalScrollbar);
 
     // Display every line as a separate entry so we can change their color or add custom widgets. If you only want raw text you can use ImGui::TextUnformatted(log.begin(), log.end());
     // NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping to only process visible items.
@@ -79,7 +79,7 @@ void LuaConsole::OnUpdate()
         ImGui::LogFinish();
 
     if (this->scrollToEnd)
-		ImGui::SetScrollHere();
+		ImGui::SetScrollHereY();
 	this->scrollToEnd = false;
 
     ImGui::PopStyleVar();
@@ -96,9 +96,9 @@ void LuaConsole::OnUpdate()
         strcpy(this->inputBuffer, "");
     }
 
-    // Demonstrate keeping auto focus on the input box
-    if (ImGui::IsItemHovered() || (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0)))
-        ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+//    // Demonstrate keeping auto focus on the input box
+//    if (ImGui::IsItemHovered() || (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0)))
+//        ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 }
 
 void LuaConsole::Execute(const char *str)

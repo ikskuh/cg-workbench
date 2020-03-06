@@ -54,7 +54,7 @@ private:
 
 	int shownTexture;
 
-	static void SizeConstraint(ImGuiSizeConstraintCallbackData * data);
+	static void SizeConstraint(ImGuiSizeCallbackData * data);
 
 	void Export(GLuint tex);
 

@@ -13,13 +13,14 @@ out vec3 position;
 out vec3 normal;
 out vec2 uv;
 
-uniform mat4 transform;
+// uniform mat4 transform;
 
 void main() {
 	position = vPosition;
 	normal = vNormal;
 	uv = vUV;
-	gl_Position = transform * vec4(position, 1.0);
+	// gl_Position = transform * vec4(position, 1.0);
+    gl_Position = vec4(position, 1.0);
 }
 )glsl";
 
@@ -222,6 +223,8 @@ void ShaderEditor::OnUpdate()
 		ImGui::TextWrapped("%s", this->shaderLog.c_str());
 		if(ImGui::Button("OK")) this->shaderLog = "";
 	}
+
+
 
 	for(auto const & sh : this->shaders)
 	{

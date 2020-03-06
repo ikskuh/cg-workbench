@@ -32,7 +32,7 @@ protected:
 				this->samples.erase(this->samples.begin());
 		}
 
-		this->samples.emplace_back(SDL_GetTicks(), this->input->GetObject<_Type>());
+		this->samples.emplace_back(SDL_GetTicks(), this->input->template GetObject<_Type>());
 
 		if(this->useSmoothing)
 		{

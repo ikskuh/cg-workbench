@@ -1,6 +1,7 @@
 #include "soundfile.hpp"
-
 #include "fileio.hpp"
+
+#include <iostream>
 
 #include "windowregistry.hpp"
 REGISTER_WINDOW_CLASS(SoundFile, Menu::Audio, "audio-sound-file", "Sound File")
@@ -110,8 +111,10 @@ void SoundFile::OnUpdate()
 void SoundFile::LoadOgg(std::string name)
 {
 	auto * ogg = stb_vorbis_open_filename(name.c_str(), nullptr, nullptr);
-	if(ogg == nullptr)
+	if(ogg == nullptr) {
+		std::cerr << "failed to load ogg file: " << name << std::endl;
 		return;
+	}
 	if(this->vorbis != nullptr)
 		stb_vorbis_close(this->vorbis);
 	this->vorbis = ogg;
