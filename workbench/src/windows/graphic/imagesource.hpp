@@ -13,6 +13,7 @@ private:
 	TextureEditor imgSettings;
 
 	std::string currentFile;
+    std::vector<std::byte> currentBlob;
 
 	void SetTexture(GLuint tex);
 protected:

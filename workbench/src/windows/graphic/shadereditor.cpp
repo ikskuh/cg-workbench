@@ -224,31 +224,34 @@ void ShaderEditor::OnUpdate()
 		if(ImGui::Button("OK")) this->shaderLog = "";
 	}
 
+    if(ImGui::BeginTabBar("Tabs"))
+    {
+        for(auto const & sh : this->shaders)
+        {
+            std::sprintf(buffer, "%s##%p", shaderToString(sh->GetType()), sh.get());
+            if(!sh->IsCompiled())
+            {
+                ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(1.0,0,0,1.0));
+                ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(1.0,0.25,0.25,1.0));
+                ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(1.0,0.33,0.33,1.0));
+            }
 
+            if(ImGui::BeginTabItem(buffer)) {
+                std::sprintf(buffer, "##Code Editor %p", sh.get());
+                ImGui::InputTextMultiline(
+                    buffer,
+                    sh->GetCode(), Shader::MaxLength,
+                    ImVec2(-1.0f, -16.0),
+                    ImGuiInputTextFlags_AllowTabInput);
 
-	for(auto const & sh : this->shaders)
-	{
-		std::sprintf(buffer, "%s##%p", shaderToString(sh->GetType()), sh.get());
-		if(!sh->IsCompiled())
-		{
-			ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(1.0,0,0,1.0));
-			ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(1.0,0.25,0.25,1.0));
-			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(1.0,0.33,0.33,1.0));
-		}
-		if(ImGui::CollapsingHeader(buffer))
-		{
-			std::sprintf(buffer, "##Code Editor %p", sh.get());
-			ImGui::InputTextMultiline(
-				buffer,
-				sh->GetCode(), Shader::MaxLength,
-				ImVec2(-1.0f, -1.0),
-				ImGuiInputTextFlags_AllowTabInput);
-
-			ImGui::TextWrapped("%s", sh->GetLog().c_str());
-		}
-		if(!sh->IsCompiled())
-			ImGui::PopStyleColor(3);
-	}
+                ImGui::TextWrapped("%s", sh->GetLog().c_str());
+                ImGui::EndTabItem();
+            }
+            if(!sh->IsCompiled())
+                ImGui::PopStyleColor(3);
+        }
+        ImGui::EndTabBar();
+    }
 }
 
 void ShaderEditor::Compile()
