@@ -12,7 +12,7 @@ private:
 	float total;
 	float delta;
 	float speed;
-	Uint32 stamp;
+	float stamp;
 	Sink * reset;
 protected:
 	void OnRender() override;

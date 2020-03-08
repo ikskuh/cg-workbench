@@ -15,7 +15,7 @@ private:
 	std::queue<timestamp_t> delayedEvents;
 	int delay;
 	int suppressor;
-	int lastEvent;
+	float lastEvent;
 protected:
 	void OnUpdate();
 public:

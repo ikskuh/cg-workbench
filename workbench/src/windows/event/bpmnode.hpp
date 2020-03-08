@@ -13,10 +13,10 @@ private:
 	Sink * stop;
 	bool ticking;
 	int frequency;
-	int timer;
+	float timer;
 
 	int startupDelay;
-	int lastTaps[4];
+	float lastTaps[4];
 protected:
 	void OnUpdate() override;
 public:

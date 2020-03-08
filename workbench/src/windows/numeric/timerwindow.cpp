@@ -1,6 +1,5 @@
 #include "timerwindow.hpp"
-
-#include <SDL.h>
+#include "time.hpp"
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(TimerWindow, Menu::Values, "timer", "Time")
@@ -10,7 +9,7 @@ TimerWindow::TimerWindow() :
     total(0.0),
     delta(0.0),
     speed(1.0),
-    stamp(SDL_GetTicks())
+    stamp(Time::get())
 {
 	this->reset = this->AddSink<CgDataType::Event>("Reset", Sink::UnlimitedConnections);
 	this->AddSource(new Source(CgDataType::UniformFloat, "Total", &this->total));
@@ -24,9 +23,9 @@ TimerWindow::~TimerWindow()
 
 void TimerWindow::OnRender()
 {
-	Uint32 current = SDL_GetTicks();
+	Uint32 current = Time::get();
 
-	this->delta = 0.001f * (current - this->stamp);
+	this->delta = (current - this->stamp);
 	this->total += this->speed * this->delta;
 
 	if(Event::Any(this->reset))
@@ -37,7 +36,7 @@ void TimerWindow::OnRender()
 
 void TimerWindow::OnUpdate()
 {
-	ImGui::Text("Current = %f", this->total);
+	ImGui::Text("Current = %f", double(this->total));
 
 	if(ImGui::Button("Reset")) this->total = 0;
 

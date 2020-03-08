@@ -1,8 +1,8 @@
 #pragma once
 
 #include "window.hpp"
+#include "time.hpp"
 
-#include <SDL.h>
 #include <algorithm>
 
 template<CgDataType _Type>
@@ -11,7 +11,7 @@ class BufferWindow : public Window
 	WINDOW_PREAMBLE
 	typedef typename UniformType<_Type>::type data_t;
 private:
-	std::vector<std::pair<uint32_t,data_t>> samples;
+	std::vector<std::pair<float,data_t>> samples;
 	float bufferLength;
 	bool useSeconds;
 	bool useSmoothing;
@@ -22,7 +22,7 @@ protected:
 	{
 		if(this->useSeconds)
 		{
-			Uint32 history = SDL_GetTicks() - int(1000 * this->bufferLength);
+			Uint32 history = int(1000.0f * Time::get() - this->bufferLength);
 			while(this->samples.size() > 0 && this->samples.front().first < history)
 				this->samples.erase(this->samples.begin());
 		}
@@ -32,7 +32,7 @@ protected:
 				this->samples.erase(this->samples.begin());
 		}
 
-		this->samples.emplace_back(SDL_GetTicks(), this->input->template GetObject<_Type>());
+		this->samples.emplace_back(Time::get(), this->input->template GetObject<_Type>());
 
 		if(this->useSmoothing)
 		{

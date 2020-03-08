@@ -1,7 +1,6 @@
 #include "linearnoisenode.hpp"
 #include <stb_perlin.h>
-
-extern float deltatime;
+#include "time.hpp"
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(LinearNoiseNode, Menu::Noise, "noise-linear", "Linear Noise")
@@ -25,7 +24,7 @@ void LinearNoiseNode::OnRender()
 			break;
 		case 1:
 			this->value = stb_perlin_noise3(this->time, 0, 0, 0, 0, 0);
-			this->time += this->freq * deltatime;
+			this->time += this->freq * Time::getVideoDelta();
 			break;
 	}
 }

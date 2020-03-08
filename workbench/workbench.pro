@@ -85,6 +85,7 @@ SOURCES += \
 	src/slot.cpp \
 	src/source.cpp \
 	src/textureeditor.cpp \
+  src/time.cpp \
 	src/window.cpp \
 	src/windowregistry.cpp \
 	src/windows/event/bpmnode.cpp \
@@ -142,6 +143,7 @@ HEADERS += \
 	src/slot.hpp \
 	src/source.hpp \
 	src/textureeditor.hpp \
+  src/time.hpp \
 	src/window.hpp \
 	src/windowregistry.hpp \
 	src/windows/event/bpmnode.hpp \

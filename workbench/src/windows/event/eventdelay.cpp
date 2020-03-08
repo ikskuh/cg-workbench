@@ -1,6 +1,5 @@
 #include "eventdelay.hpp"
-
-#include <SDL.h>
+#include "time.hpp"
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(EventDelay, Menu::Event, "event-delay", "Event Delay")
@@ -25,13 +24,13 @@ void EventDelay::OnUpdate()
 
 	ImGui::DragInt("Suppression", &this->suppressor, 1.0, 0, INT_MAX);
 
-	if(Event::Any(this->input) && (lastEvent <= (int(SDL_GetTicks()) - this->suppressor)))
+	if(Event::Any(this->input) && (lastEvent <= (int(Time::get()) - this->suppressor)))
 	{
-		this->delayedEvents.emplace(SDL_GetTicks() + this->delay);
-		lastEvent = SDL_GetTicks();
+		this->delayedEvents.emplace(Time::get() + this->delay / 1000.0f);
+		lastEvent = Time::get();
 	}
 
-	while(this->delayedEvents.size() > 0 && this->delayedEvents.front() <= SDL_GetTicks())
+	while(this->delayedEvents.size() > 0 && this->delayedEvents.front() <= Time::get())
 	{
 		this->output->Trigger();
 		this->delayedEvents.pop();

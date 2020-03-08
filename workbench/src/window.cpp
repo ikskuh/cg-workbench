@@ -7,6 +7,8 @@
 
 #include "resources.hpp"
 #include "fileio.hpp"
+#include "time.hpp"
+
 #include <fstream>
 
 static std::vector<std::unique_ptr<Window>> windows;
@@ -622,6 +624,8 @@ sample_t * audio_destbuffer;
 void Window::RenderAudio(void*  userdata, Uint8* stream, int len)
 {
 	(void)userdata;
+
+    Time::newAudioFrame();
 
 	sample_t * samples = reinterpret_cast<sample_t*>(stream);
 	len /= sizeof(sample_t);

@@ -1,0 +1,278 @@
+{
+    "signals": [
+        {
+            "from": [
+                2,
+                "Shader"
+            ],
+            "to": [
+                1,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Default"
+            ],
+            "to": [
+                2,
+                "tex"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Summed"
+            ],
+            "to": [
+                2,
+                "texSum"
+            ]
+        },
+        {
+            "from": [
+                6,
+                "Stream"
+            ],
+            "to": [
+                3,
+                "Source"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Stream"
+            ],
+            "to": [
+                5,
+                "Source"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "depthtest": true,
+            "scale": 9,
+            "size": [
+                512.0,
+                512.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 1,
+            "window-pos": [
+                954.0,
+                31.0
+            ],
+            "window-size": [
+                528.0,
+                566.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D tex;\nuniform sampler2D texSum;\n\nvoid main() {\n\tfloat sum = texture2D(texSum, vec2(uv.x, 0.5)).x;\n\n\tvec3 c = vec3(0);\n\tif(0.1 * sum > uv.y)\n\t\tc = vec3(1);\n\n\tfloat beat = texture2D(tex, uv).x;\n\n\tif(beat > uv.y)\n\t\tc = vec3(1,0,0);\n\n\tcolor = vec4(c, 1);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 2,
+            "window-pos": [
+                332.0,
+                307.0
+            ],
+            "window-size": [
+                569.0,
+                497.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "window-id": 3,
+            "window-pos": [
+                116.0,
+                254.0
+            ],
+            "window-size": [
+                86.0,
+                54.0
+            ],
+            "window-title": "FFT",
+            "window-type": "audio-fft-transform"
+        },
+        {
+            "window-id": 4,
+            "window-pos": [
+                44.0,
+                77.0
+            ],
+            "window-size": [
+                176.0,
+                48.0
+            ],
+            "window-title": "Microphone",
+            "window-type": "audio-pulse-mic"
+        },
+        {
+            "window-id": 5,
+            "window-pos": [
+                397.0,
+                46.0
+            ],
+            "window-size": [
+                407.0,
+                225.0
+            ],
+            "window-title": "Waveform Viewer",
+            "window-type": "audio-waveform-viewer"
+        },
+        {
+            "dutycycle": 0.5,
+            "freq": 3462.0,
+            "waveform": 0,
+            "window-id": 6,
+            "window-pos": [
+                86.0,
+                437.0
+            ],
+            "window-size": [
+                128.0,
+                165.0
+            ],
+            "window-title": "Synthesizer",
+            "window-type": "audio-synth"
+        }
+    ]
+}

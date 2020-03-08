@@ -2,6 +2,8 @@
 
 #include <stb_perlin.h>
 
+#include "time.hpp"
+
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(NoiseTexture, Menu::Noise, "graphic-noise", "Noise Texture")
 
@@ -46,7 +48,7 @@ void NoiseTexture::Generate()
 			color[0] = denormalize(stb_perlin_noise3(
 				x / (256.0 / this->imageFrequency),
 				y / (256.0 / this->imageFrequency),
-				this->timeFrequency * SDL_GetTicks() / 1000.0,
+				this->timeFrequency * Time::get(),
 				256,
 				256,
 				0));
@@ -56,7 +58,7 @@ void NoiseTexture::Generate()
 			color[1] = denormalize(stb_perlin_turbulence_noise3(
 				x / (256.0 / this->imageFrequency),
 				y / (256.0 / this->imageFrequency),
-				this->timeFrequency * SDL_GetTicks() / 1000.0,
+				this->timeFrequency * Time::get(),
 				1.0,
 				1.0,
 				8,

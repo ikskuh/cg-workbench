@@ -10,6 +10,7 @@
 
 #include "window.hpp"
 #include "fileio.hpp"
+#include "time.hpp"
 
 #include "windows/generic/luaconsole.hpp"
 #include "windows/graphic/gpuerrorlog.hpp"
@@ -151,8 +152,6 @@ static Window * createMenu()
 }
 
 extern ImVec2 screen_pan;
-
-float deltatime;
 
 ImFont * labelFont;
 
@@ -315,7 +314,7 @@ int main(int argc, char ** argv)
 		want.freq = 44100;
 		want.format = AUDIO_F32SYS;
 		want.channels = 2;
-		want.samples = 4096;
+		want.samples = 256;
 		want.callback = Window::RenderAudio;
 		want.userdata = nullptr;
 
@@ -332,7 +331,7 @@ int main(int argc, char ** argv)
 		printf("samp = %d\n", got.samples);
 		printf("fmt  = %d\n", got.format);
 
-		audio_samplerate = got.freq;
+		audio_samplerate = uint32_t(got.freq);
 		audio_buffersize = got.samples;
 		audio_channels = got.channels;
 	}
@@ -351,9 +350,7 @@ int main(int argc, char ** argv)
 
     // Main loop
     bool done = false;
-	Uint32 currentTime, lastTime;
-	currentTime = SDL_GetTicks();
-	lastTime = currentTime;
+	Time::init();
 
     enum class HotkeyAction {
         Save,
@@ -369,8 +366,12 @@ int main(int argc, char ** argv)
         return (hotkeyAction.has_value() and (*hotkeyAction == action));
     };
 
+    float lastSaveTimestamp = -1000;
+
     while (!done)
     {
+        Time::newVideoFrame();
+
         SDL_Event event;
 
 		bool openCreateMenu = false;
@@ -492,10 +493,7 @@ int main(int argc, char ** argv)
 
 						if(ImGui::MenuItem("Save", "CTRL+S") or isHotkeyHit(HotkeyAction::Save))
 						{
-                            if(currentFileName.empty())
-								hotkeyAction = HotkeyAction::SaveAs;
-							else
-								hotkeyAction = HotkeyAction::Save;
+                            hotkeyAction = HotkeyAction::Save;
 						}
 						if(ImGui::MenuItem("Save As...", "CTRL+SHIFT+S"))
 						{
@@ -594,8 +592,16 @@ int main(int argc, char ** argv)
             }
 
             case HotkeyAction::Save:
-                save(currentFileName);
-                break;
+                if(not currentFileName.empty())
+                {
+                    save(currentFileName);
+                    lastSaveTimestamp = Time::get();
+                    break;
+                }
+                else
+                {
+                    [[fallthrough]];
+                }
 
             case HotkeyAction::SaveAs: {
                 auto path = FileIO::SaveDialog("jgraph");
@@ -603,6 +609,7 @@ int main(int argc, char ** argv)
                 {
                     save(path);
                     updateFileName(path);
+                    lastSaveTimestamp = Time::get();
                 }
                 break;
            }
@@ -629,19 +636,22 @@ int main(int argc, char ** argv)
 
         // Rendering
         glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
-        glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+
+        {
+            auto const col = glm::mix(
+                glm::vec4(clear_color),
+                glm::vec4(1.0f,1.0f,1.0f,1.0f),
+                1.0 - glm::clamp<float>(5.0f * (Time::get() - lastSaveTimestamp), 0.0f, 1.0f)
+            );
+
+            glClearColor(col.x, col.y, col.z, col.w);
+        }
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui::Render();
 
         ImGui_ImplSdlGL3_RenderDrawLists(ImGui::GetDrawData());
 
         SDL_GL_SwapWindow(mainwindow);
-
-		currentTime = SDL_GetTicks();
-
-        deltatime = (currentTime - lastTime) / 1000;
-
-		lastTime = currentTime;
     }
 
 	Window::DestroyAll();

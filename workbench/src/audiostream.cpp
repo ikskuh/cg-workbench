@@ -6,9 +6,9 @@
 #undef STB_VORBIS_HEADER_ONLY
 #include <stb_vorbis.h>
 
-int audio_samplerate;
-int audio_buffersize;
-int audio_channels;
+uint32_t audio_samplerate;
+uint32_t audio_buffersize;
+uint32_t audio_channels;
 
 
 AudioStream::AudioStream(int channels) :
@@ -48,7 +48,7 @@ void AudioStream::SetFormatForStream(AudioStream const & other)
 }
 
 
-void AudioStream::SetChannels(int chans)
+void AudioStream::SetChannels(uint32_t chans)
 {
 	assert(chans >= 1);
 	if(this->channels == chans)

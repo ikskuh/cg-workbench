@@ -10,6 +10,9 @@ include($$PWD/../module.pri)
 }
 
 SOURCES += \
+    ../../ext/kiss_fft/kiss_fft.c \
+    ../../ext/kiss_fft/tools/kiss_fftr.c \
+    audio2texture.cpp \
     audiooutput.cpp \
     envelopenode.cpp \
     mergechannelsnode.cpp \
@@ -20,6 +23,7 @@ SOURCES += \
     pulsemicrophone.cpp
 
 HEADERS += \
+    audio2texture.hpp \
     audiooutput.hpp \
     envelopenode.hpp \
     mergechannelsnode.hpp \

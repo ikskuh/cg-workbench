@@ -1,6 +1,5 @@
 #include "bpmnode.hpp"
-
-#include <SDL.h>
+#include "time.hpp"
 
 #include <windowregistry.hpp>
 REGISTER_WINDOW_CLASS(BPMNode, Menu::Event, "event-bpm", "BPM Node")
@@ -21,12 +20,12 @@ BPMNode::BPMNode() :
 
 void BPMNode::OnUpdate()
 {
-	int ticks = SDL_GetTicks();
+	float ticks = Time::get();
     if((ticks > this->timer) && (this->frequency > 0))
 	{
 		if(this->ticking)
 			this->tick->Trigger();
-		this->timer += (60000 / this->frequency);
+		this->timer += (60.0f / float(this->frequency));
 	}
 
 	ImGui::DragInt("BPM", &this->frequency, 1, 1, 1000); // 1000 BPM!
@@ -35,13 +34,13 @@ void BPMNode::OnUpdate()
 
 	if(ImGui::Button("Start"))
 	{
-		this->timer = SDL_GetTicks();
+		this->timer = Time::get();
 		this->ticking = true;
 	}
 
 	if(Event::Any(this->start))
 	{
-		this->timer = SDL_GetTicks() + this->startupDelay;
+		this->timer = Time::get() + this->startupDelay / 1000.0f;
 		this->ticking = true;
 	}
 
@@ -55,22 +54,24 @@ void BPMNode::OnUpdate()
 	if(ImGui::Button("Tap me!"))
 	{
 		this->ticking = true;
-		this->timer = SDL_GetTicks(); // Sync with us!
+		this->timer = Time::get(); // Sync with us!
 
 		for(int i = 1; i < 4; i++)
 			this->lastTaps[i - 1] = this->lastTaps[i];
-		this->lastTaps[3] = SDL_GetTicks();
+		this->lastTaps[3] = Time::get();
 
-		int delta = 0;
+		float delta = 0;
 		for(int i = 0; i < 3; i++)
 			delta += (this->lastTaps[i+1] - this->lastTaps[i+0]);
-		delta /= 3;
+		delta /= 3.0f;
 
 		if(delta > 0)
 		{
-			this->frequency = 60000 / delta;
+			this->frequency = int(60.0f / delta + 0.5f);
 		}
 	}
+
+    ImGui::Text("Time: %f", Time::get());
 }
 
 WINDOW_SERIALIZE_IMPL(BPMNode)
