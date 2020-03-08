@@ -358,6 +358,7 @@ int main(int argc, char ** argv)
         Open,
         New,
         Exit,
+        Compile
     };
 
     std::optional<HotkeyAction> hotkeyAction;
@@ -423,6 +424,12 @@ int main(int argc, char ** argv)
                 hotkeyAction = HotkeyAction::New;
                 continue;
             }
+            // CTLR+R
+            else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_r && ctrl)
+            {
+                hotkeyAction = HotkeyAction::Compile;
+                continue;
+            }
             // Alt+F4
             else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F4 && alt)
             {
@@ -454,7 +461,7 @@ int main(int argc, char ** argv)
 
         ImGui_ImplSdlGL3_NewFrame(mainwindow);
 
-		Window::UpdateAll();
+		Window::UpdateAll(hotkeyAction and (hotkeyAction == HotkeyAction::Compile));
 
 		{
 			int w,h;
@@ -612,11 +619,14 @@ int main(int argc, char ** argv)
                     lastSaveTimestamp = Time::get();
                 }
                 break;
-           }
+            }
 
-           case HotkeyAction::Exit:
-               done = true;
-              break;
+           case HotkeyAction::Compile:
+                break;
+
+            case HotkeyAction::Exit:
+                done = true;
+                break;
            }
            hotkeyAction.reset();
         }

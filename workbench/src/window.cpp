@@ -39,7 +39,7 @@ void Window::Unregister(Window * window)
 	windows.erase(pos, windows.end());
 }
 
-void Window::UpdateAll()
+void Window::UpdateAll(bool compile)
 {
 	// HACK: Required for allowing window creation while iteration
 	for(auto & win : new_windows)
@@ -54,7 +54,7 @@ void Window::UpdateAll()
 	new_windows.clear();
 
 	for(auto const & win : windows)
-		win->Update();
+		win->Update(compile);
 
 	auto pos = std::remove_if(windows.begin(), windows.end(), [](std::unique_ptr<Window> const & win) {
 		return !win->isOpen;
@@ -360,7 +360,7 @@ Window::~Window()
 	}
 }
 
-void Window::Update()
+void Window::Update(bool recompile)
 {
 	for(auto & ev : this->events)
 		ev->triggered = false;
@@ -381,6 +381,10 @@ void Window::Update()
 
 	if(ImGui::Begin(namebuf, &this->isOpen, this->flags))
 	{
+        if(recompile and ImGui::IsWindowFocused()) {
+            this->Compile();
+        }
+
 		this->OnUpdate();
 
 		if(ImGui::BeginPopupContextWindow())
@@ -461,7 +465,12 @@ void Window::Update()
 
 void Window::OnSetup()
 {
-	ImGui::SetNextWindowSize(ImVec2(256, 256), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(256, 256), ImGuiCond_FirstUseEver);
+}
+
+void Window::OnCompile()
+{
+    /* dummy */
 }
 
 void Window::OnRender()
@@ -471,7 +480,12 @@ void Window::OnRender()
 
 void Window::Render()
 {
-	this->OnRender();
+    this->OnRender();
+}
+
+void Window::Compile()
+{
+    this->OnCompile();
 }
 
 void Window::Close()

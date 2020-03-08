@@ -115,7 +115,7 @@ ShaderEditor::ShaderEditor() :
 	this->shaders.emplace_back(new Shader(GL_VERTEX_SHADER));
 	this->shaders.emplace_back(new Shader(GL_FRAGMENT_SHADER));
 
-	this->Compile();
+	this->OnCompile();
 }
 
 ShaderEditor::~ShaderEditor()
@@ -191,7 +191,7 @@ void ShaderEditor::OnUpdate()
 	{
 		if(ImGui::BeginMenu("Compile"))
 		{
-			this->Compile();
+			this->OnCompile();
 			ImGui::CloseCurrentPopup(); // HACK: When menu is opened, menu is closed
 			ImGui::EndMenu();
 		}
@@ -254,7 +254,7 @@ void ShaderEditor::OnUpdate()
     }
 }
 
-void ShaderEditor::Compile()
+void ShaderEditor::OnCompile()
 {
 	bool success = true;
 	for(auto const & sh : this->shaders)

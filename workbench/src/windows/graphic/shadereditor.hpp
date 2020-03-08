@@ -59,7 +59,7 @@ private:
 
 	std::string shaderLog;
 
-	void Compile();
+	void OnCompile() override;
 
 	void BindUniforms();
 protected:

@@ -65,13 +65,17 @@ protected:
 	virtual void OnUpdate() = 0;
 	virtual void OnRender();
 	virtual void OnSetup();
+    virtual void OnCompile();
 	virtual std::string GetTypeID() const = 0;
 public:
 	virtual ~Window();
 
-	void Update();
+	void Update(bool recompile);
 
 	void Render();
+
+    //! Ctrl-R hotkey for recompiling/reloading code stuff
+    void Compile();
 
 	void Close();
 
@@ -109,7 +113,7 @@ public:
 
 	static void Unregister(Window * window);
 
-	static void UpdateAll();
+	static void UpdateAll(bool compile);
 
 	//! Creates buttons for each window sink/source
 	//! and draws interconnection lines

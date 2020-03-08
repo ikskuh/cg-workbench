@@ -23,7 +23,7 @@ TimerWindow::~TimerWindow()
 
 void TimerWindow::OnRender()
 {
-	Uint32 current = Time::get();
+	float current = Time::get();
 
 	this->delta = (current - this->stamp);
 	this->total += this->speed * this->delta;
@@ -42,7 +42,6 @@ void TimerWindow::OnUpdate()
 
 	ImGui::DragFloat("Speed", &this->speed, 0.01f);
 }
-
 
 nlohmann::json TimerWindow::Serialize() const
 {

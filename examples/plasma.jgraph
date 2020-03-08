@@ -165,8 +165,8 @@
             ],
             "window-id": 1,
             "window-pos": [
-                1014.0,
-                77.0
+                975.0,
+                90.0
             ],
             "window-size": [
                 302.0,
@@ -179,7 +179,7 @@
         {
             "items": [
                 {
-                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 v_coords;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tv_coords = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n}\n",
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 v_coords;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tv_coords = vUV;\n\tgl_Position = vec4(position, 1.0);\n}\n",
                     "type": 35633
                 },
                 {
@@ -200,7 +200,7 @@
             "window-type": "shader"
         },
         {
-            "current": 84.1488189697266,
+            "current": 112.228416442871,
             "speed": 1.0,
             "window-id": 3,
             "window-pos": [
@@ -217,8 +217,8 @@
         {
             "type": "uniform-vec2",
             "value": [
-                30.0,
-                30.0
+                33.0499992370605,
+                30.1700000762939
             ],
             "window-id": 5,
             "window-pos": [
