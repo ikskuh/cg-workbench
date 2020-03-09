@@ -80,6 +80,10 @@ namespace Menu
 	namespace Audio
 	{
 		WindowCategory Instance(&Menu::Instance, "Audio");
+        namespace Midi
+        {
+            WindowCategory Instance(&Menu::Audio::Instance, "MIDI");
+        }
 	}
 	namespace Event
 	{

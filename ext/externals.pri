@@ -9,4 +9,5 @@ INCLUDEPATH += \
 	$$PWD/tinydir \
 	$$PWD/webcam-v4l2 \
 	$$PWD/kiss_fft \
-	$$PWD/kiss_fft/tools
+	$$PWD/kiss_fft/tools \
+	$$PWD/rtmidi

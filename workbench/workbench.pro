@@ -19,7 +19,8 @@ windows: {
     # Make C++ on windows actually acceptable
     DEFINES += \
         NOMINMAX \
-        WIN32_LEAN_AND_MEAN
+        WIN32_LEAN_AND_MEAN \
+        CGPLAT_WINDOWS
 
     # TODO: Fix code for working with win32 wide chars.
     DEFINES -= UNICODE _UNICODE
@@ -49,6 +50,9 @@ windows: {
 !windows: {
     CONFIG += link_pkgconfig
 
+    DEFINES += \
+      CGPLAT_LINUX
+
     PKGCONFIG += lua gl sdl2 gtk+-3.0
 
     LIBS += -lm -ldl
@@ -58,7 +62,7 @@ windows: {
     QMAKE_CFLAGS += $$system(pkg-config --cflags gtk+-3.0)
     QMAKE_CXXFLAGS += $$system(pkg-config --cflags gtk+-3.0)
 
-	QMAKE_LFLAGS += -Wl,-export-dynamic
+    QMAKE_LFLAGS += -Wl,-export-dynamic
 }
 
 

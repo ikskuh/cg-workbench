@@ -90,6 +90,10 @@ namespace Menu
 	namespace Audio
 	{
 		extern WindowCategory Instance;
+        namespace Midi
+        {
+            extern WindowCategory Instance;
+        }
 	}
 	namespace Event
 	{
