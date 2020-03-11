@@ -8,7 +8,7 @@ REGISTER_WINDOW_CLASS(ClockNode, Menu::Audio::Midi, "midi-clock-node", "Clock")
 #include <iostream>
 
 ClockNode::ClockNode() :
-    Window("MIDI Clock"),
+    Window("Clock", ImGuiWindowFlags_AlwaysAutoResize),
     currentTicks(0)
 {
     this->midiCallbackID = MIDI::get().addCallback(
