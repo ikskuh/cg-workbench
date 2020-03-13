@@ -664,6 +664,8 @@ int main(int argc, char ** argv)
         SDL_GL_SwapWindow(mainwindow);
     }
 
+    SDL_PauseAudioDevice(id, 1);
+
 	Window::DestroyAll();
 
     // Cleanup
@@ -845,7 +847,7 @@ void load(std::string const & fileName)
 
 static void load_plugins()
 {
-	std::string pluginRoot = "/tmp/build-cg-workbench-Desktop-Debug/plugins";
+	std::string pluginRoot = "/home/felix/build/build-cg-workbench-Desktop-Debug/plugins";
 
 	tinydir_dir dir;
     tinydir_open_sorted(&dir, pluginRoot.c_str());

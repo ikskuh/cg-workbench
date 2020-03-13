@@ -10,7 +10,9 @@
 #include "time.hpp"
 
 #include <fstream>
+#include <mutex>
 
+static std::mutex windows_lock;
 static std::vector<std::unique_ptr<Window>> windows;
 
 int currentWindowID = 0;
@@ -24,6 +26,8 @@ void Window::Register(Window * window)
 {
 	assert(window != nullptr);
 
+    std::lock_guard lock { windows_lock };
+
 	// Use the second vector to provide a safe method to duplicate windows:
 	// Don't change a vector when iterating it!
 	new_windows.emplace_back(window);
@@ -31,6 +35,8 @@ void Window::Register(Window * window)
 
 void Window::Unregister(Window * window)
 {
+    std::lock_guard lock { windows_lock };
+
 	auto pos = std::remove_if(windows.begin(), windows.end(), [window](std::unique_ptr<Window> const & p) {
 		return p.get() == window;
 	});
@@ -650,6 +656,7 @@ void Window::RenderAudio(void*  userdata, Uint8* stream, int len)
 
 	memset(audio_destbuffer, 0, sizeof(sample_t) * audio_buffersize * audio_channels);
 
+    std::lock_guard lock { windows_lock };
 	for(auto & win : ::windows)
 	{
 		auto * node = dynamic_cast<AudioNode*>(win.get());

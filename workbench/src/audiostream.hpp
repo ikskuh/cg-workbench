@@ -22,6 +22,9 @@ public:
 	AudioStream(AudioStream &&);
 	~AudioStream();
 
+    AudioStream & operator =(AudioStream const &) = default;
+    AudioStream & operator =(AudioStream &&) = default;
+
 	//! Clears all data.
 	//! @remarks Clears all data!
 	void Clear();
