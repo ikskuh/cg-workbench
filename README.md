@@ -5,6 +5,20 @@ The CG Workbench is a small GLSL coding environment which allows to rapidly prot
 
 Live Shading Demo: [Youtube](https://www.youtube.com/watch?v=et6Kq0yJqxU)
 
+## Controls / Usage
+
+| Input | Action |
+|-|-|
+| Ctrl+Space, Rightclick on Background | Open *New Node* window |
+| Right-Click on a node | Open node editor (save to template, rename node) |
+| Ctrl + Left Mouse + Drag | Drag viewport window |
+| Ctrl + R | Recompile current window |
+| Ctrl + S | Save |
+| Ctrl + Shift + S | Save As |
+| Ctrl + N | New document |
+| Ctrl + O | Open File |
+| Alt + F4 | Exit |
+
 ## Build Instructions
 
 CG Workbench uses qmake as a build system, but doesn't require Qt.
@@ -12,6 +26,12 @@ CG Workbench uses qmake as a build system, but doesn't require Qt.
 Instead of executing qmake manually, QtCreator can be used to build the project.
 
 ### Linux
+Install the following libraries / packages:
+- `sdl2`
+- `glm`
+- `qt-5` or `qmake`
+- `lua` / `lua-5.3`
+- `gtk-3.0`
 
 Create a folder `build/`, enter it and run qmake with the `cg-workbench.pro` file specified
 as an argument. Then run `make`.
@@ -53,6 +73,7 @@ This project would be much harder without those great libraries:
 - [github.com/severin-lemaignan/webcam-v4l2](https://github.com/severin-lemaignan/webcam-v4l2)
 
 ## Ideas / Missing Nodes
+- Save query when creating new node with existing content
 - Shader Common Node
   - Provide "includes" for all shaders
 - Graphic Nodes

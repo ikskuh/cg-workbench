@@ -245,7 +245,7 @@
         },
         {
             "depthtest": true,
-            "scale": 8,
+            "scale": 9,
             "size": [
                 512.0,
                 512.0
@@ -374,12 +374,12 @@
             ],
             "window-id": 4,
             "window-pos": [
-                2208.0,
-                119.0
+                2254.0,
+                192.0
             ],
             "window-size": [
-                302.0,
-                310.0
+                528.0,
+                566.0
             ],
             "window-title": "Render Window",
             "window-type": "renderer",
@@ -392,7 +392,7 @@
                     "type": 35633
                 },
                 {
-                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D diffuse;\n\nvoid main() {\n\tcolor = texture(diffuse, uv);\n}\n",
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D diffuse;\n\nvoid main() {\n\tvec3 l = normalize(vec3(0.3, -0.8, -0.2));\n\tfloat b = clamp(dot(l, -normal), 0.0, 1.0);\n\tfloat x = 0.3 + 0.8 * b;\n\tcolor = texture(diffuse, uv);\n\tcolor.rgb *= x;\n}\n",
                     "type": 35632
                 }
             ],
@@ -460,7 +460,7 @@
             "window-type": "matrix-rotate"
         },
         {
-            "current": 6184.26025390625,
+            "current": 7758.78173828125,
             "speed": 3.58999991416931,
             "window-id": 11,
             "window-pos": [
@@ -643,8 +643,8 @@
             ],
             "window-id": 24,
             "window-pos": [
-                1167.0,
-                465.0
+                1144.0,
+                466.0
             ],
             "window-size": [
                 262.0,
