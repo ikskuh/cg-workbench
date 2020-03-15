@@ -57,12 +57,13 @@ This project would be much harder without those great libraries:
 - [github.com/severin-lemaignan/webcam-v4l2](https://github.com/severin-lemaignan/webcam-v4l2)
 
 ## Ideas / Missing Nodes
+- Shader Common Node
+  - Provide "includes" for all shaders
 - Graphic Nodes
 	- Geometry Node
 		- Primitives
 			- Sphere
 			- Cube
-- "Pop-Out" für RenderNode in eigenes Fenster
 - Player-Modus (lädt jgraph-File und hat ein Haupt-Renderer)
 - Event-Delay Visualisierung
 - Buffer -> Texture

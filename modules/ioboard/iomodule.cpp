@@ -151,7 +151,7 @@ void IoModule::OnRender()
                         {
                             case 'A': {
                                 if(id >= 0 and id < 8)
-                                    this->analogOut[id] =value / 1024.0f;
+                                    this->analogOut[id] = std::max<float>(0.0f, std::min(1.0f, (value - 4) / (1023.0f - 8.0f)));
                                 break;
                             }
                             case 'D': {

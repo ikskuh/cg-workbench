@@ -1,0 +1,1171 @@
+{
+    "signals": [
+        {
+            "from": [
+                19,
+                "Shader"
+            ],
+            "to": [
+                1,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                4,
+                "Stream"
+            ],
+            "to": [
+                3,
+                "Source"
+            ]
+        },
+        {
+            "from": [
+                10,
+                "Total"
+            ],
+            "to": [
+                5,
+                "time"
+            ]
+        },
+        {
+            "from": [
+                11,
+                "Texture"
+            ],
+            "to": [
+                5,
+                "background"
+            ]
+        },
+        {
+            "from": [
+                12,
+                "Shader"
+            ],
+            "to": [
+                7,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                14,
+                "Texture"
+            ],
+            "to": [
+                12,
+                "tunnelsurf"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Summed"
+            ],
+            "to": [
+                12,
+                "ffti_src"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Smoothed"
+            ],
+            "to": [
+                12,
+                "fft_src"
+            ]
+        },
+        {
+            "from": [
+                20,
+                "Texture"
+            ],
+            "to": [
+                12,
+                "bobbles_src"
+            ]
+        },
+        {
+            "from": [
+                15,
+                "Image 0"
+            ],
+            "to": [
+                12,
+                "endOfTunnel"
+            ]
+        },
+        {
+            "from": [
+                5,
+                "Shader"
+            ],
+            "to": [
+                15,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Smoothed"
+            ],
+            "to": [
+                16,
+                "src_fft"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Summed"
+            ],
+            "to": [
+                16,
+                "src_fft_int"
+            ]
+        },
+        {
+            "from": [
+                10,
+                "Total"
+            ],
+            "to": [
+                16,
+                "time"
+            ]
+        },
+        {
+            "from": [
+                16,
+                "Shader"
+            ],
+            "to": [
+                17,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "Image 0"
+            ],
+            "to": [
+                19,
+                "left"
+            ]
+        },
+        {
+            "from": [
+                15,
+                "Image 0"
+            ],
+            "to": [
+                19,
+                "right"
+            ]
+        },
+        {
+            "from": [
+                34,
+                "Analog 0"
+            ],
+            "to": [
+                19,
+                "fleft"
+            ]
+        },
+        {
+            "from": [
+                34,
+                "Analog 1"
+            ],
+            "to": [
+                19,
+                "fright"
+            ]
+        },
+        {
+            "from": [
+                33,
+                "Shader"
+            ],
+            "to": [
+                32,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                10,
+                "Total"
+            ],
+            "to": [
+                33,
+                "time"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Summed"
+            ],
+            "to": [
+                33,
+                "ffti_src"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                2560.0,
+                1440.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 1,
+            "window-pos": [
+                2414.0,
+                105.0
+            ],
+            "window-size": [
+                302.0,
+                198.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "smoothing": 1,
+            "window-id": 3,
+            "window-pos": [
+                305.0,
+                178.0
+            ],
+            "window-size": [
+                86.0,
+                120.0
+            ],
+            "window-title": "FFT",
+            "window-type": "audio-fft-transform"
+        },
+        {
+            "window-id": 4,
+            "window-pos": [
+                177.0,
+                58.0
+            ],
+            "window-size": [
+                176.0,
+                48.0
+            ],
+            "window-title": "Microphone",
+            "window-type": "audio-pulse-mic"
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D src_fft;\nuniform sampler2D src_fft_int;\nuniform float time;\n\nuniform sampler2D background;\n\nconst float pi = 3.1415;\n\nfloat fft(float freq) {\n\treturn texture(src_fft, vec2(freq / 10000, 0.5)).x;\n}\n\nvec3 hsv2rgb(vec3 c) {\n  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nmat2 rot(float a) {\n\treturn mat2(\n\t\tsin(a), -cos(a),\n\t\tcos(a), sin(a)\n\t);\n}\n\nuniform float mixer;\n\nvec2 uv2zoom(vec2 xy, float aspect, float z)\n{\n\treturn 0.5 + 0.5 * xy * vec2(1. / aspect, 1.) / pow(z + 1.0, 3.);\n}\n\nvoid main() {\n\tfloat aspect = 2560. / 1440.;\n\n\tvec2 xy = 2.0 * uv - 1.0;\n\txy.x *= aspect;\n\n\tfloat zoom1 = mod(time , 2.);\n\tfloat zoom2 = mod((time + 1.0) , 2.);\n\n\tcolor = max(\n\t\ttexture(background, \n\t\tuv2zoom(xy * rot(time), aspect, zoom1)\n\t\t),\n\t\ttexture(background, uv2zoom(xy * rot(-time), aspect, zoom2)));\n\tcolor.rgb = pow(color.rgb, vec3(2.0));\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 5,
+            "window-pos": [
+                603.0,
+                64.0
+            ],
+            "window-size": [
+                425.0,
+                299.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 7,
+            "size": [
+                1280.0,
+                720.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 7,
+            "window-pos": [
+                1269.0,
+                656.0
+            ],
+            "window-size": [
+                302.0,
+                126.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "current": 3849.38061523438,
+            "speed": 1.0,
+            "window-id": 10,
+            "window-pos": [
+                174.0,
+                775.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ],
+            "window-title": "Timer",
+            "window-type": "timer"
+        },
+        {
+            "file": "/home/felix/Downloads/TexturesCom_Aerials0006_1_M.jpg",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
+            "window-id": 11,
+            "window-pos": [
+                93.0,
+                325.0
+            ],
+            "window-size": [
+                297.0,
+                341.0
+            ],
+            "window-title": "Image",
+            "window-type": "image"
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\nconst float pi = 3.1415;\n\nuniform sampler2D tunnelsurf;\nuniform float time;\n\nuniform sampler2D ffti_src;\nuniform sampler2D fft_src;\n\nuniform float resonance;\n\nuniform sampler2D bobbles_src;\n\nuniform sampler2D endOfTunnel;\n\nfloat fft(float freq) {\n\treturn texture(fft_src, vec2(freq / 10000, 0.5)).x;\n}\nfloat ffti(float freq) {\n\treturn texture(ffti_src, vec2(freq / 10000, 0.5)).x;\n}\n\nvec3 hsv2rgb(vec3 c) {\n  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nvoid main() {\n\tfloat aspect = 16. / 9.;\n\n\tvec2 xy = 2.0 * uv - 1.0;\n\txy.x *= aspect;\n\t\n\tfloat d = 2.0 * length(xy);\n\n\tfloat a = 0.5 + 0.5 * atan(xy.y, xy.x)/ pi;\n\n\tfloat r = ffti(300.0);\n\n\tvec2 tuv = vec2(\n\t\t\t3.0 * a + r,\n\t\t\t0.5 / d + 10.3 * ffti(200.));\n\n\tcolor = texture(\n\t\ttunnelsurf,\n\t\ttuv);\n\tcolor.rgb = pow(color.rgb, vec3(3.0));\n\t\n\tvec3 blob = texture(\n\t\tbobbles_src,\n\t\ttuv).rgb;\n\n\tvec2 rg = 3.0 * floor(fract(tuv.xy) * 4.);\n\n\tblob *= hsv2rgb(vec3(\n\t\t0.1 * rg.x + 0.3 * rg.y + fract(15.0 * ffti(700.)),\n\t\t1.0,\n\t\t1.0\n\t));\n\n\tblob *= fft(sin(rg.x));\n\n\tcolor.rgb *= 0.5 + 3.7 * blob;\n\n\tcolor += 10.0 * texture(\n\t\tfft_src,\n\t\ttuv);\n\n\tcolor = mix(\n\t\ttexture(endOfTunnel, uv),\n\t\tcolor,\n\t\tpow(clamp(0.9 * d, 0., 1.), 0.5));\n\t\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 12,
+            "window-pos": [
+                641.0,
+                681.0
+            ],
+            "window-size": [
+                523.0,
+                403.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "file": "/home/felix/Downloads/TexturesCom_MetalAircraft0061_1_seamless_S.jpg",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
+            "window-id": 14,
+            "window-pos": [
+                11.0,
+                683.0
+            ],
+            "window-size": [
+                297.0,
+                528.0
+            ],
+            "window-title": "Image",
+            "window-type": "image"
+        },
+        {
+            "depthtest": true,
+            "scale": 7,
+            "size": [
+                1280.0,
+                720.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 15,
+            "window-pos": [
+                1159.0,
+                88.0
+            ],
+            "window-size": [
+                302.0,
+                126.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D src_fft;\nuniform sampler2D src_fft_int;\nuniform float time;\n\nuniform sampler2D background;\n\nconst float pi = 3.1415;\n\nfloat fft(float freq) {\n\treturn texture(src_fft, vec2(freq / 10000, 0.5)).x;\n}\n\nvec3 hsv2rgb(vec3 c) {\n  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\nmat2 rot(float a) {\n\treturn mat2(\n\t\tsin(a), -cos(a),\n\t\tcos(a), sin(a)\n\t);\n}\n\nuniform float mixer;\n\nvec2 uv2zoom(vec2 xy, float aspect, float z)\n{\n\treturn 0.5 + 0.5 * xy * vec2(1. / aspect, 1.) / pow(z + 1.0, 3.);\n}\n\nvoid main() {\n\tfloat aspect = 2560. / 1440.;\n\n\tvec2 xy = 2.0 * uv - 1.0;\n\txy.x *= aspect;\n\n\tfloat zoom1 = mod(time , 2.);\n\tfloat zoom2 = mod((time + 1.0) , 2.);\n\n\tcolor = max(\n\t\ttexture(background, \n\t\tuv2zoom(xy * rot(time), aspect, zoom1)\n\t\t),\n\t\ttexture(background, uv2zoom(xy * rot(-time), aspect, zoom2)));\n\n\txy *= rot(-time);\n\n\tfloat r = 0.3;\n\tr += fft(abs(1000 * atan(xy.y, xy.x) / pi));\n\n\tfloat d = length(xy);\n\n\tfloat i = 1.0 - pow(clamp(10.0 * abs(d - r), 0, 1), 0.4);\n\n\tcolor.a = 1;\n\tcolor.rgb = i * hsv2rgb(vec3(\n\t\t1.0 * texture(src_fft_int, vec2(0.01, 0.5)).x,\n\t1.0, 1.0));\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 16,
+            "window-pos": [
+                653.0,
+                394.0
+            ],
+            "window-size": [
+                393.0,
+                277.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 7,
+            "size": [
+                1280.0,
+                720.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 17,
+            "window-pos": [
+                1221.0,
+                408.0
+            ],
+            "window-size": [
+                302.0,
+                126.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 2) in vec2 vUV;\nout vec2 uv;\nvoid main() {\n\tuv = vUV;\n    gl_Position = vec4(vPosition, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec2 uv;\n\nuniform sampler2D left, right;\nuniform float fleft, fright;\n\nvoid main() {\n\tcolor = fleft*texture(left, uv)+ \n\t\tfright*texture(right, uv);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 19,
+            "window-pos": [
+                2079.0,
+                343.0
+            ],
+            "window-size": [
+                455.0,
+                466.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "file": "/home/felix/Downloads/Bobbles.png",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
+            "window-id": 20,
+            "window-pos": [
+                124.0,
+                1165.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "window-title": "Image",
+            "window-type": "image"
+        },
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                1280.0,
+                720.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 32,
+            "window-pos": [
+                1844.0,
+                980.0
+            ],
+            "window-size": [
+                302.0,
+                198.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform float time;\n\nuniform sampler2D ffti_src;\nuniform sampler2D fft_src;\nfloat fft(float freq) {\n\treturn texture(fft_src, vec2(freq / 10000, 0.5)).x;\n}\nfloat ffti(float freq) {\n\treturn texture(ffti_src, vec2(freq / 10000, 0.5)).x;\n}\n \nfloat sdBox( vec3 p, vec3 b )\n{\n  vec3 d = abs(p) - b;\n  return min(max(d.x,max(d.y,d.z)),0.0) +\n         length(max(d,0.0));\n}\n\nmat2 rot(float a) {\n\treturn mat2(\n\t\tsin(a), -cos(a),\n\t\tcos(a), sin(a)\n\t);\n}\n\n\nvec3 hsv2rgb(vec3 c) {\n  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n}\n\n\nfloat scene(vec3 pos)\n{\n\tpos.z += 5. * sin(time);\n\tpos.xz *= rot(4.0 * ffti(500.));\n\t\n\tpos.zy *= rot(1. * time);\n\n\treturn sdBox(mod(pos, vec3(3.0)), (4 * fft(200.) + 1.0) * vec3(1,1,1));\n}\n\nvoid main() {\n\tvec2 xy = 2.0 * uv - 1.0;\n\txy.x *= 16. / 9.;\n\n\tcolor = vec4(0);\n\n\tvec3 dir = normalize(vec3(xy, 1.0));\n\tvec3 pos = vec3(0, 0, -0.1 * time);\n\n\tfor(int i = 0; i < 100; i++)\n\t{\n\t\tfloat d = scene(pos);\n\t\t\n\t\tif(d <= 0.01) {\n//\t\t\tcolor.rgb = ;\n\t\t\tcolor.rgb = vec3(0.5);\n\t\t\tcolor.a = 1;\n\t\t\tbreak;\n\t\t}\n\n\t\tpos += 0.9 * dir * d;\n\t}\n\n\tcolor.rgb = 1.0 - color.rgb;\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 33,
+            "window-pos": [
+                1230.0,
+                948.0
+            ],
+            "window-size": [
+                471.0,
+                501.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "window-id": 34,
+            "window-pos": [
+                1723.0,
+                286.0
+            ],
+            "window-size": [
+                78.0,
+                48.0
+            ],
+            "window-title": "IO Module",
+            "window-type": "iomodule-input"
+        }
+    ]
+}

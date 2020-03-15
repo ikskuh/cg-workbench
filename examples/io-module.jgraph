@@ -1,0 +1,205 @@
+{
+    "signals": [
+        {
+            "from": [
+                1,
+                "Analog 0"
+            ],
+            "to": [
+                2,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Analog 1"
+            ],
+            "to": [
+                3,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Analog 2"
+            ],
+            "to": [
+                4,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Analog 3"
+            ],
+            "to": [
+                5,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Analog 4"
+            ],
+            "to": [
+                6,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Analog 5"
+            ],
+            "to": [
+                7,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Analog 6"
+            ],
+            "to": [
+                8,
+                "Input"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Analog 7"
+            ],
+            "to": [
+                9,
+                "Input"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "window-id": 1,
+            "window-pos": [
+                10.0,
+                50.0
+            ],
+            "window-size": [
+                78.0,
+                48.0
+            ],
+            "window-title": "IO Module",
+            "window-type": "iomodule-input"
+        },
+        {
+            "window-id": 2,
+            "window-pos": [
+                273.0,
+                51.0
+            ],
+            "window-size": [
+                462.0,
+                94.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        },
+        {
+            "window-id": 3,
+            "window-pos": [
+                280.0,
+                160.0
+            ],
+            "window-size": [
+                452.0,
+                103.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        },
+        {
+            "window-id": 4,
+            "window-pos": [
+                274.0,
+                286.0
+            ],
+            "window-size": [
+                459.0,
+                95.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        },
+        {
+            "window-id": 5,
+            "window-pos": [
+                271.0,
+                402.0
+            ],
+            "window-size": [
+                464.0,
+                108.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        },
+        {
+            "window-id": 6,
+            "window-pos": [
+                817.0,
+                44.0
+            ],
+            "window-size": [
+                462.0,
+                94.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        },
+        {
+            "window-id": 7,
+            "window-pos": [
+                806.0,
+                170.0
+            ],
+            "window-size": [
+                462.0,
+                94.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        },
+        {
+            "window-id": 8,
+            "window-pos": [
+                801.0,
+                308.0
+            ],
+            "window-size": [
+                462.0,
+                94.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        },
+        {
+            "window-id": 9,
+            "window-pos": [
+                807.0,
+                419.0
+            ],
+            "window-size": [
+                462.0,
+                94.0
+            ],
+            "window-title": "Graph",
+            "window-type": "graph"
+        }
+    ]
+}
