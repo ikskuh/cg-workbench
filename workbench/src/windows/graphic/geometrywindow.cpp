@@ -156,8 +156,10 @@ void GeometryWindow::LoadObj(std::string const & fileName)
 
 	attrib_t attrib;
 	std::vector<shape_t> shapes;
+    std::vector<material_t> materials;
+    std::string error;
 
-	bool success = tinyobj::LoadObj(&attrib, &shapes, nullptr, nullptr, fileName.c_str());
+	bool success = tinyobj::LoadObj(&attrib, &shapes, &materials, &error, fileName.c_str());
 	if(!success)
 		return;
 

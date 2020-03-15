@@ -9,8 +9,11 @@ REGISTER_WINDOW_CLASS(MatrixScale, Menu::Transforms, "matrix-scale", "Scale");
 REGISTER_WINDOW_CLASS(MatrixLookAt, Menu::Transforms, "matrix-lookat", "Look At");
 REGISTER_WINDOW_CLASS(MatrixPerspective, Menu::Transforms, "matrix-perspective", "Perspective");
 
+static inline const glm::mat4 IDENTITY = glm::identity<glm::mat4>();
+
 MatrixTransforms::MatrixTransforms(std::string const & title) :
-    Window(title, ImGuiWindowFlags_AlwaysAutoResize)
+    Window(title, ImGuiWindowFlags_AlwaysAutoResize),
+    value(1)
 {
 	this->AddSource(new Source(CgDataType::UniformMat4, "Result", &this->value));
 }
@@ -48,7 +51,7 @@ MatrixTranslate::MatrixTranslate() :
 
 void MatrixTranslate::OnRender()
 {
-	this->value = MAT(input) * glm::translate(glm::mat4(), VEC(offset));
+	this->value = MAT(input) * glm::translate(IDENTITY, VEC(offset));
 }
 
 
@@ -62,7 +65,7 @@ MatrixRotate::MatrixRotate() :
 
 void MatrixRotate::OnRender()
 {
-	this->value = MAT(input) * glm::rotate(glm::mat4(), FLT(angle), VEC_DEF(axis, glm::vec3(0,1,0)));
+	this->value = MAT(input) * glm::rotate(IDENTITY, FLT(angle), VEC_DEF(axis, glm::vec3(0,1,0)));
 }
 
 
@@ -75,7 +78,7 @@ MatrixScale::MatrixScale() :
 
 void MatrixScale::OnRender()
 {
-	this->value = MAT(input) * glm::scale(glm::mat4(), VEC_DEF(scaling, glm::vec3(1,1,1)));
+	this->value = MAT(input) * glm::scale(IDENTITY, VEC_DEF(scaling, glm::vec3(1,1,1)));
 }
 
 MatrixLookAt::MatrixLookAt() :

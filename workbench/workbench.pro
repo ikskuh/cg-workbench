@@ -77,6 +77,7 @@ SOURCES += \
 	$$PWD/../ext/imgui/imgui_draw.cpp \
 	$$PWD/../ext/tinyobjloader/tiny_obj_loader.cpp \
   ../ext/imgui/imgui_widgets.cpp \
+  src/cgdatatype.cpp \
 	src/imgui_impl.cpp \
 	src/audiostream.cpp \
 	src/event.cpp \

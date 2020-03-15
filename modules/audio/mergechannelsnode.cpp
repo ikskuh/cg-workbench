@@ -15,7 +15,7 @@ MergeChannelsNode::MergeChannelsNode() :
 void MergeChannelsNode::OnRenderAudio()
 {
 	this->output.SetChannels(std::max(this->input->GetSourceCount(), 1));
-	for(int i = 0; i < this->output.GetLength(); i++)
+	for(unsigned int i = 0; i < this->output.GetLength(); i++)
 		for(int j = 0; j < this->input->GetSourceCount(); j++)
 			this->output.Sample(i, j) = this->input->GetObject<CgDataType::Audio>(j).Sample(i, 0);
 }

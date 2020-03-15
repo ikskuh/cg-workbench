@@ -13,22 +13,25 @@
 enum class CgDataType
 {
 	None = 0,
-	Texture2D,
-	Shader,
-	Geometry,
-	Audio,
-	Event, //! can be TRIGGERED!!!
-	RenderPass,
-	UniformFloat,
-	UniformVec2,
-	UniformVec3,
-	UniformVec4,
-	UniformMat3,
-	UniformMat4,
+	Texture2D = 1,
+	Shader = 2,
+	Geometry = 3,
+	Audio = 4,
+	Event = 5, //! can be TRIGGERED!!!
+	RenderPass = 6,
+	UniformFloat = 7,
+	UniformVec2 = 8,
+	UniformVec3 = 9,
+	UniformVec4 = 10,
+	UniformMat3 = 11,
+	UniformMat4 = 12,
 };
 
 template<CgDataType _Type>
 struct UniformType;
+
+template<CgDataType _Type>
+typename UniformType<_Type>::type GetDefaultValue();
 
 #define MAPTYPE(_CgType, _DataType, ...) \
 	template<> struct UniformType<CgDataType::_CgType> { \

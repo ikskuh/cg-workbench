@@ -41,7 +41,7 @@ public:
 	template<CgDataType _Type>
 	typename UniformType<_Type>::type const & GetObject(int index = 0) const
 	{
-		static typename UniformType<_Type>::type _default;
+		static typename UniformType<_Type>::type _default = GetDefaultValue<_Type>();
 		auto * src = this->GetSource(true, index);
 		if(src != nullptr)
 			return *static_cast<typename UniformType<_Type>::type const *>(src->GetObject());
