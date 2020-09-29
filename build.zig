@@ -64,6 +64,7 @@ const include_dirs = [_][]const u8{
     "./ext/kiss_fft",
     "./ext/kiss_fft/tools",
     "./ext/rtmidi",
+    "./ext/glm-0.9.9.8/",
 };
 
 const workbench_sources = [_][]const u8{
