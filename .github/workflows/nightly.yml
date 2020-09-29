@@ -32,9 +32,10 @@ jobs:
     - name: Upload artifact (Linux, GNU)
       uses: actions/upload-artifact@v2
       with:
-        name: cg-workbench_x86_64-linux-gnu
+        name: workbench-linux
         path: |
           zig-cache/bin/cg-workbench
+          icons/*
     
     # - name: Build Workbench (Win32)
     #   run: |
@@ -43,9 +44,11 @@ jobs:
     # - name: Upload artifact (Win32)
     #   uses: actions/upload-artifact@v2
     #   with:
-    #     name: cg-workbench_i386-windows-gnu
+    #     name: workbench-win32
     #     path: |
     #       zig-cache/bin/cg-workbench.exe
+    #       lib/SDL2-2.0.12.mingw/i686-w64-mingw32/bin/SDL2.dll
+    #       icons/*
     
     - name: Build Workbench (Win64)
       run: |
@@ -54,6 +57,8 @@ jobs:
     - name: Upload artifact (Win64)
       uses: actions/upload-artifact@v2
       with:
-        name: cg-workbench_x86_64-windows-gnu.exe
+        name: workbench-win64
         path: |
           zig-cache/bin/cg-workbench.exe
+          lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/bin/SDL2.dll
+          icons/*
