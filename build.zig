@@ -39,6 +39,10 @@ pub fn build(b: *std.build.Builder) !void {
         workbench.defineCMacro("NOMINMAX");
         workbench.defineCMacro("WIN32_LEAN_AND_MEAN");
         workbench.defineCMacro("CGPLAT_WINDOWS");
+        workbench.defineCMacro("WIN32");
+
+        // Remove warnings for using non-portable libc functions
+        workbench.defineCMacro("_CRT_SECURE_NO_WARNINGS");
 
         workbench.linkSystemLibrary("OpenGL32");
         workbench.linkSystemLibrary("ole32");
