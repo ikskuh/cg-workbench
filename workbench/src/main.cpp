@@ -36,7 +36,8 @@ void load(std::string const &fileName);
 extern int currentWindowID;
 
 #ifdef WIN32
-char const * strcasestr(const char *haystack, const char *needle)
+// TODO: https://github.com/MasterQ32/cg-workbench/issues/2
+char const *strcasestr(const char *haystack, const char *needle)
 {
 	return strstr(haystack, needle);
 }

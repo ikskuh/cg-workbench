@@ -9,7 +9,7 @@ on:
     - cron: '0 5 * * *' # run at 5 AM UTC
 
 jobs:
-  build:
+  linux-64:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,18 +37,21 @@ jobs:
           zig-cache/bin/cg-workbench
           icons/*
     
-    # - name: Build Workbench (Win32)
-    #   run: |
-    #     zig build -Dtarget=i386-windows-gnu
-    # 
-    # - name: Upload artifact (Win32)
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: workbench-win32
-    #     path: |
-    #       zig-cache/bin/cg-workbench.exe
-    #       lib/SDL2-2.0.12.mingw/i686-w64-mingw32/bin/SDL2.dll
-    #       icons/*
+  win64-64:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    
+    - name: Install dependencies
+      run: sudo apt-get install mesa-common-dev libsdl2-dev liblua5.3-dev libgtk-3-dev
+
+    - name: Setup Zig
+      uses: goto-bus-stop/setup-zig@v1.2.3
+      with:
+        version: master
     
     - name: Build Workbench (Win64)
       run: |
@@ -61,4 +64,33 @@ jobs:
         path: |
           zig-cache/bin/cg-workbench.exe
           lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/bin/SDL2.dll
+          icons/*
+
+  win-32:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    
+    - name: Install dependencies
+      run: sudo apt-get install mesa-common-dev libsdl2-dev liblua5.3-dev libgtk-3-dev
+
+    - name: Setup Zig
+      uses: goto-bus-stop/setup-zig@v1.2.3
+      with:
+        version: master
+    
+    - name: Build Workbench (Win32)
+      run: |
+        zig build -Dtarget=i386-windows-gnu
+    
+    - name: Upload artifact (Win32)
+      uses: actions/upload-artifact@v2
+      with:
+        name: workbench-win32
+        path: |
+          zig-cache/bin/cg-workbench.exe
+          lib/SDL2-2.0.12.mingw/i686-w64-mingw32/bin/SDL2.dll
           icons/*
