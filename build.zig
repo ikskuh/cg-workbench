@@ -57,7 +57,7 @@ pub fn build(b: *std.build.Builder) !void {
         workbench.linkSystemLibrary("shlwapi");
         workbench.linkSystemLibrary("user32");
 
-        if (target.getCpuArch() == .i386) {https://github.com/MasterQ32/cg-workbench/issues/4
+        if (target.getCpuArch() == .i386) {
             // https://github.com/MasterQ32/cg-workbench/issues/1
             workbench.defineCMacro("IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCTIONS");
         }
@@ -84,7 +84,7 @@ pub fn build(b: *std.build.Builder) !void {
 
             // TODO: https://github.com/MasterQ32/cg-workbench/issues/4
             workbench.linkSystemLibraryName("SDL2.dll");
-            workbench.linkSystemLibraryName("SDL2main");
+            workbench.3("SDL2main");
         }
     } else {
         workbench.defineCMacro("CGPLAT_LINUX");
