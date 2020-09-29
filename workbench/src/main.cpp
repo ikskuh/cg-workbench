@@ -35,6 +35,13 @@ void load(std::string const &fileName);
 
 extern int currentWindowID;
 
+#ifdef WIN32
+char *strcasestr(const char *haystack, const char *needle)
+{
+	return strstr(haystack, needle);
+}
+#endif
+
 static Window *ClassMenu(WindowCategory const *root)
 {
 	Window *result = nullptr;
@@ -854,7 +861,8 @@ static void load_plugins()
 			continue;
 
 #ifdef WIN32
-#error "Plugins not supported right now."
+		// #error "Plugins not supported right now."
+		printf("Plugins are not implemented on windows yet!\n");
 #else
 		void *plugin = dlopen(file.path, RTLD_NOW | RTLD_GLOBAL | RTLD_NODELETE);
 		if (plugin == nullptr)
