@@ -16,6 +16,11 @@ pub fn build(b: *std.build.Builder) !void {
         workbench.defineCMacro("NOMINMAX");
         workbench.defineCMacro("WIN32_LEAN_AND_MEAN");
         workbench.defineCMacro("CGPLAT_WINDOWS");
+
+        workbench.linkSystemLibrary("OpenGL32");
+        workbench.linkSystemLibrary("ole32");
+        workbench.linkSystemLibrary("Shell32");
+        workbench.linkSystemLibrary("Shlwapi");
     } else {
         workbench.addLibPath("./ext/nativefiledialog/src/");
         workbench.linkSystemLibrary("nfd");
@@ -95,7 +100,6 @@ const workbench_sources = [_][]const u8{
     "./workbench/src/windows/event/trackernode.cpp",
     "./workbench/src/windows/event/trigger.cpp",
     "./workbench/src/windows/graphic/shadereditor.cpp",
-    "./workbench/src/windows/generic/luaconsole.cpp",
     "./workbench/src/windows/graphic/gpuerrorlog.cpp",
     "./workbench/src/windows/generic/linearnoisenode.cpp",
     "./workbench/src/windows/generic/notewindow.cpp",

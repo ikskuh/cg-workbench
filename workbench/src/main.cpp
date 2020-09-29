@@ -12,7 +12,6 @@
 #include "fileio.hpp"
 #include "time.hpp"
 
-#include "windows/generic/luaconsole.hpp"
 #include "windows/graphic/gpuerrorlog.hpp"
 
 #include "windows/graphic/geometrywindow.hpp"
@@ -509,8 +508,6 @@ int main(int argc, char **argv)
 					}
 					if (ImGui::BeginMenu("Extras"))
 					{
-						if (ImGui::MenuItem("Lua Console"))
-							Window::Register(new LuaConsole());
 						if (ImGui::MenuItem("OpenGL Log"))
 							Window::Register(new GpuErrorLog());
 						ImGui::Separator();

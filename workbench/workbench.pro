@@ -98,7 +98,6 @@ SOURCES += \
   src/windows/event/trackernode.cpp \
 	src/windows/event/trigger.cpp \
     src/windows/graphic/shadereditor.cpp \
-    src/windows/generic/luaconsole.cpp \
     src/windows/graphic/gpuerrorlog.cpp \
     src/windows/generic/linearnoisenode.cpp \
     src/windows/generic/notewindow.cpp \
@@ -156,7 +155,6 @@ HEADERS += \
   src/windows/event/trackernode.hpp \
 	src/windows/event/trigger.hpp \
     src/windows/graphic/shadereditor.hpp \
-    src/windows/generic/luaconsole.hpp \
     src/windows/graphic/gpuerrorlog.hpp \
     src/windows/generic/linearnoisenode.hpp \
     src/windows/generic/notewindow.hpp \
