@@ -36,7 +36,7 @@ void load(std::string const &fileName);
 extern int currentWindowID;
 
 #ifdef WIN32
-char *strcasestr(const char *haystack, const char *needle)
+char const * strcasestr(const char *haystack, const char *needle)
 {
 	return strstr(haystack, needle);
 }
