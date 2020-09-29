@@ -15,6 +15,7 @@
 #define _WIN32_WINNT _WIN32_WINNT_VISTA
 #endif
 
+#include <initguid.h>
 #include <wchar.h>
 #include <stdio.h>
 #include <assert.h>

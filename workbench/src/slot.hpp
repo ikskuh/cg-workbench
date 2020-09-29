@@ -5,7 +5,7 @@
 
 // Required for "compatibility" with function names.
 #ifdef WIN32
-#include <Windows.h>
+#include <windows.h>
 #endif
 
 class Window;
@@ -13,15 +13,18 @@ class Window;
 class Slot
 {
 	friend class Window;
+
 private:
 	CgDataType type;
 	std::string name;
-	Window * window;
+	Window *window;
 	int index;
+
 protected:
-	Slot(CgDataType type, std::string const & name);
+	Slot(CgDataType type, std::string const &name);
 	Slot(Slot const &) = delete;
 	Slot(Slot &&) = delete;
+
 public:
 	virtual ~Slot();
 
@@ -29,7 +32,7 @@ public:
 
 	std::string GetName() const { return this->name; }
 
-	Window * GetWindow() const { return this->window; }
+	Window *GetWindow() const { return this->window; }
 
 	int GetWindowIndex() const { return this->index; }
 };

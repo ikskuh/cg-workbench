@@ -6,8 +6,8 @@
 #include <string.h>
 
 #ifdef WIN32
-#include <Windows.h>
-#include "Shlwapi.h"
+#include <windows.h>
+#include "shlwapi.h"
 #else
 #include <unistd.h>
 #include <libgen.h>
@@ -15,22 +15,22 @@
 
 namespace FileIO
 {
-    std::string GetWorkingDirectory()
-    {
-#ifdef WIN32
-        static char cwd[MAX_PATH];
-        ::GetCurrentDirectoryA(sizeof(cwd), cwd);
-        return std::string(cwd);
-#else
-        static char cwd[PATH_MAX];
-        return std::string(getcwd(cwd, sizeof(cwd)));
-#endif
-    }
-
-    void SetWorkingDirectory(std::string const & text)
+	std::string GetWorkingDirectory()
 	{
 #ifdef WIN32
-        ::SetCurrentDirectory(text.c_str());
+		static char cwd[MAX_PATH];
+		::GetCurrentDirectoryA(sizeof(cwd), cwd);
+		return std::string(cwd);
+#else
+		static char cwd[PATH_MAX];
+		return std::string(getcwd(cwd, sizeof(cwd)));
+#endif
+	}
+
+	void SetWorkingDirectory(std::string const &text)
+	{
+#ifdef WIN32
+		::SetCurrentDirectory(text.c_str());
 #else
 		chdir(text.c_str());
 #endif
@@ -52,45 +52,45 @@ namespace FileIO
 #endif
 	}
 
-	std::string OpenDialog(char const * filter)
+	std::string OpenDialog(char const *filter)
 	{
 		nfdchar_t *outPath = NULL;
-        nfdresult_t result = NFD_OpenDialog(filter, FileIO::GetWorkingDirectory().c_str(), &outPath );
-		if ( result == NFD_OKAY )
+		nfdresult_t result = NFD_OpenDialog(filter, FileIO::GetWorkingDirectory().c_str(), &outPath);
+		if (result == NFD_OKAY)
 		{
- 			std::string path(outPath);
+			std::string path(outPath);
 			free(outPath);
 			return path;
 		}
-		else if ( result == NFD_CANCEL )
+		else if (result == NFD_CANCEL)
 			; // Silently ignore cancel
 		else
 		{
-			printf("Error: %s\n", NFD_GetError() );
+			printf("Error: %s\n", NFD_GetError());
 		}
 		return "";
 	}
 
-	std::string SaveDialog(char const * filter)
+	std::string SaveDialog(char const *filter)
 	{
 		nfdchar_t *outPath = NULL;
-        nfdresult_t result = NFD_SaveDialog(filter, FileIO::GetWorkingDirectory().c_str(), &outPath );
-		if ( result == NFD_OKAY )
+		nfdresult_t result = NFD_SaveDialog(filter, FileIO::GetWorkingDirectory().c_str(), &outPath);
+		if (result == NFD_OKAY)
 		{
- 			std::string path(outPath);
+			std::string path(outPath);
 			free(outPath);
 			return path;
 		}
-		else if ( result == NFD_CANCEL )
+		else if (result == NFD_CANCEL)
 			; // Silently ignore cancel
 		else
 		{
-			printf("Error: %s\n", NFD_GetError() );
+			printf("Error: %s\n", NFD_GetError());
 		}
 		return "";
 	}
 
-	std::string RemoveLastPathComponent(std::string const & text)
+	std::string RemoveLastPathComponent(std::string const &text)
 	{
 #ifdef WIN32
 		TCHAR path[MAX_PATH];
@@ -103,4 +103,4 @@ namespace FileIO
 		return std::string(dirname(path));
 #endif
 	}
-}
+} // namespace FileIO
