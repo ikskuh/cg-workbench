@@ -4,11 +4,11 @@
 
 namespace resources
 {
-	void load(std::string const & root)
+	void load(std::string const &root)
 	{
-	#define ICON(_name, file) \
-		icons::_name = load_texture(root + "/icons/" file, GL_CLAMP_TO_BORDER); \
-		assert(icons::_name != 0)
+#define ICON(_name, file)                                                 \
+	icons::_name = load_texture(root + "/icons/" file, GL_CLAMP_TO_BORDER); \
+	assert(icons::_name != 0)
 		ICON(geometry, "geometry.png");
 		ICON(shader, "shader.png");
 		ICON(image, "image.png");
@@ -22,7 +22,7 @@ namespace resources
 		ICON(audio, "audio.png");
 		ICON(event_source, "event_source.png");
 		ICON(event_listener, "event_listener.png");
-        ICON(render_pass, "render_pass.png");
+		ICON(render_pass, "render_pass.png");
 	}
 
 	namespace icons
@@ -31,8 +31,8 @@ namespace resources
 		GLuint shader;
 		GLuint image;
 		GLuint audio;
-        GLuint render_pass;
-        GLuint event_source;
+		GLuint render_pass;
+		GLuint event_source;
 		GLuint event_listener;
 		GLuint genericSink;
 		GLuint genericSource;
@@ -41,5 +41,5 @@ namespace resources
 		GLuint vector2;
 		GLuint vector3;
 		GLuint vector4;
-	}
-}
+	} // namespace icons
+} // namespace resources

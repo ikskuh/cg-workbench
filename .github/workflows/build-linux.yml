@@ -28,3 +28,10 @@ jobs:
     - name: Build Workbench
       run: |
         zig build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: cg-workbench_x86_64-linux-gnu
+        path: |
+          zig-cache/bin/cg-workbench
