@@ -57,7 +57,7 @@ pub fn build(b: *std.build.Builder) !void {
         workbench.linkSystemLibrary("shlwapi");
         workbench.linkSystemLibrary("user32");
 
-        if (target.getCpuArch() == .i386) {
+        if (target.getCpuArch() == .i386) {https://github.com/MasterQ32/cg-workbench/issues/4
             // https://github.com/MasterQ32/cg-workbench/issues/1
             workbench.defineCMacro("IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCTIONS");
         }
@@ -82,6 +82,7 @@ pub fn build(b: *std.build.Builder) !void {
                 workbench.addLibPath("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/lib");
             }
 
+            // TODO: https://github.com/MasterQ32/cg-workbench/issues/4
             workbench.linkSystemLibraryName("SDL2.dll");
             workbench.linkSystemLibraryName("SDL2main");
         }

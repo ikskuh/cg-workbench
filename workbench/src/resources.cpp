@@ -6,6 +6,7 @@ namespace resources
 {
 	void load(std::string const &root)
 	{
+		// TODO: https://github.com/MasterQ32/cg-workbench/issues/3
 #define ICON(_name, file)                                                 \
 	icons::_name = load_texture(root + "/icons/" file, GL_CLAMP_TO_BORDER); \
 	assert(icons::_name != 0)
