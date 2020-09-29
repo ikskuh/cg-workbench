@@ -1,11 +1,34 @@
 const std = @import("std");
 
+const cpp_options = &[_][]const u8{
+    "-std=c++17",
+    "-fno-sanitize=undefined",
+};
+const c_options = &[_][]const u8{
+    "-fno-sanitize=undefined",
+};
+
 pub fn build(b: *std.build.Builder) !void {
     const target = b.standardTargetOptions(.{});
+
+    const nfd = b.addStaticLibrary("nfd", null);
+    nfd.linkLibC();
+    nfd.setTarget(target);
+    nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_common.c", c_options);
+    nfd.addIncludeDir("./ext/nativefiledialog/src/include");
+    nfd.linkSystemLibrary("gtk+-3.0");
+    switch (target.getOsTag()) {
+        .linux => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_gtk.c", c_options),
+        .windows => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_win.c", c_options),
+        .macosx => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_cocoa.m", c_options),
+        else => return error.UnsupportedOS,
+    }
 
     const workbench = b.addExecutable("cg-workbench", null);
     workbench.linkLibC();
     workbench.linkSystemLibrary("c++");
+
+    workbench.linkLibrary(nfd);
 
     workbench.defineCMacro("GLM_ENABLE_EXPERIMENTAL");
     workbench.defineCMacro("DEBUG_BUILD");
@@ -22,26 +45,16 @@ pub fn build(b: *std.build.Builder) !void {
         workbench.linkSystemLibrary("Shell32");
         workbench.linkSystemLibrary("Shlwapi");
     } else {
-        workbench.addLibPath("./ext/nativefiledialog/src/");
-        workbench.linkSystemLibrary("nfd");
-
         workbench.linkSystemLibrary("m");
         workbench.linkSystemLibrary("dl");
-        workbench.linkSystemLibrary("lua");
         workbench.linkSystemLibrary("gl");
         workbench.linkSystemLibrary("sdl2");
         workbench.linkSystemLibrary("gtk+-3.0");
 
+        // workbench.linkSystemLibrary("lua");
+
         workbench.defineCMacro("CGPLAT_LINUX");
     }
-
-    const cpp_options = &[_][]const u8{
-        "-std=c++17",
-        "-fno-sanitize=undefined",
-    };
-    const c_options = &[_][]const u8{
-        "-fno-sanitize=undefined",
-    };
 
     for (workbench_sources) |src| {
         workbench.addCSourceFile(
