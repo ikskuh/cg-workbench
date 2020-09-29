@@ -84,7 +84,7 @@ pub fn build(b: *std.build.Builder) !void {
 
             // TODO: https://github.com/MasterQ32/cg-workbench/issues/4
             workbench.linkSystemLibraryName("SDL2.dll");
-            workbench.3("SDL2main");
+            workbench.linkSystemLibraryNa3me("SDL2main");
         }
     } else {
         workbench.defineCMacro("CGPLAT_LINUX");
