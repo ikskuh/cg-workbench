@@ -42,15 +42,6 @@ Create a folder `lib` with the following contents and the corresponding librarie
 
 ```
 cg-workbench/lib
-├───glm
-│   ├───glm
-│   │   ├───detail
-│   │   ├───gtc
-│   │   ├───gtx
-│   │   └───simd
-├───lua-5.3.4
-│   └───include
-├───nfd
 └───SDL2-2.0.7
     ├───include
     └───lib

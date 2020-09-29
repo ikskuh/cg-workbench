@@ -19,7 +19,7 @@ pub fn build(b: *std.build.Builder) !void {
     nfd.linkSystemLibrary("gtk+-3.0");
     switch (target.getOsTag()) {
         .linux => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_gtk.c", c_options),
-        .windows => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_win.c", c_options),
+        .windows => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_win.cpp", c_options),
         .macosx => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_cocoa.m", c_options),
         else => return error.UnsupportedOS,
     }
@@ -44,16 +44,23 @@ pub fn build(b: *std.build.Builder) !void {
         workbench.linkSystemLibrary("ole32");
         workbench.linkSystemLibrary("Shell32");
         workbench.linkSystemLibrary("Shlwapi");
+
+        workbench.addIncludeDir("lib/SDL2-2.0.12/include");
+        if (target.getCpuArch() == .i386) {
+            workbench.addLibPath("lib/SDL2-2.0.12/lib/x86");
+        } else {
+            workbench.addLibPath("lib/SDL2-2.0.12/lib/x64");
+        }
+        workbench.linkSystemLibrary("SDL2");
+        workbench.linkSystemLibrary("SDL2main");
     } else {
+        workbench.defineCMacro("CGPLAT_LINUX");
+
         workbench.linkSystemLibrary("m");
         workbench.linkSystemLibrary("dl");
         workbench.linkSystemLibrary("gl");
         workbench.linkSystemLibrary("sdl2");
         workbench.linkSystemLibrary("gtk+-3.0");
-
-        // workbench.linkSystemLibrary("lua");
-
-        workbench.defineCMacro("CGPLAT_LINUX");
     }
 
     for (workbench_sources) |src| {
