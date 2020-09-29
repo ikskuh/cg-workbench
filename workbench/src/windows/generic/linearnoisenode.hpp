@@ -10,13 +10,15 @@ private:
 	float freq;
 	float time;
 	float value;
+
 protected:
 	void OnRender() override;
 	void OnUpdate() override;
+
 public:
 	LinearNoiseNode();
 
-	nlohmann::json Serialize() const;
+	nlohmann::json Serialize() const override;
 
 	void Deserialize(const nlohmann::json &value) override;
 };

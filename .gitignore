@@ -1,4 +1,6 @@
 *.pro.user
 imgui.ini
 examples/*.ppm
-lib/*
+lib/
+*zig-cache/
+.vscode/

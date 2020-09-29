@@ -1,0 +1,1332 @@
+{
+    "signals": [
+        {
+            "from": [
+                3,
+                "Shape"
+            ],
+            "to": [
+                1,
+                "Geometry"
+            ]
+        },
+        {
+            "from": [
+                2,
+                "Shader"
+            ],
+            "to": [
+                1,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Result"
+            ],
+            "to": [
+                1,
+                "Transform"
+            ]
+        },
+        {
+            "from": [
+                5,
+                "Result"
+            ],
+            "to": [
+                6,
+                "Src"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "Value"
+            ],
+            "to": [
+                6,
+                "Eye"
+            ]
+        },
+        {
+            "from": [
+                10,
+                "Value"
+            ],
+            "to": [
+                6,
+                "Center"
+            ]
+        },
+        {
+            "from": [
+                6,
+                "Result"
+            ],
+            "to": [
+                8,
+                "Src"
+            ]
+        },
+        {
+            "from": [
+                9,
+                "Total"
+            ],
+            "to": [
+                8,
+                "Angle"
+            ]
+        },
+        {
+            "from": [
+                11,
+                "Texture"
+            ],
+            "to": [
+                12,
+                "tex"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Shape"
+            ],
+            "to": [
+                13,
+                "Geometry"
+            ]
+        },
+        {
+            "from": [
+                12,
+                "Shader"
+            ],
+            "to": [
+                13,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Result"
+            ],
+            "to": [
+                13,
+                "Transform"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Image 0"
+            ],
+            "to": [
+                14,
+                "texUV"
+            ]
+        },
+        {
+            "from": [
+                11,
+                "Texture"
+            ],
+            "to": [
+                14,
+                "texColor"
+            ]
+        },
+        {
+            "from": [
+                14,
+                "Shader"
+            ],
+            "to": [
+                15,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                17,
+                "Shader"
+            ],
+            "to": [
+                16,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                13,
+                "Image 0"
+            ],
+            "to": [
+                17,
+                "texA"
+            ]
+        },
+        {
+            "from": [
+                15,
+                "Image 0"
+            ],
+            "to": [
+                17,
+                "texB"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Shape"
+            ],
+            "to": [
+                18,
+                "Geometry"
+            ]
+        },
+        {
+            "from": [
+                12,
+                "Shader"
+            ],
+            "to": [
+                18,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Result"
+            ],
+            "to": [
+                18,
+                "Transform"
+            ]
+        },
+        {
+            "from": [
+                18,
+                "Image 0"
+            ],
+            "to": [
+                19,
+                "texSrc"
+            ]
+        },
+        {
+            "from": [
+                19,
+                "Shader"
+            ],
+            "to": [
+                20,
+                "Shader"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                32.0,
+                32.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9728,
+                        "min-filt": 9728,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 1,
+            "window-pos": [
+                934.0,
+                28.0
+            ],
+            "window-size": [
+                302.0,
+                310.0
+            ],
+            "window-title": "UV Render (32²)",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n    // gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nvoid main() {\n\tcolor = vec4(uv,0,1);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 2,
+            "window-pos": [
+                501.0,
+                309.0
+            ],
+            "window-size": [
+                245.0,
+                158.0
+            ],
+            "window-title": "UV Shader",
+            "window-type": "shader"
+        },
+        {
+            "file": "/home/felix/Downloads/chickenV2.obj",
+            "window-id": 3,
+            "window-pos": [
+                512.0,
+                48.0
+            ],
+            "window-size": [
+                223.0,
+                135.0
+            ],
+            "window-title": "Geometry",
+            "window-type": "geometry"
+        },
+        {
+            "window-id": 5,
+            "window-pos": [
+                81.0,
+                46.0
+            ],
+            "window-size": [
+                141.0,
+                48.0
+            ],
+            "window-title": "Matrix Perspective",
+            "window-type": "matrix-perspective"
+        },
+        {
+            "window-id": 6,
+            "window-pos": [
+                312.0,
+                128.0
+            ],
+            "window-size": [
+                106.0,
+                48.0
+            ],
+            "window-title": "Matrix LookAt",
+            "window-type": "matrix-lookat"
+        },
+        {
+            "type": "uniform-vec3",
+            "value": [
+                0.0,
+                10.3299999237061,
+                -13.6000003814697
+            ],
+            "window-id": 7,
+            "window-pos": [
+                10.0,
+                354.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Eye",
+            "window-type": "uniform-vec3"
+        },
+        {
+            "window-id": 8,
+            "window-pos": [
+                519.0,
+                214.0
+            ],
+            "window-size": [
+                106.0,
+                48.0
+            ],
+            "window-title": "Matrix Rotate",
+            "window-type": "matrix-rotate"
+        },
+        {
+            "current": 1132.623046875,
+            "speed": 1.0,
+            "window-id": 9,
+            "window-pos": [
+                26.0,
+                428.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ],
+            "window-title": "Rotation",
+            "window-type": "timer"
+        },
+        {
+            "type": "uniform-vec3",
+            "value": [
+                0.0,
+                5.94999980926514,
+                0.0
+            ],
+            "window-id": 10,
+            "window-pos": [
+                8.0,
+                279.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Center",
+            "window-type": "uniform-vec3"
+        },
+        {
+            "file": "/home/felix/Downloads/textures/UV-Texture.png",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 10497,
+                "wrap-s": 10497,
+                "wrap-t": 10497
+            },
+            "window-id": 11,
+            "window-pos": [
+                30.0,
+                554.0
+            ],
+            "window-size": [
+                297.0,
+                425.0
+            ],
+            "window-title": "Source Texture",
+            "window-type": "image"
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\nuniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\tgl_Position = transform * vec4(position, 1.0);\n    // gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D tex;\n\nvoid main() {\n\tcolor = texture(tex, uv);\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 12,
+            "window-pos": [
+                487.0,
+                498.0
+            ],
+            "window-size": [
+                277.0,
+                175.0
+            ],
+            "window-title": "Flat Texture",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                32.0,
+                32.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9728,
+                        "min-filt": 9728,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 13,
+            "window-pos": [
+                934.0,
+                338.0
+            ],
+            "window-size": [
+                302.0,
+                310.0
+            ],
+            "window-title": "Ground Truth (32px)",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D texUV;\nuniform sampler2D texColor;\n\nvoid main() {\n\tvec4 info = texture(texUV, uv);\n\tcolor = mix(\n\t\tvec4(0,0,0,1),\n\t\ttexture(texColor, info.xy),\n\t\tinfo.a);\n\tcolor.a = 1;\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 14,
+            "window-pos": [
+                937.0,
+                655.0
+            ],
+            "window-size": [
+                325.0,
+                200.0
+            ],
+            "window-title": "UV -> Texture",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                32.0,
+                32.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9728,
+                        "min-filt": 9728,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 15,
+            "window-pos": [
+                1444.0,
+                448.0
+            ],
+            "window-size": [
+                302.0,
+                310.0
+            ],
+            "window-title": "UV Restoration (32²)",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                128.0,
+                128.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9728,
+                        "min-filt": 9728,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 16,
+            "window-pos": [
+                1488.0,
+                26.0
+            ],
+            "window-size": [
+                302.0,
+                310.0
+            ],
+            "window-title": "Difference (Ground Truth, UV Mapped)",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D texA, texB;\n\nvoid main() {\n\tcolor = abs(texture(texA, uv) - texture(texB, uv));\n\tcolor.a = 1.0;\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 17,
+            "window-pos": [
+                1359.0,
+                305.0
+            ],
+            "window-size": [
+                455.0,
+                158.0
+            ],
+            "window-title": "Diff Shader",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                128.0,
+                128.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9728,
+                        "min-filt": 9728,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 18,
+            "window-pos": [
+                468.0,
+                709.0
+            ],
+            "window-size": [
+                302.0,
+                310.0
+            ],
+            "window-title": "Ground Truth (128²)",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform sampler2D texSrc;\n\nvoid main() {\n\tcolor = vec4(0);\n\tfor(int x = 0; x < 4; x++) {\n\t\tfor(int y = 0; y < 4; y++) {\n\t\t\tvec2 o = vec2(x,y) / 128.0;\n\t\t\tcolor += texture(texSrc, uv + o);\n\t\t}\n\t}\n\tcolor /= 16.0;\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 19,
+            "window-pos": [
+                907.0,
+                857.0
+            ],
+            "window-size": [
+                373.0,
+                190.0
+            ],
+            "window-title": "Super Sampler",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 8,
+            "size": [
+                32.0,
+                32.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9728,
+                        "min-filt": 9728,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 20,
+            "window-pos": [
+                1480.0,
+                741.0
+            ],
+            "window-size": [
+                302.0,
+                310.0
+            ],
+            "window-title": "SSAA Rendering (32²)",
+            "window-type": "renderer",
+            "wireframe": false
+        }
+    ]
+}

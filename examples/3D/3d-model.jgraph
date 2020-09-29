@@ -460,7 +460,7 @@
             "window-type": "matrix-rotate"
         },
         {
-            "current": 7758.78173828125,
+            "current": 8906.375,
             "speed": 3.58999991416931,
             "window-id": 11,
             "window-pos": [
@@ -585,7 +585,7 @@
             "window-type": "geometry"
         },
         {
-            "priority": 0,
+            "priority": -2,
             "window-id": 20,
             "window-pos": [
                 1942.0,

@@ -18,29 +18,29 @@ static std::vector<std::unique_ptr<Window>> windows;
 int currentWindowID = 0;
 
 std::vector<std::unique_ptr<Window>>::iterator Window::Begin() { return windows.begin(); }
-std::vector<std::unique_ptr<Window>>::iterator Window::End()   { return windows.end(); }
+std::vector<std::unique_ptr<Window>>::iterator Window::End() { return windows.end(); }
 
 static std::vector<std::unique_ptr<Window>> new_windows;
 
-void Window::Register(Window * window)
+void Window::Register(Window *window)
 {
 	assert(window != nullptr);
 
-    std::lock_guard lock { windows_lock };
+	std::lock_guard<std::mutex> lock{windows_lock};
 
 	// Use the second vector to provide a safe method to duplicate windows:
 	// Don't change a vector when iterating it!
 	new_windows.emplace_back(window);
 }
 
-void Window::Unregister(Window * window)
+void Window::Unregister(Window *window)
 {
-    std::lock_guard lock { windows_lock };
+	std::lock_guard<std::mutex> lock{windows_lock};
 
-	auto pos = std::remove_if(windows.begin(), windows.end(), [window](std::unique_ptr<Window> const & p) {
+	auto pos = std::remove_if(windows.begin(), windows.end(), [window](std::unique_ptr<Window> const &p) {
 		return p.get() == window;
 	});
-	for(auto i = pos; i != windows.end(); i++)
+	for (auto i = pos; i != windows.end(); i++)
 		i->release();
 	windows.erase(pos, windows.end());
 }
@@ -48,21 +48,21 @@ void Window::Unregister(Window * window)
 void Window::UpdateAll(bool compile)
 {
 	// HACK: Required for allowing window creation while iteration
-	for(auto & win : new_windows)
+	for (auto &win : new_windows)
 	{
-		Window * window = win.release();
-		auto pos = std::find_if(windows.begin(), windows.end(), [window](std::unique_ptr<Window> const & p) {
+		Window *window = win.release();
+		auto pos = std::find_if(windows.begin(), windows.end(), [window](std::unique_ptr<Window> const &p) {
 			return (p.get() == window);
 		});
-		if(pos == windows.end())
+		if (pos == windows.end())
 			windows.emplace_back(window);
 	}
 	new_windows.clear();
 
-	for(auto const & win : windows)
+	for (auto const &win : windows)
 		win->Update(compile);
 
-	auto pos = std::remove_if(windows.begin(), windows.end(), [](std::unique_ptr<Window> const & win) {
+	auto pos = std::remove_if(windows.begin(), windows.end(), [](std::unique_ptr<Window> const &win) {
 		return !win->isOpen;
 	});
 	windows.erase(pos, windows.end());
@@ -70,50 +70,61 @@ void Window::UpdateAll(bool compile)
 
 static ImTextureID GetSocketIcon(CgDataType type, bool isSource)
 {
-	switch(type)
+	switch (type)
 	{
-		case CgDataType::Geometry: return (ImTextureID)uintptr_t(resources::icons::geometry);
-		case CgDataType::Shader: return (ImTextureID)uintptr_t(resources::icons::shader);
-		case CgDataType::Texture2D: return (ImTextureID)uintptr_t(resources::icons::image);
-		case CgDataType::Audio: return (ImTextureID)uintptr_t(resources::icons::audio);
-        case CgDataType::RenderPass: return (ImTextureID)uintptr_t(resources::icons::render_pass);
-		case CgDataType::Event:
-			if(isSource)
-				return (ImTextureID)uintptr_t(resources::icons::event_source);
-			else
-				return (ImTextureID)uintptr_t(resources::icons::event_listener);
-		case CgDataType::UniformFloat: return (ImTextureID)uintptr_t(resources::icons::scalar);
-		case CgDataType::UniformVec2: return (ImTextureID)uintptr_t(resources::icons::vector2);
-		case CgDataType::UniformVec3: return (ImTextureID)uintptr_t(resources::icons::vector3);
-		case CgDataType::UniformVec4: return (ImTextureID)uintptr_t(resources::icons::vector4);
-		case CgDataType::UniformMat3: return (ImTextureID)uintptr_t(resources::icons::matrix);
-		case CgDataType::UniformMat4: return (ImTextureID)uintptr_t(resources::icons::matrix);
-		default:
-			if(isSource)
-				return (ImTextureID)uintptr_t(resources::icons::genericSource);
-			else
-				return (ImTextureID)uintptr_t(resources::icons::genericSink);
+	case CgDataType::Geometry:
+		return (ImTextureID)uintptr_t(resources::icons::geometry);
+	case CgDataType::Shader:
+		return (ImTextureID)uintptr_t(resources::icons::shader);
+	case CgDataType::Texture2D:
+		return (ImTextureID)uintptr_t(resources::icons::image);
+	case CgDataType::Audio:
+		return (ImTextureID)uintptr_t(resources::icons::audio);
+	case CgDataType::RenderPass:
+		return (ImTextureID)uintptr_t(resources::icons::render_pass);
+	case CgDataType::Event:
+		if (isSource)
+			return (ImTextureID)uintptr_t(resources::icons::event_source);
+		else
+			return (ImTextureID)uintptr_t(resources::icons::event_listener);
+	case CgDataType::UniformFloat:
+		return (ImTextureID)uintptr_t(resources::icons::scalar);
+	case CgDataType::UniformVec2:
+		return (ImTextureID)uintptr_t(resources::icons::vector2);
+	case CgDataType::UniformVec3:
+		return (ImTextureID)uintptr_t(resources::icons::vector3);
+	case CgDataType::UniformVec4:
+		return (ImTextureID)uintptr_t(resources::icons::vector4);
+	case CgDataType::UniformMat3:
+		return (ImTextureID)uintptr_t(resources::icons::matrix);
+	case CgDataType::UniformMat4:
+		return (ImTextureID)uintptr_t(resources::icons::matrix);
+	default:
+		if (isSource)
+			return (ImTextureID)uintptr_t(resources::icons::genericSource);
+		else
+			return (ImTextureID)uintptr_t(resources::icons::genericSink);
 	}
 }
 
-extern ImFont * labelFont;
+extern ImFont *labelFont;
 
 void Window::UpdateNodes()
 {
-	static Source * currentSource = nullptr;
-	static Sink * currentSink = nullptr;
+	static Source *currentSource = nullptr;
+	static Sink *currentSink = nullptr;
 
-	static Sink * hoveredSink = nullptr;
-	static Source * hoveredSource = nullptr;
+	static Sink *hoveredSink = nullptr;
+	static Source *hoveredSource = nullptr;
 
 	int offset;
 	int margin = 4;
 	int size = 24;
 
-	auto * draw = ImGui::GetWindowDrawList();
-	auto & io = ImGui::GetIO();
+	auto *draw = ImGui::GetWindowDrawList();
+	auto &io = ImGui::GetIO();
 
-	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 
 	ImVec4 slotBaseColor(0.3f, 0.3f, 0.3f, 1.0f);
 	ImVec4 linkBaseColor(0.3f, 0.3f, 0.3f, 0.8f);
@@ -124,18 +135,18 @@ void Window::UpdateNodes()
 
 	currentSink = nullptr;
 
-	for(auto const & win : windows)
+	for (auto const &win : windows)
 	{
-		for(auto const & sink : win->sinks)
+		for (auto const &sink : win->sinks)
 		{
 			ImVec2 pos(
-				win->pos.x - size - margin,
-				win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
+					win->pos.x - size - margin,
+					win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
 
-			for(int i = 0; i < sink->GetSourceCount(); i++)
+			for (int i = 0; i < sink->GetSourceCount(); i++)
 			{
-				auto * src = sink->GetSource(false, i);
-				auto * srcwin = src->GetWindow();
+				auto *src = sink->GetSource(false, i);
+				auto *srcwin = src->GetWindow();
 				auto srcpos = srcwin->GetPosition();
 				auto srcsize = srcwin->GetSize();
 				int index = src->GetWindowIndex();
@@ -148,18 +159,18 @@ void Window::UpdateNodes()
 				float width = 2.0;
 				ImColor color(linkBaseColor);
 
-				if(selected)
+				if (selected)
 				{
 					color = linkHoverColor;
 					width = 4.0;
 				}
 
-				if(src->GetType() == CgDataType::Event)
+				if (src->GetType() == CgDataType::Event)
 				{
 					float str = 0.3 - glm::clamp<float>(
-						src->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
-						0.0,
-						0.3);
+																src->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
+																0.0,
+																0.3);
 					// TODO: Make better animation here!
 					width += 4.0 * str;
 					color.Value.x += str;
@@ -168,12 +179,12 @@ void Window::UpdateNodes()
 				}
 
 				draw->AddBezierCurve(
-					from,
-				    ImVec2(from.x + 64, from.y),
-					ImVec2(to.x - 64, to.y),
-					to,
-					color,
-					width);
+						from,
+						ImVec2(from.x + 64, from.y),
+						ImVec2(to.x - 64, to.y),
+						to,
+						color,
+						width);
 			}
 		}
 	}
@@ -181,33 +192,30 @@ void Window::UpdateNodes()
 	hoveredSink = nullptr;
 	hoveredSource = nullptr;
 
-	for(auto const & win : windows)
+	for (auto const &win : windows)
 	{
-		for(auto const & sink : win->sinks)
+		for (auto const &sink : win->sinks)
 		{
 			ImVec2 pos(
-				win->pos.x - size - margin,
-				win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
+					win->pos.x - size - margin,
+					win->pos.y + margin + sink->GetWindowIndex() * (margin + size));
 
 			ImVec2 m = io.MousePos;
-			bool hovered = (m.x >= pos.x)
-			        && (m.x < (pos.x + size))
-			        && (m.y >= pos.y)
-			        && (m.y < (pos.y + size));
+			bool hovered = (m.x >= pos.x) && (m.x < (pos.x + size)) && (m.y >= pos.y) && (m.y < (pos.y + size));
 
 			ImGui::SetCursorScreenPos(pos);
 
 			ImVec4 color(slotBaseColor);
 
 			float str = 0.0;
-			for(int i = 0; i < sink->GetSourceCount(); i++)
+			for (int i = 0; i < sink->GetSourceCount(); i++)
 			{
-				if(sink->GetSource(false, i)->GetType() == CgDataType::Event)
+				if (sink->GetSource(false, i)->GetType() == CgDataType::Event)
 				{
 					str = std::max<float>(str, 0.3 - glm::clamp<float>(
-						sink->GetObject<CgDataType::Event>(i).GetTimeSinceLastTrigger(),
-						0.0,
-						0.3));
+																							 sink->GetObject<CgDataType::Event>(i).GetTimeSinceLastTrigger(),
+																							 0.0,
+																							 0.3));
 				}
 			}
 
@@ -215,42 +223,42 @@ void Window::UpdateNodes()
 			color.y += str;
 			color.z += str;
 
-			if(currentSource != nullptr)
+			if (currentSource != nullptr)
 			{
-				if(sink->GetType() == currentSource->GetType())
+				if (sink->GetType() == currentSource->GetType())
 				{
-					if(hovered)
+					if (hovered)
 					{
 						currentSink = sink.get();
-						color = ImVec4(1.0f,1.0f,0.0f,1.0f);
+						color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
 					}
 					else
 					{
-						color = ImVec4(0.0f,1.0f,0.0f,1.0f);
+						color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
 					}
 				}
 			}
 			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			ImGui::PushID(sink.get());
-            if(ImGui::ImageButton(GetSocketIcon(sink->GetType(), false) , ImVec2(size, size), ImVec2(0,1), ImVec2(1,0)))
+			if (ImGui::ImageButton(GetSocketIcon(sink->GetType(), false), ImVec2(size, size), ImVec2(0, 1), ImVec2(1, 0)))
 				sink->Clear();
 			ImGui::PopID();
 			ImGui::PopStyleColor();
 
 			ImVec2 label = ImGui::GetFont()->CalcTextSizeA(
-				labelSize,
-				1000.0f,
-				1000.0f,
-				sink->GetName().c_str());
+					labelSize,
+					1000.0f,
+					1000.0f,
+					sink->GetName().c_str());
 
 			draw->AddText(
-				labelFont,
-				labelSize,
-				ImVec2(pos.x - margin - label.x, pos.y + (size - labelSize) / 2),
-				labelColor,
-				sink->GetName().c_str());
+					labelFont,
+					labelSize,
+					ImVec2(pos.x - margin - label.x, pos.y + (size - labelSize) / 2),
+					labelColor,
+					sink->GetName().c_str());
 
-			if(ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered())
 			{
 				hoveredSink = sink.get();
 				ImGui::SetTooltip("%s : %s", sink->GetName().c_str(), DisplayName(sink->GetType()));
@@ -258,23 +266,23 @@ void Window::UpdateNodes()
 		}
 	}
 
-	for(auto const & win : windows)
+	for (auto const &win : windows)
 	{
 		offset = margin;
-		for(auto const & source : win->sources)
+		for (auto const &source : win->sources)
 		{
 			ImVec2 pos(
-				win->pos.x + win->size.x + margin,
-				win->pos.y + offset);
+					win->pos.x + win->size.x + margin,
+					win->pos.y + offset);
 			ImGui::SetCursorScreenPos(pos);
 			ImVec4 color(slotBaseColor);
 
-			if(source->GetType() == CgDataType::Event)
+			if (source->GetType() == CgDataType::Event)
 			{
 				float str = 0.3 - glm::clamp<float>(
-					source->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
-					0.0,
-					0.3);
+															source->GetObject<CgDataType::Event>().GetTimeSinceLastTrigger(),
+															0.0,
+															0.3);
 				color.x += str;
 				color.y += str;
 				color.z += str;
@@ -282,18 +290,18 @@ void Window::UpdateNodes()
 
 			ImGui::PushStyleColor(ImGuiCol_Button, color);
 			ImGui::PushID(source.get());
-            ImGui::ImageButton(GetSocketIcon(source->GetType(), true), ImVec2(size, size), ImVec2(0,1), ImVec2(1,0));
+			ImGui::ImageButton(GetSocketIcon(source->GetType(), true), ImVec2(size, size), ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::PopID();
 			ImGui::PopStyleColor();
 
 			draw->AddText(
-				labelFont,
-				labelSize,
-				ImVec2(pos.x + margin + size, pos.y + (size - labelSize) / 2),
-				labelColor,
-				source->GetName().c_str());
+					labelFont,
+					labelSize,
+					ImVec2(pos.x + margin + size, pos.y + (size - labelSize) / 2),
+					labelColor,
+					source->GetName().c_str());
 
-			if(ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered())
 			{
 				hoveredSource = source.get();
 				ImGui::BeginTooltip();
@@ -304,20 +312,20 @@ void Window::UpdateNodes()
 
 				ImGui::EndTooltip();
 			}
-			if(ImGui::IsItemActive())
+			if (ImGui::IsItemActive())
 			{
 				currentSource = source.get();
 				draw->PushClipRectFullScreen();
 				draw->AddLine(
-					ImGui::GetWindowPos(), // ImGui::CalcItemRectClosestPoint(io.MousePos, true, -2.0f),
-					io.MousePos,
-					ImColor(0.7f,0.7f,0.7f,1.0f),
-					4.0f);
+						ImGui::GetWindowPos(), // ImGui::CalcItemRectClosestPoint(io.MousePos, true, -2.0f),
+						io.MousePos,
+						ImColor(0.7f, 0.7f, 0.7f, 1.0f),
+						4.0f);
 				draw->PopClipRect();
 			}
-			else if(currentSource == source.get())
+			else if (currentSource == source.get())
 			{
-				if(currentSink != nullptr)
+				if (currentSink != nullptr)
 					currentSink->AddSource(currentSource);
 				currentSource = nullptr;
 			}
@@ -325,12 +333,11 @@ void Window::UpdateNodes()
 		}
 	}
 	ImGui::PopStyleVar();
-
 }
 
 void Window::RenderAll()
 {
-	for(auto const & win : windows)
+	for (auto const &win : windows)
 		win->Render();
 }
 
@@ -339,28 +346,27 @@ void Window::DestroyAll()
 	windows.clear();
 }
 
-Window::Window(std::string const & title, ImGuiWindowFlags flags) :
-    id(++currentWindowID),
-	isOpen(true),
-    title(title),
-    flags(flags | ImGuiWindowFlags_NoCollapse),
-    wantsResize(false)
+Window::Window(std::string const &title, ImGuiWindowFlags flags) : id(++currentWindowID),
+																																	 isOpen(true),
+																																	 title(title),
+																																	 flags(flags | ImGuiWindowFlags_NoCollapse),
+																																	 wantsResize(false)
 {
 	strcpy(this->titleEditBuffer, this->title.c_str());
 }
 
 Window::~Window()
 {
-	for(auto const & win : windows)
+	for (auto const &win : windows)
 	{
-		if(win.get() == nullptr) // this is ourselves, as we are deleted right now
+		if (win.get() == nullptr) // this is ourselves, as we are deleted right now
 			continue;
-		if(win.get() == this) // this is weird
+		if (win.get() == this) // this is weird
 			continue;
 
-		for(auto const & source : this->sources)
+		for (auto const &source : this->sources)
 		{
-			for(auto const & sink : win->sinks)
+			for (auto const &sink : win->sinks)
 				sink->RemoveSource(source.get());
 		}
 	}
@@ -368,12 +374,12 @@ Window::~Window()
 
 void Window::Update(bool recompile)
 {
-	for(auto & ev : this->events)
+	for (auto &ev : this->events)
 		ev->triggered = false;
 
 	this->OnSetup();
 
-	if(this->wantsResize)
+	if (this->wantsResize)
 	{
 		ImGui::SetNextWindowPos(this->pos, ImGuiCond_Once);
 		ImGui::SetNextWindowSize(this->size, ImGuiCond_Once);
@@ -385,17 +391,18 @@ void Window::Update(bool recompile)
 	char namebuf[512];
 	snprintf(namebuf, 512, "%s##%p", this->title.c_str(), this);
 
-	if(ImGui::Begin(namebuf, &this->isOpen, this->flags))
+	if (ImGui::Begin(namebuf, &this->isOpen, this->flags))
 	{
-        if(recompile and ImGui::IsWindowFocused()) {
-            this->Compile();
-        }
+		if (recompile and ImGui::IsWindowFocused())
+		{
+			this->Compile();
+		}
 
 		this->OnUpdate();
 
-		if(ImGui::BeginPopupContextWindow())
+		if (ImGui::BeginPopupContextWindow())
 		{
-			if(ImGui::InputText("Node Name", this->titleEditBuffer, 256, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
+			if (ImGui::InputText("Node Name", this->titleEditBuffer, 256, ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue))
 			{
 				this->title = std::string(this->titleEditBuffer);
 				this->wantsResize = true;
@@ -403,10 +410,10 @@ void Window::Update(bool recompile)
 
 			ImGui::Separator();
 
-			if(ImGui::MenuItem("Export Node..."))
+			if (ImGui::MenuItem("Export Node..."))
 			{
 				auto path = FileIO::SaveDialog("jnode");
-				if(!path.empty())
+				if (!path.empty())
 				{
 					auto obj = this->Serialize();
 					obj["window-type"] = this->GetTypeID();
@@ -418,17 +425,17 @@ void Window::Update(bool recompile)
 				}
 			}
 
-			if(ImGui::MenuItem("Import Node..."))
+			if (ImGui::MenuItem("Import Node..."))
 			{
 				auto path = FileIO::OpenDialog("jnode");
-				if(!path.empty())
+				if (!path.empty())
 				{
 					nlohmann::json data;
 
 					std::ifstream stream(path);
 					stream >> data;
 
-					if(data["window-type"] == this->GetTypeID())
+					if (data["window-type"] == this->GetTypeID())
 					{
 						this->Deserialize(data);
 					}
@@ -437,15 +444,15 @@ void Window::Update(bool recompile)
 
 			ImGui::Separator();
 
-			if(ImGui::MenuItem("Duplicate"))
+			if (ImGui::MenuItem("Duplicate"))
 			{
 				auto obj = this->Serialize();
 				obj["window-type"] = this->GetTypeID();
 				obj["window-title"] = this->GetTitle();
 
-				auto * win = Window::CreateFromJSON(obj);
+				auto *win = Window::CreateFromJSON(obj);
 
-				if(win)
+				if (win)
 				{
 					win->pos = this->dupSpawnPos;
 					win->size = this->size;
@@ -471,27 +478,26 @@ void Window::Update(bool recompile)
 
 void Window::OnSetup()
 {
-    ImGui::SetNextWindowSize(ImVec2(256, 256), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(256, 256), ImGuiCond_FirstUseEver);
 }
 
 void Window::OnCompile()
 {
-    /* dummy */
+	/* dummy */
 }
 
 void Window::OnRender()
 {
-
 }
 
 void Window::Render()
 {
-    this->OnRender();
+	this->OnRender();
 }
 
 void Window::Compile()
 {
-    this->OnCompile();
+	this->OnCompile();
 }
 
 void Window::Close()
@@ -499,66 +505,64 @@ void Window::Close()
 	this->isOpen = false;
 }
 
-Event * Window::AddEventSource(std::string name)
+Event *Window::AddEventSource(std::string name)
 {
-	Event * ev = this->CreateEvent();
+	Event *ev = this->CreateEvent();
 	this->AddSource<CgDataType::Event>(name, ev);
 	return ev;
 }
 
-void Window::AddSource(Source * source)
+void Window::AddSource(Source *source)
 {
-	if(source == nullptr)
+	if (source == nullptr)
 		throw std::invalid_argument("source must not be NULL!");
-	if(source->window != nullptr)
+	if (source->window != nullptr)
 		throw std::invalid_argument("source must not have a window assigned already!");
 	source->window = this;
 	source->index = this->sources.size();
 	this->sources.emplace_back(source);
 }
 
-void Window::AddSink(Sink * sink)
+void Window::AddSink(Sink *sink)
 {
-	if(sink == nullptr)
+	if (sink == nullptr)
 		throw std::invalid_argument("source must not be NULL!");
-	if(sink->window != nullptr)
+	if (sink->window != nullptr)
 		throw std::invalid_argument("source must not have a window assigned already!");
 	sink->window = this;
 	sink->index = this->sinks.size();
 	this->sinks.emplace_back(sink);
 }
 
-void Window::RemoveSource(Source * source, bool free)
+void Window::RemoveSource(Source *source, bool free)
 {
-	auto end = std::remove_if(this->sources.begin(), this->sources.end(), [source](std::unique_ptr<Source> const & ptr)
-	{
+	auto end = std::remove_if(this->sources.begin(), this->sources.end(), [source](std::unique_ptr<Source> const &ptr) {
 		return (ptr.get() == source);
 	});
-	if(!free)
+	if (!free)
 	{
-		for(auto it = end; it != this->sources.end(); it++)
+		for (auto it = end; it != this->sources.end(); it++)
 			it->release();
 	}
 	this->sources.erase(end, this->sources.end());
 
-	for(size_t i = 0; i < this->sources.size(); i++)
+	for (size_t i = 0; i < this->sources.size(); i++)
 		this->sources[i]->index = int(i);
 }
 
-void Window::RemoveSink(Sink * sink, bool free)
+void Window::RemoveSink(Sink *sink, bool free)
 {
-	auto end = std::remove_if(this->sinks.begin(), this->sinks.end(), [sink](std::unique_ptr<Sink> const & ptr)
-	{
+	auto end = std::remove_if(this->sinks.begin(), this->sinks.end(), [sink](std::unique_ptr<Sink> const &ptr) {
 		return (ptr.get() == sink);
 	});
-	if(!free)
+	if (!free)
 	{
-		for(auto it = end; it != this->sinks.end(); it++)
+		for (auto it = end; it != this->sinks.end(); it++)
 			it->release();
 	}
 	this->sinks.erase(end, this->sinks.end());
 
-	for(size_t i = 0; i < this->sinks.size(); i++)
+	for (size_t i = 0; i < this->sinks.size(); i++)
 		this->sinks[i]->index = int(i);
 }
 
@@ -567,68 +571,66 @@ nlohmann::json Window::Serialize() const
 	return nlohmann::json::object();
 }
 
-void Window::Deserialize(nlohmann::json const & value)
+void Window::Deserialize(nlohmann::json const &value)
 {
 	fprintf(stderr, "Deserialize: %s\n", value.dump().c_str());
 }
 
-
-Source * Window::GetSource(std::string name)
+Source *Window::GetSource(std::string name)
 {
-	for(auto const & src : this->sources)
-		if(src->GetName() == name)
+	for (auto const &src : this->sources)
+		if (src->GetName() == name)
 			return src.get();
 	return nullptr;
 }
 
-Source const * Window::GetSource(std::string name) const
+Source const *Window::GetSource(std::string name) const
 {
-	for(auto const & src : this->sources)
-		if(src->GetName() == name)
+	for (auto const &src : this->sources)
+		if (src->GetName() == name)
 			return src.get();
 	return nullptr;
 }
 
-Sink * Window::GetSink(std::string name)
+Sink *Window::GetSink(std::string name)
 {
-	for(auto const & src : this->sinks)
-		if(src->GetName() == name)
+	for (auto const &src : this->sinks)
+		if (src->GetName() == name)
 			return src.get();
 	return nullptr;
 }
 
-Sink const * Window::GetSink(std::string name) const
+Sink const *Window::GetSink(std::string name) const
 {
-	for(auto const & src : this->sinks)
-		if(src->GetName() == name)
+	for (auto const &src : this->sinks)
+		if (src->GetName() == name)
 			return src.get();
 	return nullptr;
 }
 
-
-Event * Window::CreateEvent()
+Event *Window::CreateEvent()
 {
-	Event * ev;
+	Event *ev;
 	this->events.emplace_back(ev = new Event());
 	return ev;
 }
 
-Window * Window::CreateFromJSON(nlohmann::json const & window)
+Window *Window::CreateFromJSON(nlohmann::json const &window)
 {
-	if(window.is_null())
+	if (window.is_null())
 		return nullptr;
 
-	Window * win = nullptr;
+	Window *win = nullptr;
 	nlohmann::json type = window["window-type"];
 
-	for(WindowClass * cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
+	for (WindowClass *cl = WindowClass::First(); cl != nullptr; cl = cl->Next())
 	{
-		if(type != cl->GetID())
+		if (type != cl->GetID())
 			continue;
 		win = cl->CreateInstance();
 		break;
 	}
-	if(win == nullptr)
+	if (win == nullptr)
 		return nullptr;
 
 	win->Deserialize(window);
@@ -639,15 +641,15 @@ Window * Window::CreateFromJSON(nlohmann::json const & window)
 
 #include "audionode.hpp"
 
-sample_t * audio_destbuffer;
+sample_t *audio_destbuffer;
 
-void Window::RenderAudio(void*  userdata, Uint8* stream, int len)
+void Window::RenderAudio(void *userdata, Uint8 *stream, int len)
 {
 	(void)userdata;
 
-    Time::newAudioFrame();
+	Time::newAudioFrame();
 
-	sample_t * samples = reinterpret_cast<sample_t*>(stream);
+	sample_t *samples = reinterpret_cast<sample_t *>(stream);
 	len /= sizeof(sample_t);
 
 	assert(len == (audio_buffersize * audio_channels));
@@ -656,11 +658,11 @@ void Window::RenderAudio(void*  userdata, Uint8* stream, int len)
 
 	memset(audio_destbuffer, 0, sizeof(sample_t) * audio_buffersize * audio_channels);
 
-    std::lock_guard lock { windows_lock };
-	for(auto & win : ::windows)
+	std::lock_guard<std::mutex> lock{windows_lock};
+	for (auto &win : ::windows)
 	{
-		auto * node = dynamic_cast<AudioNode*>(win.get());
-		if(node == nullptr)
+		auto *node = dynamic_cast<AudioNode *>(win.get());
+		if (node == nullptr)
 			continue;
 		node->RenderAudio();
 	}

@@ -14,8 +14,8 @@ protected:
 public:
 	NoteWindow();
 
-	nlohmann::json Serialize() const;
+	nlohmann::json Serialize() const override;
 
-	void Deserialize(const nlohmann::json &value);
+	void Deserialize(const nlohmann::json &value) override;
 
 };
