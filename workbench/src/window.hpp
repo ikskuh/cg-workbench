@@ -15,9 +15,10 @@
 
 class Window
 {
-	friend void load(std::string const & fileName);
-	friend void save(std::string const & fileName);
-	friend int main(int argc, char ** argv);
+	friend void load(std::string const &fileName);
+	friend void save(std::string const &fileName);
+	friend int main(int argc, char **argv);
+
 private:
 	int id;
 	bool isOpen;
@@ -34,39 +35,42 @@ private:
 	char titleEditBuffer[256];
 
 	ImVec2 dupSpawnPos;
+
 protected:
-	Event * CreateEvent();
+	Event *CreateEvent();
 
-	Event * AddEventSource(std::string name);
+	Event *AddEventSource(std::string name);
 
-	void AddSource(Source * source);
-	void AddSink(Sink * sink);
+	void AddSource(Source *source);
+	void AddSink(Sink *sink);
 
-	void RemoveSource(Source * source, bool free = true);
-	void RemoveSink(Sink * sink, bool free = true);
+	void RemoveSource(Source *source, bool free = true);
+	void RemoveSink(Sink *sink, bool free = true);
 
-	template<CgDataType _Type>
-	Sink * AddSink(std::string name, int maxConnections = 1)
+	template <CgDataType _Type>
+	Sink *AddSink(std::string name, int maxConnections = 1)
 	{
-		Sink * s = new Sink(_Type, name, maxConnections);
+		Sink *s = new Sink(_Type, name, maxConnections);
 		this->AddSink(s);
 		return s;
 	}
 
-	template<CgDataType _Type>
-	Source * AddSource(std::string name, typename UniformType<_Type>::type const * data)
+	template <CgDataType _Type>
+	Source *AddSource(std::string name, typename UniformType<_Type>::type const *data)
 	{
-		Source * s = new Source(_Type, name, data);
+		Source *s = new Source(_Type, name, data);
 		this->AddSource(s);
 		return s;
 	}
+
 protected:
-	explicit Window(std::string const & title, ImGuiWindowFlags flags = ImGuiWindowFlags_MenuBar);
+	explicit Window(std::string const &title, ImGuiWindowFlags flags = ImGuiWindowFlags_MenuBar);
 	virtual void OnUpdate() = 0;
 	virtual void OnRender();
 	virtual void OnSetup();
-    virtual void OnCompile();
+	virtual void OnCompile();
 	virtual std::string GetTypeID() const = 0;
+
 public:
 	virtual ~Window();
 
@@ -74,8 +78,8 @@ public:
 
 	void Render();
 
-    //! Ctrl-R hotkey for recompiling/reloading code stuff
-    void Compile();
+	//! Ctrl-R hotkey for recompiling/reloading code stuff
+	void Compile();
 
 	void Close();
 
@@ -87,18 +91,18 @@ public:
 
 	int GetSourceCount() const { return int(this->sources.size()); }
 
-	Source * GetSource(int idx) { return this->sources[idx].get(); }
+	Source *GetSource(int idx) { return this->sources[idx].get(); }
 
-	Source const * GetSource(int idx) const { return this->sources[idx].get(); }
+	Source const *GetSource(int idx) const { return this->sources[idx].get(); }
 
-	Source * GetSource(std::string name);
-	Source const * GetSource(std::string name) const;
+	Source *GetSource(std::string name);
+	Source const *GetSource(std::string name) const;
 
-	Sink * GetSink(int idx) { return this->sinks[idx].get(); }
-	Sink const * GetSink(int idx) const { return this->sinks[idx].get(); }
+	Sink *GetSink(int idx) { return this->sinks[idx].get(); }
+	Sink const *GetSink(int idx) const { return this->sinks[idx].get(); }
 
-	Sink * GetSink(std::string name);
-	Sink const * GetSink(std::string name) const;
+	Sink *GetSink(std::string name);
+	Sink const *GetSink(std::string name) const;
 
 	int GetID() const { return this->id; }
 
@@ -106,12 +110,12 @@ public:
 
 	virtual nlohmann::json Serialize() const;
 
-	virtual void Deserialize(nlohmann::json const & value);
+	virtual void Deserialize(nlohmann::json const &value);
 
 public:
-	static void Register(Window * window);
+	static void Register(Window *window);
 
-	static void Unregister(Window * window);
+	static void Unregister(Window *window);
 
 	static void UpdateAll(bool compile);
 
@@ -123,9 +127,9 @@ public:
 
 	static void DestroyAll();
 
-	static void RenderAudio(void*  userdata, Uint8* stream, int len);
+	static void RenderAudio(void *userdata, Uint8 *stream, int len);
 
-	static Window * CreateFromJSON(nlohmann::json const & window);
+	static Window *CreateFromJSON(nlohmann::json const &window);
 
 public:
 	static std::vector<std::unique_ptr<Window>>::iterator Begin();
@@ -133,18 +137,18 @@ public:
 };
 
 #define WINDOW_PREAMBLE \
-	protected: \
-		virtual std::string GetTypeID() const override;
+protected:              \
+	virtual std::string GetTypeID() const override;
 
-#define WINDOW_CUSTOM_SERIALIZE \
-	public: \
-		nlohmann::json Serialize() const override; \
-		void Deserialize(nlohmann::json const & value) override;
+#define WINDOW_CUSTOM_SERIALIZE              \
+public:                                      \
+	nlohmann::json Serialize() const override; \
+	void Deserialize(nlohmann::json const &value) override;
 
 #define WINDOW_SERIALIZE_IMPL(_Type) \
 	nlohmann::json _Type::Serialize() const
 
 #define WINDOW_DESERIALIZE_IMPL(_Type) \
-	void _Type::Deserialize(nlohmann::json const & data)
+	void _Type::Deserialize(nlohmann::json const &data)
 
 #endif // WINDOW_HPP

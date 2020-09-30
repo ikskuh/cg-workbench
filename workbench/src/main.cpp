@@ -838,7 +838,7 @@ void load(std::string const &fileName)
 
 static void load_plugins()
 {
-	std::string pluginRoot = "/home/felix/build/build-cg-workbench-Desktop-Debug/plugins";
+	std::string pluginRoot = FileIO::GetExecutableDirectory() + "/plugins";
 
 	tinydir_dir dir;
 	tinydir_open_sorted(&dir, pluginRoot.c_str());

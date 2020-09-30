@@ -10,10 +10,12 @@ const c_options = &[_][]const u8{
 
 pub fn build(b: *std.build.Builder) !void {
     const target = b.standardTargetOptions(.{});
+    const mode = b.standardReleaseOptions();
 
     const nfd = b.addStaticLibrary("nfd", null);
     nfd.linkLibC();
     nfd.setTarget(target);
+    nfd.setBuildMode(mode);
     nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_common.c", c_options);
     nfd.addIncludeDir("./ext/nativefiledialog/src/include");
 
@@ -27,17 +29,20 @@ pub fn build(b: *std.build.Builder) !void {
         else => return error.UnsupportedOS,
     }
 
-    const workbench = b.addExecutable("cg-workbench", null);
+    const workbench = b.addExecutable("cg-workbench", "workbench/main.zig");
     workbench.linkLibC();
     workbench.linkSystemLibrary("c++");
     workbench.setTarget(target);
+    workbench.setBuildMode(mode);
 
     workbench.linkLibrary(nfd);
 
     workbench.defineCMacro("GLM_ENABLE_EXPERIMENTAL");
-    workbench.defineCMacro("DEBUG_BUILD");
     workbench.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS");
     workbench.defineCMacro("STB_VORBIS_HEADER_ONLY");
+
+    if (mode == .Debug)
+        workbench.defineCMacro("DEBUG_BUILD");
 
     if (target.getOsTag() == .windows) {
         workbench.defineCMacro("NOMINMAX");

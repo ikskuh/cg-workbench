@@ -2,14 +2,32 @@
 #include "imageloader.hpp"
 #include <assert.h>
 
+extern "C"
+{
+
+	struct Resource
+	{
+		char const *file_name;
+		uint8_t const *data;
+		size_t length;
+	};
+
+	extern int cgw_find_resource(char const *name, Resource *resource);
+};
+
 namespace resources
 {
 	void load(std::string const &root)
 	{
 		// TODO: https://github.com/MasterQ32/cg-workbench/issues/3
-#define ICON(_name, file)                                                 \
-	icons::_name = load_texture(root + "/icons/" file, GL_CLAMP_TO_BORDER); \
-	assert(icons::_name != 0)
+#define ICON(_name, file)                                                              \
+	{                                                                                    \
+		Resource res;                                                                      \
+		if (!cgw_find_resource("/icons/" file, &res))                                      \
+			abort();                                                                         \
+		icons::_name = load_texture_from_memory(res.data, res.length, GL_CLAMP_TO_BORDER); \
+		assert(icons::_name != 0);                                                         \
+	}
 		ICON(geometry, "geometry.png");
 		ICON(shader, "shader.png");
 		ICON(image, "image.png");

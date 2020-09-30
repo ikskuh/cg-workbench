@@ -27,7 +27,7 @@ jobs:
     
     - name: Build Workbench (Linux, GNU)
       run: |
-        zig build -Dtarget=x86_64-native-gnu
+        zig build -Dtarget=x86_64-native-gnu -Drelease-safe
 
     - name: Upload artifact (Linux, GNU)
       uses: actions/upload-artifact@v2
@@ -55,7 +55,7 @@ jobs:
     
     - name: Build Workbench (Win64)
       run: |
-        zig build -Dtarget=x86_64-windows-gnu
+        zig build -Dtarget=x86_64-windows-gnu -Drelease-safe
     
     - name: Upload artifact (Win64)
       uses: actions/upload-artifact@v2
@@ -84,7 +84,7 @@ jobs:
     
     - name: Build Workbench (Win32)
       run: |
-        zig build -Dtarget=i386-windows-gnu
+        zig build -Dtarget=i386-windows-gnu -Drelease-safe
     
     - name: Upload artifact (Win32)
       uses: actions/upload-artifact@v2
