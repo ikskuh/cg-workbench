@@ -63,8 +63,13 @@ jobs:
         name: workbench-win64
         path: |
           zig-cache/bin/cg-workbench.exe
+    
+    - name: Upload SDL2.dll (Win64)
+      uses: actions/upload-artifact@v2
+      with:
+        name: workbench-win64
+        path: |
           lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/bin/SDL2.dll
-          icons/*
 
   win-32:
     runs-on: ubuntu-latest
@@ -92,5 +97,10 @@ jobs:
         name: workbench-win32
         path: |
           zig-cache/bin/cg-workbench.exe
+    
+    - name: Upload SDL2.dll (Win32)
+      uses: actions/upload-artifact@v2
+      with:
+        name: workbench-win32
+        path: |
           lib/SDL2-2.0.12.mingw/i686-w64-mingw32/bin/SDL2.dll
-          icons/*

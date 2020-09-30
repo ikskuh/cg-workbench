@@ -35,13 +35,31 @@ void load(std::string const &fileName);
 
 extern int currentWindowID;
 
-#ifdef WIN32
-// TODO: https://github.com/MasterQ32/cg-workbench/issues/2
-char const *strcasestr(const char *haystack, const char *needle)
+//! checks if `haystack` starts with `needle` ignoring ASCII case
+bool str_case_startswith(char const *haystack, char const *needle)
 {
-	return strstr(haystack, needle);
+	while (*haystack and *needle)
+	{
+		if (tolower(*haystack) != tolower(*needle))
+			return false;
+		haystack++;
+		needle++;
+	}
+	return (*needle == 0);
 }
-#endif
+
+//! checks if `haystack` contains `needle` at any position.
+bool contains_pattern(const char *haystack, const char *needle)
+{
+	char const *start = haystack;
+	while (*start)
+	{
+		if (str_case_startswith(start, needle))
+			return true;
+		start++;
+	}
+	return false;
+}
 
 static Window *ClassMenu(WindowCategory const *root)
 {
@@ -544,7 +562,7 @@ int main(int argc, char **argv)
 					{
 						for (auto *c = WindowClass::First(); c != nullptr; c = c->Next())
 						{
-							if (strcasestr(c->GetName().c_str(), search) == nullptr)
+							if (not contains_pattern(c->GetName().c_str(), search))
 								continue;
 
 							if (ImGui::MenuItem(c->GetName().c_str()) || accepted)
