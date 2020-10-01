@@ -21,34 +21,15 @@ Live Shading Demo: [Youtube](https://www.youtube.com/watch?v=et6Kq0yJqxU)
 
 ## Build Instructions
 
-CG Workbench uses qmake as a build system, but doesn't require Qt.
-
-Instead of executing qmake manually, QtCreator can be used to build the project.
+CG Workbench uses [Zig](https://ziglang.org/) as a build system. Just call `zig build` to build your project, `zig-cache/bin` will contain the executable.
 
 ### Linux
 Install the following libraries / packages:
 - `sdl2`
-- `glm`
-- `qt-5` or `qmake`
-- `lua` / `lua-5.3`
 - `gtk-3.0`
 
-Create a folder `build/`, enter it and run qmake with the `cg-workbench.pro` file specified
-as an argument. Then run `make`.
-
 ### Windows
-
-Create a folder `lib` with the following contents and the corresponding libraries included.
-
-```
-cg-workbench/lib
-└───SDL2-2.0.7
-    ├───include
-    └───lib
-        └───x64
-```
-
-Then use QtCreator to build the project.
+Should work out of the box
 
 ## External Libraries
 This project would be much harder without those great libraries:
