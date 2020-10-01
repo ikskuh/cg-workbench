@@ -308,6 +308,7 @@ extern "C" uint8_t workbench_main(char const *initial_file_name)
 	{
 		ImGuiIO &io = ImGui::GetIO();
 		io.Fonts->AddFontDefault();
+		io.IniFilename = nullptr;
 
 		ImFontConfig cfg;
 		cfg.PixelSnapH = true;
