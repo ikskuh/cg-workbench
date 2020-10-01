@@ -1,0 +1,78 @@
+  CG Workbench
+================
+
+The CG Workbench is a live multimedia environment which allows rapid prototyping of
+graphic effects or multimedia applications.
+
+  Usage
+---------
+
+This is just a rough description on how the workbench should be used:
+
+The workbench is based on the concept of connect nodes. Each node has inputs and outputs.
+Inputs affect how the node processes its data, outputs are the result of processing.
+
+Nodes can be connected by dragging an output (on the right side of a node) to a
+input (on the left side of a node). Compatible inputs will be highlighted when a
+drag is in process. Removing a link is done by clicking a connected input of the node.
+
+Here are some nodes to get a quick start:
+
+- "Image"
+  Provides a texture that can be used in shaders.
+- "Shader"
+  Provides a shader where you can define uniforms which are available as node inputs.
+- "Renderer"
+  Will render a flat quad with the connected shader. When geometry is connected,
+  will render the geometry instead.
+- "Float", "Vec2", "Vec3", …
+  Are nodes that provide raw values which can be combined with arithmetic nodes
+  or can be passed into shaders.
+
+Right now, there is no full description of node types available. Most nodes are kinda
+self explanatory, and most can be understood by just playing around. Don't be shy,
+the workbench is there for experimentation!
+
+  Hotkeys
+-----------
+
+The hotkey scheme is hardcoded at the moment. These are the available actions:
+
+| Input                                | Action                                           |
+|--------------------------------------|--------------------------------------------------|
+| Ctrl+Space, Rightclick on Background | Open *New Node* window                           |
+| Right-Click on a node                | Open node editor (save to template, rename node) |
+| Ctrl + Left Mouse + Drag             | Drag viewport window                             |
+| Ctrl + R                             | Recompile current window                         |
+| Ctrl + S                             | Save                                             |
+| Ctrl + Shift + S                     | Save As                                          |
+| Ctrl + N                             | New document                                     |
+| Ctrl + O                             | Open File                                        |
+| Alt + F4                             | Exit                                             |
+
+  Templates
+-------------
+
+The CG Workbench searches templates in the folder `templates` next to the executable. Save your
+own node types in the directory structure there and you can quickly create them by using
+the create menu and selecting the templates there.
+
+  Updates
+-----------
+
+This program is open source and is developed on GitHub:
+
+  https://github.com/MasterQ32/cg-workbench
+  
+Check out the GitHub page for new public releases!
+
+  Bugs
+--------
+
+The program is not very well tested at the moment. If you find a bug, please create
+a GitHub Issue or report the bug to:
+
+  cg-workbench@mq32.de
+
+It would be nice to have a project file that produces the crash or have a description
+on how to reproduce it.
