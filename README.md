@@ -1,7 +1,7 @@
 # CG Workbench
 The CG Workbench is a small GLSL coding environment which allows to rapidly prototype some shaders or shader pipelines.
 
-![](https://puu.sh/yOGv5/6c440d280e.png)
+![](https://mq32.de/public/2801bead79cd300b41f6e983d8e4a7fbd7b134dc.png)
 
 Live Shading Demo: [Youtube](https://www.youtube.com/watch?v=et6Kq0yJqxU)
 

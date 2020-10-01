@@ -6,3 +6,4 @@ lib/
 .vscode/
 release/
 workbench-release.zip
+hidden-examples/
