@@ -55,7 +55,8 @@ jobs:
     
     - name: Build Workbench (Win64)
       run: |
-        zig build -Dtarget=x86_64-windows-gnu -Drelease-safe
+        zig build -Dtarget=x86_64-windows-gnu
+      # https://github.com/MasterQ32/cg-workbench/issues/7: -Drelease-safe 
     
     - name: Upload artifact (Win64)
       uses: actions/upload-artifact@v2
@@ -71,36 +72,38 @@ jobs:
         path: |
           lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/bin/SDL2.dll
 
-  win-32:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-    
-    - name: Install dependencies
-      run: sudo apt-get install mesa-common-dev libsdl2-dev liblua5.3-dev libgtk-3-dev
-
-    - name: Setup Zig
-      uses: goto-bus-stop/setup-zig@v1.2.3
-      with:
-        version: master
-    
-    - name: Build Workbench (Win32)
-      run: |
-        zig build -Dtarget=i386-windows-gnu -Drelease-safe
-    
-    - name: Upload artifact (Win32)
-      uses: actions/upload-artifact@v2
-      with:
-        name: workbench-win32
-        path: |
-          zig-cache/bin/cg-workbench.exe
-    
-    - name: Upload SDL2.dll (Win32)
-      uses: actions/upload-artifact@v2
-      with:
-        name: workbench-win32
-        path: |
-          lib/SDL2-2.0.12.mingw/i686-w64-mingw32/bin/SDL2.dll
+# https://github.com/MasterQ32/cg-workbench/issues/1
+#  win-32:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#      with:
+#        submodules: 'recursive'
+#    
+#    - name: Install dependencies
+#      run: sudo apt-get install mesa-common-dev libsdl2-dev liblua5.3-dev libgtk-3-dev
+#
+#    - name: Setup Zig
+#      uses: goto-bus-stop/setup-zig@v1.2.3
+#      with:
+#        version: master
+#    
+#    - name: Build Workbench (Win32)
+#      run: |
+#        zig build -Dtarget=i386-windows-gnu 
+#      # https://github.com/MasterQ32/cg-workbench/issues/7: -Drelease-safe 
+#    
+#    - name: Upload artifact (Win32)
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: workbench-win32
+#        path: |
+#          zig-cache/bin/cg-workbench.exe
+#    
+#    - name: Upload SDL2.dll (Win32)
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: workbench-win32
+#        path: |
+#          lib/SDL2-2.0.12.mingw/i686-w64-mingw32/bin/SDL2.dll
