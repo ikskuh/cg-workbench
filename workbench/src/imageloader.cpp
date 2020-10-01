@@ -67,6 +67,8 @@ GLuint load_texture(std::string const &fileName, GLenum wrap, bool withMipMaps)
 {
 	int w, h, chan;
 	stbi_uc *ptr = stbi_load(fileName.c_str(), &w, &h, &chan, 4);
+	if (ptr == nullptr)
+		return 0;
 	return load_raw(ptr, w, h, wrap, withMipMaps);
 }
 
@@ -74,5 +76,7 @@ GLuint load_texture_from_memory(uint8_t const *buffer, size_t length, GLenum wra
 {
 	int w, h, chan;
 	stbi_uc *ptr = stbi_load_from_memory(buffer, length, &w, &h, &chan, 4);
+	if (ptr == nullptr)
+		return 0;
 	return load_raw(ptr, w, h, wrap, withMipMaps);
 }
