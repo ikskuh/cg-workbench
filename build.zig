@@ -12,103 +12,123 @@ pub fn build(b: *std.build.Builder) !void {
     const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
 
-    const nfd = b.addStaticLibrary("nfd", null);
-    nfd.linkLibC();
-    nfd.setTarget(target);
-    nfd.setBuildMode(mode);
-    nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_common.c", c_options);
-    nfd.addIncludeDir("./ext/nativefiledialog/src/include");
+    const static_sdl = b.option(bool, "static-sdl", "Link SDL statically") orelse true;
+    const strip_executables = b.option(bool, "strip", "Strips all executables") orelse false;
 
-    switch (target.getOsTag()) {
-        .linux => {
-            nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_gtk.c", c_options);
-            nfd.linkSystemLibrary("gtk+-3.0");
-        },
-        .windows => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_win.cpp", c_options),
-        .macosx => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_cocoa.m", c_options),
-        else => return error.UnsupportedOS,
+    const nfd = b.addStaticLibrary("nfd", null);
+    {
+        nfd.strip = strip_executables;
+
+        nfd.linkLibC();
+        nfd.setTarget(target);
+        nfd.setBuildMode(mode);
+        nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_common.c", c_options);
+        nfd.addIncludeDir("./ext/nativefiledialog/src/include");
+
+        switch (target.getOsTag()) {
+            .linux => {
+                nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_gtk.c", c_options);
+                nfd.linkSystemLibrary("gtk+-3.0");
+            },
+            .windows => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_win.cpp", c_options),
+            .macosx => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_cocoa.m", c_options),
+            else => return error.UnsupportedOS,
+        }
     }
 
     const workbench = b.addExecutable("cg-workbench", "workbench/main.zig");
-    workbench.linkLibC();
-    workbench.linkSystemLibrary("c++");
-    workbench.setTarget(target);
-    workbench.setBuildMode(mode);
+    {
+        workbench.strip = strip_executables;
 
-    workbench.linkLibrary(nfd);
+        workbench.linkLibC();
+        workbench.linkSystemLibrary("c++");
+        workbench.setTarget(target);
+        workbench.setBuildMode(mode);
 
-    workbench.defineCMacro("GLM_ENABLE_EXPERIMENTAL");
-    workbench.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS");
-    workbench.defineCMacro("STB_VORBIS_HEADER_ONLY");
+        workbench.linkLibrary(nfd);
 
-    if (mode == .Debug)
-        workbench.defineCMacro("DEBUG_BUILD");
+        workbench.defineCMacro("GLM_ENABLE_EXPERIMENTAL");
+        workbench.defineCMacro("IMGUI_DISABLE_OBSOLETE_FUNCTIONS");
+        workbench.defineCMacro("STB_VORBIS_HEADER_ONLY");
 
-    if (target.getOsTag() == .windows) {
-        workbench.defineCMacro("NOMINMAX");
-        workbench.defineCMacro("WIN32_LEAN_AND_MEAN");
-        workbench.defineCMacro("CGPLAT_WINDOWS");
-        workbench.defineCMacro("WIN32");
+        if (mode == .Debug)
+            workbench.defineCMacro("DEBUG_BUILD");
 
-        // Remove warnings for using non-portable libc functions
-        workbench.defineCMacro("_CRT_SECURE_NO_WARNINGS");
+        if (target.getOsTag() == .windows) {
+            workbench.defineCMacro("NOMINMAX");
+            workbench.defineCMacro("WIN32_LEAN_AND_MEAN");
+            workbench.defineCMacro("CGPLAT_WINDOWS");
+            workbench.defineCMacro("WIN32");
 
-        workbench.linkSystemLibrary("gdi32");
-        workbench.linkSystemLibrary("kernel32");
-        workbench.linkSystemLibrary("ole32");
-        workbench.linkSystemLibrary("oleaut32");
-        workbench.linkSystemLibrary("opengl32");
-        workbench.linkSystemLibrary("shell32");
-        workbench.linkSystemLibrary("shlwapi");
-        workbench.linkSystemLibrary("user32");
+            // Remove warnings for using non-portable libc functions
+            workbench.defineCMacro("_CRT_SECURE_NO_WARNINGS");
 
-        if (target.getCpuArch() == .i386) {
-            // https://github.com/MasterQ32/cg-workbench/issues/1
-            workbench.defineCMacro("IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCTIONS");
-        }
+            workbench.linkSystemLibrary("gdi32");
+            workbench.linkSystemLibrary("kernel32");
+            workbench.linkSystemLibrary("ole32");
+            workbench.linkSystemLibrary("oleaut32");
+            workbench.linkSystemLibrary("opengl32");
+            workbench.linkSystemLibrary("shell32");
+            workbench.linkSystemLibrary("shlwapi");
+            workbench.linkSystemLibrary("user32");
 
-        if (target.getAbi() == .msvc) {
-            workbench.addIncludeDir("lib/SDL2-2.0.12/include");
             if (target.getCpuArch() == .i386) {
-                workbench.addLibPath("lib/SDL2-2.0.12/lib/x86");
-            } else {
-                workbench.addLibPath("lib/SDL2-2.0.12/lib/x64");
+                // https://github.com/MasterQ32/cg-workbench/issues/1
+                workbench.defineCMacro("IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCTIONS");
             }
 
-            workbench.linkSystemLibraryName("SDL2");
-            workbench.linkSystemLibraryName("SDL2main");
+            if (target.getAbi() == .msvc) {
+                workbench.addIncludeDir("lib/SDL2-2.0.12/include");
+                if (target.getCpuArch() == .i386) {
+                    workbench.addLibPath("lib/SDL2-2.0.12/lib/x86");
+                } else {
+                    workbench.addLibPath("lib/SDL2-2.0.12/lib/x64");
+                }
+
+                workbench.linkSystemLibraryName("SDL2");
+                workbench.linkSystemLibraryName("SDL2main");
+            } else {
+                workbench.defineCMacro("DECLSPEC=");
+                if (target.getCpuArch() == .i386) {
+                    workbench.addIncludeDir("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/include/SDL2");
+                    workbench.addLibPath("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/lib");
+                } else {
+                    workbench.addIncludeDir("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/include/SDL2");
+                    workbench.addLibPath("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/lib");
+                }
+
+                // TODO: https://github.com/MasterQ32/cg-workbench/issues/4
+                if (static_sdl) {
+                    workbench.linkSystemLibrary("winmm");
+                    workbench.linkSystemLibrary("imm32");
+                    workbench.linkSystemLibrary("version");
+                    workbench.linkSystemLibrary("setupapi");
+
+                    workbench.linkSystemLibraryName("SDL2");
+                } else {
+                    workbench.linkSystemLibraryName("SDL2.dll");
+                }
+                workbench.linkSystemLibraryName("SDL2main");
+            }
         } else {
-            workbench.defineCMacro("DECLSPEC=");
-            if (target.getCpuArch() == .i386) {
-                workbench.addIncludeDir("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/include/SDL2");
-                workbench.addLibPath("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/lib");
-            } else {
-                workbench.addIncludeDir("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/include/SDL2");
-                workbench.addLibPath("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/lib");
-            }
+            workbench.defineCMacro("CGPLAT_LINUX");
 
-            // TODO: https://github.com/MasterQ32/cg-workbench/issues/4
-            workbench.linkSystemLibraryName("SDL2.dll");
-            workbench.linkSystemLibraryName("SDL2main");
+            workbench.linkSystemLibrary("m");
+            workbench.linkSystemLibrary("dl");
+            workbench.linkSystemLibrary("gl");
+            workbench.linkSystemLibrary("sdl2");
+            workbench.linkSystemLibrary("gtk+-3.0");
         }
-    } else {
-        workbench.defineCMacro("CGPLAT_LINUX");
 
-        workbench.linkSystemLibrary("m");
-        workbench.linkSystemLibrary("dl");
-        workbench.linkSystemLibrary("gl");
-        workbench.linkSystemLibrary("sdl2");
-        workbench.linkSystemLibrary("gtk+-3.0");
-    }
-
-    for (workbench_sources) |src| {
-        workbench.addCSourceFile(
-            src,
-            if (std.mem.endsWith(u8, src, ".cpp")) cpp_options else c_options,
-        );
-    }
-    for (include_dirs) |dir| {
-        workbench.addIncludeDir(dir);
+        for (workbench_sources) |src| {
+            workbench.addCSourceFile(
+                src,
+                if (std.mem.endsWith(u8, src, ".cpp")) cpp_options else c_options,
+            );
+        }
+        for (include_dirs) |dir| {
+            workbench.addIncludeDir(dir);
+        }
     }
 
     workbench.install();

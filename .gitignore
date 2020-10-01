@@ -4,3 +4,4 @@ examples/*.ppm
 lib/
 *zig-cache/
 .vscode/
+release/

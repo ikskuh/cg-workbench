@@ -13,11 +13,13 @@
 #include "source.hpp"
 #include "sink.hpp"
 
+extern "C" uint8_t workbench_main(char const *initial_file_name);
+
 class Window
 {
 	friend void load(std::string const &fileName);
 	friend void save(std::string const &fileName);
-	friend int main(int argc, char **argv);
+	friend uint8_t workbench_main(char const *initial_file_name);
 
 private:
 	int id;

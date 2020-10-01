@@ -211,7 +211,7 @@ static void updateFileName(std::string fileName)
 
 static void load_plugins();
 
-int main(int argc, char **argv)
+extern "C" uint8_t workbench_main(char const *initial_file_name)
 {
 #ifdef DEBUG_BUILD
 	::installPath = FileIO::GetWorkingDirectory();
@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) != 0)
 	{
 		printf("Error: %s\n", SDL_GetError());
-		return -1;
+		return 1;
 	}
 
 	{
@@ -360,10 +360,10 @@ int main(int argc, char **argv)
 
 	load_plugins();
 
-	if (argc == 2)
+	if (initial_file_name != nullptr)
 	{
-		updateFileName(argv[1]);
-		load(std::string(argv[1]));
+		updateFileName(initial_file_name);
+		load(std::string(initial_file_name));
 	}
 
 	SDL_PauseAudioDevice(id, 0);
