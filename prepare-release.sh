@@ -11,7 +11,7 @@ echo "Building linux executable"
 zig build -Dtarget=x86_64-native-gnu -Drelease-safe -Dstrip
 
 echo "Building windows executable"
-zig build -Dtarget=x86_64-windows-gnu -Drelease-safe -Dstrip
+zig build -Dtarget=x86_64-windows-gnu -Dstrip # -Drelease-safe  bug with zig atm
 
 rm -f "${ARTIFACT}"
 rm -rf release
