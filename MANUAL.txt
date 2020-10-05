@@ -12,7 +12,7 @@ This is just a rough description on how the workbench should be used:
 The workbench is based on the concept of connect nodes. Each node has inputs and outputs.
 Inputs affect how the node processes its data, outputs are the result of processing.
 
-Nodes can be connected by dragging an output (on the right side of a node) to a
+Nodes can be connected by dragging an output (on the right side of a node) to an
 input (on the left side of a node). Compatible inputs will be highlighted when a
 drag is in process. Removing a link is done by clicking a connected input of the node.
 

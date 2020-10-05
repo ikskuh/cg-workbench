@@ -27,7 +27,7 @@ jobs:
     
     - name: Build Workbench (Linux, GNU)
       run: |
-        zig build -Dtarget=x86_64-native-gnu -Drelease-safe
+        zig build -Dtarget=x86_64-native-gnu -Drelease-safe -Dstrip
 
     - name: Upload artifact (Linux, GNU)
       uses: actions/upload-artifact@v2
@@ -55,7 +55,7 @@ jobs:
     
     - name: Build Workbench (Win64)
       run: |
-        zig build -Dtarget=x86_64-windows-gnu
+        zig build -Dtarget=x86_64-windows-gnu -Dstrip
       # https://github.com/MasterQ32/cg-workbench/issues/7: -Drelease-safe 
     
     - name: Upload artifact (Win64)
@@ -91,7 +91,7 @@ jobs:
 #    
 #    - name: Build Workbench (Win32)
 #      run: |
-#        zig build -Dtarget=i386-windows-gnu 
+#        zig build -Dtarget=i386-windows-gnu -Dstrip
 #      # https://github.com/MasterQ32/cg-workbench/issues/7: -Drelease-safe 
 #    
 #    - name: Upload artifact (Win32)

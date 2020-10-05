@@ -91,10 +91,8 @@ pub fn build(b: *std.build.Builder) !void {
                 workbench.defineCMacro("DECLSPEC=");
                 if (target.getCpuArch() == .i386) {
                     workbench.addIncludeDir("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/include/SDL2");
-                    workbench.addLibPath("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/lib");
                 } else {
                     workbench.addIncludeDir("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/include/SDL2");
-                    workbench.addLibPath("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/lib");
                 }
 
                 // TODO: https://github.com/MasterQ32/cg-workbench/issues/4
@@ -104,11 +102,20 @@ pub fn build(b: *std.build.Builder) !void {
                     workbench.linkSystemLibrary("version");
                     workbench.linkSystemLibrary("setupapi");
 
-                    workbench.linkSystemLibraryName("SDL2");
+                    if (target.getCpuArch() == .i386) {
+                        workbench.addObjectFile("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/lib/libSDL2.a");
+                    } else {
+                        workbench.addObjectFile("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/lib/libSDL2.a");
+                    }
                 } else {
+                    if (target.getCpuArch() == .i386) {
+                        workbench.addLibPath("lib/SDL2-2.0.12.mingw/i686-w64-mingw32/lib");
+                    } else {
+                        workbench.addLibPath("lib/SDL2-2.0.12.mingw/x86_64-w64-mingw32/lib");
+                    }
                     workbench.linkSystemLibraryName("SDL2.dll");
+                    workbench.linkSystemLibraryName("SDL2main");
                 }
-                workbench.linkSystemLibraryName("SDL2main");
             }
         } else {
             workbench.defineCMacro("CGPLAT_LINUX");
