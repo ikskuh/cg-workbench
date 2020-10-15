@@ -1,0 +1,484 @@
+{
+    "signals": [
+        {
+            "from": [
+                3,
+                "Total"
+            ],
+            "to": [
+                1,
+                "iTime"
+            ]
+        },
+        {
+            "from": [
+                7,
+                "Image 0"
+            ],
+            "to": [
+                1,
+                "iBackground"
+            ]
+        },
+        {
+            "from": [
+                9,
+                "Value"
+            ],
+            "to": [
+                1,
+                "iDistPow"
+            ]
+        },
+        {
+            "from": [
+                10,
+                "Value"
+            ],
+            "to": [
+                1,
+                "iDistFac"
+            ]
+        },
+        {
+            "from": [
+                1,
+                "Shader"
+            ],
+            "to": [
+                2,
+                "Shader"
+            ]
+        },
+        {
+            "from": [
+                3,
+                "Total"
+            ],
+            "to": [
+                5,
+                "iTime"
+            ]
+        },
+        {
+            "from": [
+                8,
+                "Texture"
+            ],
+            "to": [
+                5,
+                "iGradient"
+            ]
+        },
+        {
+            "from": [
+                5,
+                "Shader"
+            ],
+            "to": [
+                7,
+                "Shader"
+            ]
+        }
+    ],
+    "type": "cg-workbench-file",
+    "version": "1.0",
+    "windows": [
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nconst float pi = 3.14;\n\nuniform float iTime;\nuniform sampler2D iBackground;\n\nstruct Mat\n{\n\tfloat d;\n\tvec3 c;\n};\n\nfloat sphere(vec3 p, float r)\n{\n\treturn length(p) - r;\n}\n\nfloat sdHexPrism( vec3 p, vec2 h )\n{\n  const vec3 k = vec3(-0.8660254, 0.5, 0.57735);\n  p = abs(p);\n  p.xy -= 2.0*min(dot(k.xy, p.xy), 0.0)*k.xy;\n  vec2 d = vec2(\n       length(p.xy-vec2(clamp(p.x,-k.z*h.x,k.z*h.x), h.x))*sign(p.y-h.x),\n       p.z-h.y );\n  return min(max(d.x,d.y),0.0) + length(max(d,0.0));\n}\n\n\nfloat sdOctahedron( vec3 p, float s)\n{\n  p = abs(p);\n  float m = p.x+p.y+p.z-s;\n  vec3 q;\n       if( 3.0*p.x < m ) q = p.xyz;\n  else if( 3.0*p.y < m ) q = p.yzx;\n  else if( 3.0*p.z < m ) q = p.zxy;\n  else return m*0.57735027;\n    \n  float k = clamp(0.5*(q.z-q.y+s),0.0,s); \n  return length(vec3(q.x,q.y-s+k,q.z-k)); \n}\n\nvec3 move(vec3 p, vec3 o)\n{\n\treturn p - o;\n}\n\nMat sdUnion(Mat a, Mat b)\n{\n\tif(a.d < b.d)\n\t\treturn a;\n\telse\n\t\treturn b;\n}\n\nmat2 rot(float r)\n{\n\treturn mat2(\n\t\tsin(r), -cos(r),\n\t\tcos(r), sin(r)\n\t);\n}\n\nconst vec3[] spheres = vec3[](\n\tvec3(0.96,0.00,0.28),\n\tvec3(0.86,0.71,0.76),\n\tvec3(1.00,0.79,0.02),\n\tvec3(0.16,0.40,0.55),\n\tvec3(0.60,0.81,0.71),\n\tvec3(0.25,0.20,0.82)\n);\n\nMat scene(vec3 p)\n{\n\tfloat rep = 5;\n\t// p.z = mod(p.z+0.5*rep,rep)-0.5*rep;\n\tMat dist = Mat(1e9, vec3(0));\n\t// p.xy *= rot(iTime);\n\tfor(int i = 0; i < spheres.length(); i++) {\n\t\tvec3 o = vec3(0, 4 + sin(i + 4 * iTime), 0.2 * sin(0.3 * iTime +  2 * i));\n\t\to.xy *= rot(2.0 * pi * i / spheres.length() + iTime);\t\n\n\t\tvec3 l = move(p, o);\n\n\t\tl.xy *= rot(1.1 * iTime + 0.3 * i);\n\t\tl.yz *= rot(1.2 * iTime + 0.7 * i);\n\t\tl.xz *= rot(1.3 * iTime + 0.9 * i);\n\n\t\tfloat d1 = sdOctahedron(l, 1.0 + 0.3 * sin(0.3 * iTime));\n\n\t\tl.xy *= rot(1.1 * iTime + 0.3 * i);\n\t\tl.yz *= rot(1.2 * iTime + 0.7 * i);\n\t\tl.xz *= rot(1.3 * iTime + 0.9 * i);\n\t\tfloat d2 = sdHexPrism(l, vec2(1,.1));\n\t\t\n\t\tdist = sdUnion(dist, Mat(\n\t\t\tmix(d1, d2, 0.5 + 0.5 * sin(iTime + i)),\n\t\t\tspheres[i] + 10.0 * clamp(5.0 * sin(iTime + i) - 9.0, 0, 1)\n\t\t));\n\t}\n\treturn dist;\n}\n\nconst vec2 eps = vec2(0.1, 0.0);\n\nuniform float iDistPow;\nuniform float iDistFac;\n\nvoid main() {\n\tvec2 xy = 2.0 * uv - 1.0;\n\t\n\tfloat a = atan(xy.y, xy.x);\n\n\n\tcolor = texture(iBackground, vec2(0.4 / length(xy), 4.0 * a / pi + 0.15 * iTime));\n\n\tcolor = mix(vec4(0.35,0.5,0.3,1), color, pow(clamp(iDistFac * length(xy),0,1),iDistPow));\n\n\n\t\n\n\n\tvec3 pos = vec3(2 * sin(0.7 * iTime + 2.0), 2 * sin(0.8 * iTime), -9);\n\tvec3 dir = normalize(vec3(xy, 1.0));\n\n\tvec3 light = normalize(vec3(1, 0, -3));\n\t\n\tfor(int i = 0; i < 32; i++) {\n\t\tMat d = scene(pos);\n\t\tif(d.d <= 1e-3) {\n\t\t\tvec3 grad = normalize(vec3(\n\t\t\t\tscene(pos + eps.xyy).d - scene(pos - eps.xyy).d,\n\t\t\t\tscene(pos + eps.yxy).d - scene(pos - eps.yxy).d,\n\t\t\t\tscene(pos + eps.yyx).d - scene(pos - eps.yyx).d\n\t\t\t));\n\n\t\t\tfloat b = 0.3 + 0.5 * clamp(dot(grad, light), 0, 1);\n\n\t\t\tcolor.rgb = mix(\n\t\t\t\tcolor.rgb,\n\t\t\t\td.c * b,\n\t\t\t\t0.7\n\t\t\t);\n\n\t\t\tcolor.xyz += 2.0 * pow(\n\t\t\t\tclamp(dot(reflect(grad, light), dir), 0.0, 1.0),\n\t\t\t\t32.0\n\t\t\t);\n\n\t\t\tbreak;\n\t\t}\n\t\tpos += 0.99 * d.d * dir;\n\t}\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 1,
+            "window-pos": [
+                348.0,
+                586.0
+            ],
+            "window-size": [
+                645.0,
+                425.0
+            ],
+            "window-title": "Spheres",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 9,
+            "size": [
+                512.0,
+                512.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 2,
+            "window-pos": [
+                1091.0,
+                362.0
+            ],
+            "window-size": [
+                528.0,
+                566.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "current": 4004.65747070312,
+            "speed": 1.0,
+            "window-id": 3,
+            "window-pos": [
+                32.0,
+                554.0
+            ],
+            "window-size": [
+                262.0,
+                94.0
+            ],
+            "window-title": "Timer",
+            "window-type": "timer"
+        },
+        {
+            "items": [
+                {
+                    "code": "#version 330\nlayout(location = 0) in vec3 vPosition;\nlayout(location = 1) in vec3 vNormal;\nlayout(location = 2) in vec2 vUV;\n\nout vec3 position;\nout vec3 normal;\nout vec2 uv;\n\n// uniform mat4 transform;\n\nvoid main() {\n\tposition = vPosition;\n\tnormal = vNormal;\n\tuv = vUV;\n\t// gl_Position = transform * vec4(position, 1.0);\n    gl_Position = vec4(position, 1.0);\n}\n",
+                    "type": 35633
+                },
+                {
+                    "code": "#version 330\nout vec4 color;\n\nin vec3 position;\nin vec3 normal;\nin vec2 uv;\n\nuniform float iTime;\nuniform sampler2D iGradient;\n\nstruct Octave\n{\n\tfloat o;\n\tfloat a;\n\tfloat r;\n\tfloat v;\n};\n\nconst Octave[] octaves = Octave[](\n\tOctave(0.3, 0.3, 1.0, 2.0),\n\tOctave(0.4, 0.6, 2.0, 4.0),\n\tOctave(0.5, 0.4, 1.4, 6.0),\n\tOctave(0.6, 0.5, 1.4, 8.0),\n\tOctave(0.7, 0.5, 1.4, 12.0)\n);\n\nvoid main() {\n\tfloat f = 0.0;\n\tfor(int i = 0; i < octaves.length(); i++) {\n\t\tOctave oct = octaves[i];\n\t\tvec2 uv_r = vec2(sin(oct.r), cos(oct.r));\n\t\tfloat d = dot(uv, uv_r);\n\t\tf +=  oct.a * sin(oct.v * d + oct.o * iTime);\n\t}\n\tcolor = texture(iGradient, vec2(f, 0.5));\n}\n",
+                    "type": 35632
+                }
+            ],
+            "window-id": 5,
+            "window-pos": [
+                91.0,
+                229.0
+            ],
+            "window-size": [
+                542.0,
+                274.0
+            ],
+            "window-title": "Shader Editor",
+            "window-type": "shader"
+        },
+        {
+            "depthtest": true,
+            "scale": 7,
+            "size": [
+                512.0,
+                512.0
+            ],
+            "tex": [
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 33648,
+                        "wrap-s": 33648,
+                        "wrap-t": 33648
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                },
+                {
+                    "blend": false,
+                    "blend-alpha": 32774,
+                    "blend-color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "blend-dst-alpha": 771,
+                    "blend-dst-rgb": 771,
+                    "blend-rgb": 32774,
+                    "blend-src-alpha": 770,
+                    "blend-src-rgb": 770,
+                    "clear": true,
+                    "color": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "format": 32856,
+                    "settings": {
+                        "mag-filt": 9729,
+                        "min-filt": 9729,
+                        "wrap-r": 10497,
+                        "wrap-s": 10497,
+                        "wrap-t": 10497
+                    }
+                }
+            ],
+            "window-id": 7,
+            "window-pos": [
+                1004.0,
+                70.0
+            ],
+            "window-size": [
+                302.0,
+                182.0
+            ],
+            "window-title": "Render Window",
+            "window-type": "renderer",
+            "wireframe": false
+        },
+        {
+            "file": "/home/felix/projects/cg-workbench/examples/plasma.png",
+            "filter": {
+                "mag-filt": 9729,
+                "min-filt": 9729,
+                "wrap-r": 33648,
+                "wrap-s": 33648,
+                "wrap-t": 33648
+            },
+            "window-id": 8,
+            "window-pos": [
+                11.0,
+                38.0
+            ],
+            "window-size": [
+                297.0,
+                173.0
+            ],
+            "window-title": "Image",
+            "window-type": "image"
+        },
+        {
+            "type": "uniform-float",
+            "value": 3.69000005722046,
+            "window-id": 9,
+            "window-pos": [
+                50.0,
+                709.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (float)",
+            "window-type": "uniform-float"
+        },
+        {
+            "type": "uniform-float",
+            "value": 3.86999988555908,
+            "window-id": 10,
+            "window-pos": [
+                80.0,
+                815.0
+            ],
+            "window-size": [
+                262.0,
+                54.0
+            ],
+            "window-title": "Value (float)",
+            "window-type": "uniform-float"
+        }
+    ]
+}

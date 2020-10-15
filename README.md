@@ -19,6 +19,14 @@ Live Shading Demo: [Youtube](https://www.youtube.com/watch?v=et6Kq0yJqxU)
 | Ctrl + O | Open File |
 | Alt + F4 | Exit |
 
+## Examples
+
+### Gems
+
+![](https://mq32.de/public/159cddca23a0d4e3055aa29b548bf243746661f6.png)
+
+![](https://mq32.de/public/26c330536a3d48368ed26dca8d1267cf5d3cecd8.png)
+
 ## Build Instructions
 
 CG Workbench uses [Zig](https://ziglang.org/) as a build system. Just call `zig build` to build your project, `zig-cache/bin` will contain the executable.

@@ -31,7 +31,7 @@ pub fn build(b: *std.build.Builder) !void {
                 nfd.linkSystemLibrary("gtk+-3.0");
             },
             .windows => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_win.cpp", c_options),
-            .macos => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_cocoa.m", c_options),
+            .macosx => nfd.addCSourceFile("./ext/nativefiledialog/src/nfd_cocoa.m", c_options),
             else => return error.UnsupportedOS,
         }
     }
