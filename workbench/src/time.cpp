@@ -7,20 +7,20 @@
 namespace
 {
 // these values store times in "audiosamples" for maximum precision
-    std::atomic<uint64_t> time;
+    std::atomic<uint64_t> current_time;
 
     uint64_t deltaV, lastVideoFrame;
 }
 
 void Time::init()
 {
-    time = 0;
+    current_time = 0;
     lastVideoFrame = 0;
 }
 
 float Time::get()
 {
-    return float(time.load(std::memory_order_acquire)) / float(audio_samplerate);
+    return float(current_time.load(std::memory_order_acquire)) / float(audio_samplerate);
 }
 
 float Time::getAudioDelta()
@@ -35,11 +35,12 @@ float Time::getVideoDelta()
 
 void Time::newAudioFrame()
 {
-    (void)time.fetch_add(audio_buffersize);
+    (void)current_time.fetch_add(audio_buffersize);
 }
 
 void Time::newVideoFrame()
 {
-    deltaV = time.load(std::memory_order_acquire) - lastVideoFrame;
-    lastVideoFrame = time;
+    uint64_t now = current_time.load(std::memory_order_acquire);
+    deltaV = now - lastVideoFrame;
+    lastVideoFrame = now;
 }
