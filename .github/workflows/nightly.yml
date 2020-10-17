@@ -35,7 +35,6 @@ jobs:
         name: workbench-linux
         path: |
           zig-cache/bin/cg-workbench
-          icons/*
     
   win64-64:
     runs-on: ubuntu-latest
@@ -55,8 +54,7 @@ jobs:
     
     - name: Build Workbench (Win64)
       run: |
-        zig build -Dtarget=x86_64-windows-gnu -Dstrip
-      # https://github.com/MasterQ32/cg-workbench/issues/7: -Drelease-safe 
+        zig build -Dtarget=x86_64-windows-gnu -Dstrip -Drelease-safe 
     
     - name: Upload artifact (Win64)
       uses: actions/upload-artifact@v2
